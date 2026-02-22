@@ -8,36 +8,38 @@ import { logger } from '../utils/logger.js';
 import { truncateToWord } from '../utils/truncate.js';
 
 const SummarySchema = z.object({
-  title: z.string(),
-  summary: z.string(),
-  thought: z.string().describe('Comentario breve y con personalidad del Sapo, máx 100 caracteres'),
-  tags: z.array(z.string()).min(3).max(5),
-  sentiment: z.enum(['bullish', 'bearish', 'neutral']),
-  emoji: z.string(),
+    title: z.string(),
+    summary: z.string(),
+    thought: z
+        .string()
+        .describe('Comentario breve y con personalidad del Sapo, máx 100 caracteres'),
+    tags: z.array(z.string()).min(3).max(5),
+    sentiment: z.enum(['bullish', 'bearish', 'neutral']),
+    emoji: z.string(),
 });
 
 export type Summary = z.infer<typeof SummarySchema>;
 
 async function callLLM(prompt: string): Promise<Summary | null> {
-  const { object } = await generateObject({
-    model: google('gemini-2.5-flash'),
-    schema: SummarySchema,
-    prompt,
-  });
-  return object;
+    const { object } = await generateObject({
+        model: google('gemini-2.5-flash'),
+        schema: SummarySchema,
+        prompt,
+    });
+    return object;
 }
 
 export async function summarizeArticle(article: FeedArticle): Promise<Summary | null> {
-  try {
-    const safeTitle = article.title.slice(0, 300);
-    const rawContent = await scrapeArticle(article.url);
-    const content = rawContent ? rawContent.slice(0, 1500) : null;
+    try {
+        const safeTitle = article.title.slice(0, 300);
+        const rawContent = await scrapeArticle(article.url);
+        const content = rawContent ? rawContent.slice(0, 1500) : null;
 
-    const contentBlock = content
-      ? `Contenido del artículo:\n${content}`
-      : `Sin contenido disponible. Usa solo el título. Comienza con "Según ${article.source},"`;
+        const contentBlock = content
+            ? `Contenido del artículo:\n${content}`
+            : `Sin contenido disponible. Usa solo el título. Comienza con "Según ${article.source},"`;
 
-    const prompt = `
+        const prompt = `
 Eres el editor de El Sapo Cripto — un canal de noticias cripto para latinoamérica.
 Tu estilo: directo, claro, con personalidad. Como un amigo que sabe de cripto y te cuenta lo importante sin rodeos. No eres un profesor aburrido, tampoco un degen gritando "to the moon".
 
@@ -63,40 +65,40 @@ Reglas:
 - Si no hay info suficiente: empieza el summary con "Según ${article.source},"
 `.trim();
 
-    let result = await callLLM(prompt);
+        let result = await callLLM(prompt);
 
-    // Repair: if summary or title too long — retry with explicit command
-    if (result && (result.summary.length > 420 || result.title.length > 85)) {
-      logger.warn(`⚠️ Output too long, retrying with repair prompt...`);
-      result = await callLLM(
-        `${prompt}\n\nANTERIOR INTENTO FALLÓ POR LONGITUD. Acorta: title < 80 chars, summary < 400 chars. Sin perder el sentido.`,
-      );
+        // Repair: if summary or title too long — retry with explicit command
+        if (result && (result.summary.length > 420 || result.title.length > 85)) {
+            logger.warn(`⚠️ Output too long, retrying with repair prompt...`);
+            result = await callLLM(
+                `${prompt}\n\nANTERIOR INTENTO FALLÓ POR LONGITUD. Acorta: title < 80 chars, summary < 400 chars. Sin perder el sentido.`,
+            );
+        }
+
+        if (!result) return null;
+
+        // Normalize tags
+        const normalized: Summary = {
+            ...result,
+            tags: result.tags.map((t) => (t.startsWith('#') ? t : `#${t}`)),
+            title: truncateToWord(result.title, 80),
+            summary: truncateToWord(result.summary, 420),
+            emoji: result.emoji.slice(0, 6),
+        };
+
+        logger.info(`🧠 Summarized: ${safeTitle}`);
+        return normalized;
+    } catch (error) {
+        logger.error({ err: error }, `❌ Failed to summarize: ${article.title}`);
+        return null;
     }
-
-    if (!result) return null;
-
-    // Normalize tags
-    const normalized: Summary = {
-      ...result,
-      tags: result.tags.map((t) => (t.startsWith('#') ? t : `#${t}`)),
-      title: truncateToWord(result.title, 80),
-      summary: truncateToWord(result.summary, 420),
-      emoji: result.emoji.slice(0, 6),
-    };
-
-    logger.info(`🧠 Summarized: ${safeTitle}`);
-    return normalized;
-  } catch (error) {
-    logger.error({ err: error }, `❌ Failed to summarize: ${article.title}`);
-    return null;
-  }
 }
 
 export async function generateGoodNight(): Promise<string> {
-  try {
-    const { text } = await generateText({
-      model: google('gemini-2.5-flash'),
-      prompt: `
+    try {
+        const { text } = await generateText({
+            model: google('gemini-2.5-flash'),
+            prompt: `
 Eres el editor de El Sapo Cripto. Escribe un mensaje de buenas noches para el canal de Telegram.
 
 Reglas:
@@ -107,10 +109,10 @@ Reglas:
 - Solo español latinoamericano
 - Sin emojis en el texto (se añaden aparte)
       `.trim(),
-    });
+        });
 
-    return `🌙 *Buenas noches mis sapos* 🐸\n\n${text}`;
-  } catch {
-    return `🌙 *Buenas noches mis sapos* 🐸\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
-  }
+        return `🌙 *Buenas noches mis sapos* 🐸\n\n${text}`;
+    } catch {
+        return `🌙 *Buenas noches mis sapos* 🐸\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
+    }
 }
