@@ -49,8 +49,8 @@ async function runMorningDigest(): Promise<void> {
     const prices = await fetchPrices();
     await sendToTelegram(formatPricesPost(prices));
 
-    // После курсов — топ-3 свежих новости
-    await runNewsPipeline(3);
+    // После курсов — топ-1 свежих новости
+    await runNewsPipeline(1);
   } catch (error) {
     logger.error(`❌ Ошибка утреннего дайджеста: ${error}`);
   }
