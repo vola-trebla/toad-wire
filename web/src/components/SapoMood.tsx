@@ -10,15 +10,16 @@ export function SapoMood({ mood, glitching, onSwitch }: Props) {
   const currentMood = MOODS[mood];
 
   return (
-    <section
-      style={{
-        padding: 'clamp(40px,6vw,80px) clamp(20px,5vw,80px)',
-        background: 'var(--surface)',
-        borderTop: '1px solid var(--border)',
-        borderBottom: '1px solid var(--border)',
-      }}
-    >
-      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+    <section style={{ padding: 'clamp(40px,6vw,80px) clamp(20px,5vw,80px)' }}>
+      <div
+        style={{
+          maxWidth: '1100px',
+          margin: '0 auto',
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
+          padding: '32px',
+        }}
+      >
         <div
           style={{
             fontFamily: 'var(--font-mono)',
