@@ -1,11 +1,15 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import { articles } from '../db/schema.js';
 import { type FeedArticle } from '../sources/rss.js';
 import { logger } from '../utils/logger.js';
 
 export async function isDuplicate(url: string): Promise<boolean> {
-  const existing = await db.select().from(articles).where(eq(articles.url, url)).limit(1);
+  const existing = await db
+    .select()
+    .from(articles)
+    .where(and(eq(articles.url, url), eq(articles.posted, true)))
+    .limit(1);
 
   return existing.length > 0;
 }

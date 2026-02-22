@@ -25,9 +25,9 @@ Autonomous AI-powered Telegram bot that monitors global crypto news, summarizes 
 | Time  | Content                                              |
 | ----- | ---------------------------------------------------- |
 | 10:00 | 🌅 Morning prices (BTC/ETH/SOL/PEPE/DOGE) + top news |
-| 12:00 | 📰 News digest (up to 5 articles)                    |
-| 15:00 | 📰 News digest (up to 5 articles)                    |
-| 18:00 | 📰 News digest (up to 5 articles)                    |
+| 12:00 | 📰 News digest (up to n articles)                    |
+| 15:00 | 📰 News digest (up to n articles)                    |
+| 18:00 | 📰 News digest (up to n articles)                    |
 | 21:00 | 🌙 Evening sign-off + fun news pick                  |
 
 ---

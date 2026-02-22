@@ -71,13 +71,13 @@ async function runNewsPipeline(limit = 5): Promise<void> {
     if (posted >= limit) break;
     if (await isDuplicate(article.url)) continue;
 
-    await saveArticle(article);
-
     const summary = await summarizeArticle(article);
     if (!summary) continue;
 
     const post = formatPost(article, summary);
     await sendToTelegram(post);
+
+    await saveArticle(article);
     await markAsPosted(article.url);
 
     posted++;
