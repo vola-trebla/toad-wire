@@ -42,31 +42,31 @@ function isRelevant(title: string): boolean {
   return KEYWORDS.some((kw) => lower.includes(kw));
 }
 
-// 🌅 10:00 — утренний дайджест с курсами
+// 🌅 10:00 — Morning digest with prices
 async function runMorningDigest(): Promise<void> {
-  logger.info('🌅 Запуск утреннего дайджеста...');
+  logger.info('🌅 Starting morning digest...');
 
   try {
     const prices = await fetchPrices();
     await sendToTelegram(formatPricesPost(prices));
 
-    // После курсов — топ-1 свежих новости
+    // After prices — top-1 fresh news
     await runNewsPipeline(1);
   } catch (error) {
-    logger.error(`❌ Ошибка утреннего дайджеста: ${error}`);
+    logger.error(`❌ Morning digest error: ${error}`);
   }
 }
 
-// 📰 Дневные прогоны — только новости
+// 📰 Day runs — news only
 async function runNewsPipeline(limit = 5): Promise<void> {
-  logger.info('📰 Запуск новостного прогона...');
+  logger.info('📰 Starting news pipeline...');
 
   const allArticles = await fetchFeeds();
   const filtered = allArticles.filter((a) => isRelevant(a.title));
 
-  logger.info(`🔍 После фильтра: ${filtered.length} из ${allArticles.length}`);
+  logger.info(`🔍 After filter: ${filtered.length} of ${allArticles.length}`);
 
-  // Исключаем дубли
+  // Exclude duplicates
   const nonDuplicates: FeedArticle[] = [];
   for (const article of filtered) {
     if (!(await isDuplicate(article.url))) {
@@ -74,7 +74,7 @@ async function runNewsPipeline(limit = 5): Promise<void> {
     }
   }
 
-  // Ранкаем через LLM с запасом
+  // Rank via LLM with buffer
   const ranked = await rankArticles(nonDuplicates, limit * 3);
 
   let posted = 0;
@@ -95,20 +95,20 @@ async function runNewsPipeline(limit = 5): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 5000));
   }
 
-  logger.info(`✅ Запощено: ${posted}`);
+  logger.info(`✅ Posted: ${posted}`);
 }
 
-// 🌙 21:00 — вечерний прогон
+// 🌙 21:00 — Evening digest
 async function runEveningDigest(): Promise<void> {
-  logger.info('🌙 Запуск вечернего дайджеста...');
+  logger.info('🌙 Starting evening digest...');
 
   try {
-    // Одна фановая/необычная новость
+    // One fun/unusual news pick
     await runNewsPipeline(1);
 
     await sendToTelegram(await generateGoodNight());
   } catch (error) {
-    logger.error(`❌ Ошибка вечернего дайджеста: ${error}`);
+    logger.error(`❌ Evening digest error: ${error}`);
   }
 }
 

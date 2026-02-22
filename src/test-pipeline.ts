@@ -36,51 +36,51 @@ function isRelevant(title: string): boolean {
 }
 
 async function testPipeline() {
-  console.log('🐸 Запуск тестового пайплайна...\n');
+  console.log('🐸 Running test pipeline...\n');
 
-  // 1. Фетчим фиды
+  // 1. Fetch feeds
   const all = await fetchFeeds();
-  console.log(`📡 Всего статей из RSS: ${all.length}`);
+  console.log(`📡 Total articles from RSS: ${all.length}`);
 
-  // 2. Фильтруем по ключевым словам
+  // 2. Filter by keywords
   const filtered = all.filter((a) => isRelevant(a.title));
-  console.log(`🔍 После фильтра: ${filtered.length}\n`);
+  console.log(`🔍 After filter: ${filtered.length}\n`);
 
-  // 3. Показываем топ-5 кандидатов до ранкера
-  console.log('📋 Топ-5 кандидатов (до ранкера):');
+  // 3. Show top-5 candidates before ranker
+  console.log('📋 Top-5 candidates (before ranker):');
   filtered.slice(0, 5).forEach((a, i) => {
     console.log(`  ${i + 1}. [${a.source}] ${a.publishedAt}`);
     console.log(`     ${a.title}`);
   });
 
-  // 4. Ранкаем через LLM
+  // 4. Rank via LLM
   const ranked = await rankArticles(filtered, 3);
 
-  console.log('\n🎯 После ранкера:');
+  console.log('\n🎯 After ranker:');
   ranked.forEach((a, i) => {
     console.log(`  ${i + 1}. [${a.source}] ${a.title}`);
   });
 
-  // 5. Суммаризируем первую статью из ranked
+  // 5. Summarize first article from ranked
   const target = ranked[0];
   if (!target) {
-    console.log('\n❌ Нет кандидатов для суммаризации');
+    console.log('\n❌ No candidates for summarization');
     return;
   }
 
-  console.log(`\n🧠 Суммаризируем: "${target.title}"`);
+  console.log(`\n🧠 Summarizing: "${target.title}"`);
   const summary = await summarizeArticle(target);
 
   if (!summary) {
-    console.log('❌ Суммаризация не удалась');
+    console.log('❌ Summarization failed');
     return;
   }
 
-  // 6. Форматируем пост
+  // 6. Format post
   const post = formatPost(target, summary);
 
   console.log('\n' + '='.repeat(60));
-  console.log('📨 ГОТОВЫЙ ПОСТ (не отправляется в Telegram):');
+  console.log('📨 READY POST (not sent to Telegram):');
   console.log('='.repeat(60));
   console.log(post);
   console.log('='.repeat(60));

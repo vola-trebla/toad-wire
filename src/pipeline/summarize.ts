@@ -65,7 +65,7 @@ Reglas:
 
     let result = await callLLM(prompt);
 
-    // Repair: если summary или title слишком длинные — retry с явной командой
+    // Repair: if summary or title too long — retry with explicit command
     if (result && (result.summary.length > 420 || result.title.length > 85)) {
       logger.warn(`⚠️ Output too long, retrying with repair prompt...`);
       result = await callLLM(
@@ -75,7 +75,7 @@ Reglas:
 
     if (!result) return null;
 
-    // Нормализуем теги
+    // Normalize tags
     const normalized: Summary = {
       ...result,
       tags: result.tags.map((t) => (t.startsWith('#') ? t : `#${t}`)),

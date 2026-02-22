@@ -48,7 +48,7 @@ export const Ticker = memo(({ prices, color }: Props) => {
               el.style.textShadow = `0 0 12px ${color}`;
               el.style.transform = 'scale(1.15)';
               el.style.letterSpacing = '0.35em';
-              // замедлить ленту
+              // pause ticker animation
               const ticker = el.parentElement as HTMLElement;
               ticker.style.animationPlayState = 'paused';
             }}
