@@ -1,15 +1,22 @@
-import { useLastPost } from '../hooks/useLastPost';
+import { useState, useEffect } from 'react';
+import { POSTS } from '../constants/posts';
+
+function getRandomPost() {
+  return POSTS[Math.floor(Math.random() * POSTS.length)];
+}
 
 export function LastPost() {
-  const post = useLastPost();
+  const [post, setPost] = useState(getRandomPost);
 
-  const formatDate = (timestamp: number) =>
-    new Date(timestamp * 1000).toLocaleDateString('es-UY', {
-      day: '2-digit',
-      month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  useEffect(() => {
+    const interval = setInterval(
+      () => {
+        setPost(getRandomPost());
+      },
+      2 * 60 * 60 * 1000,
+    ); // 2 hours
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div
@@ -29,40 +36,47 @@ export function LastPost() {
           marginBottom: '16px',
         }}
       >
-        // LAST_POST.log
+        // RANDOM_POST.log
       </div>
-
-      {post ? (
-        <>
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '12px',
-              color: 'var(--text-dim)',
-              lineHeight: 1.7,
-              marginBottom: '12px',
-              display: '-webkit-box',
-              WebkitLineClamp: 5,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            {post.text}
-          </div>
-          <div
-            style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)' }}
-          >
-            {formatDate(post.date)}
-          </div>
-        </>
-      ) : (
+      <div
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '12px',
+          fontWeight: 700,
+          color: 'var(--green)',
+          marginBottom: '10px',
+          lineHeight: 1.4,
+        }}
+      >
+        {post.title}
+      </div>
+      <div
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '11px',
+          color: 'var(--text-dim)',
+          lineHeight: 1.7,
+          marginBottom: '12px',
+          display: '-webkit-box',
+          WebkitLineClamp: 4,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }}
+      >
+        {post.text}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div
-          style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-muted)' }}
+          style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)' }}
         >
-          ...
+          📊 {post.sentiment}
         </div>
-      )}
-
+        <div
+          style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)' }}
+        >
+          🔗 {post.source}
+        </div>
+      </div>
       <div
         style={{
           position: 'absolute',
