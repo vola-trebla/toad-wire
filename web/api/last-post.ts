@@ -7,7 +7,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
   const channelId = process.env.TELEGRAM_CHANNEL_ID;
 
   try {
-    const response = await fetch(`https://api.telegram.org/bot${token}/getUpdates?limit=10`);
+    const response = await fetch(`https://api.telegram.org/bot${token}/getUpdates?limit=100`);
     const data = await response.json();
 
     const messages = data.result
