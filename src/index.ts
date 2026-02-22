@@ -3,7 +3,7 @@ import cron from 'node-cron';
 import { fetchFeeds } from './sources/rss.js';
 import { fetchPrices, formatPricesPost } from './sources/prices.js';
 import { isDuplicate, saveArticle, markAsPosted } from './pipeline/dedup.js';
-import { summarizeArticle } from './pipeline/summarize.js';
+import {generateGoodNight, summarizeArticle} from './pipeline/summarize.js';
 import { formatPost } from './pipeline/format.js';
 import { sendToTelegram } from './pipeline/post.js';
 import { logger } from './utils/logger.js';
@@ -95,9 +95,7 @@ async function runEveningDigest(): Promise<void> {
     // Одна фановая/необычная новость
     await runNewsPipeline(1);
 
-    await sendToTelegram(
-      `🌙 *Buenas noches mis sapos* 🐸\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`,
-    );
+    await sendToTelegram(await generateGoodNight());
   } catch (error) {
     logger.error(`❌ Ошибка вечернего дайджеста: ${error}`);
   }

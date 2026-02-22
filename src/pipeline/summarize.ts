@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { generateObject } from 'ai';
+import {generateObject, generateText} from 'ai';
 import { google } from '@ai-sdk/google';
 import { z } from 'zod';
 import { type FeedArticle } from '../sources/rss.js';
@@ -90,4 +90,27 @@ Reglas:
     logger.error({ err: error }, `❌ Failed to summarize: ${article.title}`);
     return null;
   }
+}
+
+export async function generateGoodNight(): Promise<string> {
+    try {
+        const { text } = await generateText({
+            model: google('gemini-2.5-flash'),
+            prompt: `
+Eres el editor de El Sapo Cripto. Escribe un mensaje de buenas noches para el canal de Telegram.
+
+Reglas:
+- Máximo 2 frases
+- Tono: cálido, con personalidad, ligero humor
+- Puede hacer referencia al mercado cripto de forma casual
+- Siempre diferente, nunca repetitivo
+- Solo español latinoamericano
+- Sin emojis en el texto (se añaden aparte)
+      `.trim(),
+        });
+
+        return `🌙 *Buenas noches mis sapos* 🐸\n\n${text}`;
+    } catch {
+        return `🌙 *Buenas noches mis sapos* 🐸\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
+    }
 }
