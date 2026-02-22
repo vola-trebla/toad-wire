@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCryptoPrices } from './hooks/useCryptoPrices';
+import { Ticker } from './components/Ticker';
 
 type Mood = 'neutral' | 'bullish' | 'bearish';
 
@@ -43,27 +44,6 @@ const MOODS: Record<Mood, MoodConfig> = {
   },
 };
 
-const TICKER_ITEMS = [
-  'BTC',
-  'ETH',
-  'SOL',
-  'BNB',
-  'ADA',
-  'AVAX',
-  'DOT',
-  'LINK',
-  'UNI',
-  'BTC',
-  'ETH',
-  'SOL',
-  'BNB',
-  'ADA',
-  'AVAX',
-  'DOT',
-  'LINK',
-  'UNI',
-];
-
 const SCHEDULE = [
   {
     time: '10:00',
@@ -98,7 +78,7 @@ const SCHEDULE = [
 ];
 
 export default function App() {
-    const prices = useCryptoPrices(['BTC', 'ETH', 'SOL', 'BNB', 'ADA', 'AVAX', 'DOT', 'LINK', 'UNI'])
+  const prices = useCryptoPrices(['BTC', 'ETH', 'SOL', 'BNB', 'ADA', 'AVAX', 'DOT', 'LINK', 'UNI']);
   const [mood, setMood] = useState<Mood>('neutral');
   const [time, setTime] = useState(new Date());
   const [glitching, setGlitching] = useState(false);
@@ -139,24 +119,10 @@ export default function App() {
             display: 'flex',
             animation: 'ticker 20s linear infinite',
             whiteSpace: 'nowrap',
+            willChange: 'transform',
           }}
         >
-          {TICKER_ITEMS.map((item, i) => (
-            <span
-              key={i}
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                color: currentMood.color,
-                padding: '0 24px',
-                opacity: 0.7,
-                letterSpacing: '0.15em',
-              }}
-            >
-              {item} {prices[`${item}USDT`] ? `$${prices[`${item}USDT`].toLocaleString()}` : '...'}{' '}
-              <span style={{ opacity: 0.4 }}>///</span>
-            </span>
-          ))}
+          <Ticker prices={prices} color={currentMood.color} />
         </div>
       </div>
 
