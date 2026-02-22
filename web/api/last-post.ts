@@ -21,7 +21,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
     }
 
     return res.json({
-      text: last.text,
+      text: last.text || last.caption || null,
       date: last.date,
     });
   } catch (e) {
