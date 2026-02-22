@@ -114,6 +114,22 @@ COINMARKETCAP_API_KEY=
 
 ---
 
+## Landing Page
+
+🌐 Website: [el-sapo-cripto.vercel.app](https://el-sapo-cripto.vercel.app)
+
+Static landing page built with React + TypeScript + Vite. Live crypto prices via Binance WebSocket.
+```
+web/
+  src/
+    App.tsx                 # Main page + Sapo Mood switcher
+    hooks/
+      useCryptoPrices.ts    # Binance WebSocket hook
+    components/
+      Ticker.tsx            # Live prices ticker
+  index.css                 # Design system + animations
+```
+
 ## License
 
 MIT
