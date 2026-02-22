@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import cron from 'node-cron';
-import { fetchFeeds } from './sources/rss.js';
+import { type FeedArticle, fetchFeeds } from './sources/rss.js';
 import { fetchPrices, formatPricesPost } from './sources/prices.js';
 import { isDuplicate, saveArticle, markAsPosted } from './pipeline/dedup.js';
 import { generateGoodNight, summarizeArticle } from './pipeline/summarize.js';
@@ -9,6 +9,7 @@ import { sendToTelegram } from './pipeline/post.js';
 import { logger } from './utils/logger.js';
 import { db } from './db/client.js';
 import { sql } from 'drizzle-orm';
+import { rankArticles } from './pipeline/ranker.js';
 
 const KEYWORDS = [
   'bitcoin',
@@ -60,16 +61,26 @@ async function runMorningDigest(): Promise<void> {
 async function runNewsPipeline(limit = 5): Promise<void> {
   logger.info('📰 Запуск новостного прогона...');
 
-  const articles = await fetchFeeds();
-  const filtered = articles.filter((a) => isRelevant(a.title));
+  const allArticles = await fetchFeeds();
+  const filtered = allArticles.filter((a) => isRelevant(a.title));
 
-  logger.info(`🔍 После фильтра: ${filtered.length} из ${articles.length}`);
+  logger.info(`🔍 После фильтра: ${filtered.length} из ${allArticles.length}`);
+
+  // Исключаем дубли
+  const nonDuplicates: FeedArticle[] = [];
+  for (const article of filtered) {
+    if (!(await isDuplicate(article.url))) {
+      nonDuplicates.push(article);
+    }
+  }
+
+  // Ранкаем через LLM с запасом
+  const ranked = await rankArticles(nonDuplicates, limit * 3);
 
   let posted = 0;
 
-  for (const article of filtered) {
+  for (const article of ranked) {
     if (posted >= limit) break;
-    if (await isDuplicate(article.url)) continue;
 
     const summary = await summarizeArticle(article);
     if (!summary) continue;

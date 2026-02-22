@@ -41,5 +41,23 @@ export async function fetchFeeds(): Promise<FeedArticle[]> {
     }
   }
 
-  return results.sort(() => Math.random() - 0.5);
+  results.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+
+  const bySource = new Map<string, FeedArticle[]>();
+  for (const article of results) {
+    if (!bySource.has(article.source)) bySource.set(article.source, []);
+    bySource.get(article.source)!.push(article);
+  }
+
+  const diverse: FeedArticle[] = [];
+  const sources = Array.from(bySource.values());
+  const maxLen = Math.max(...sources.map((s) => s.length));
+
+  for (let i = 0; i < maxLen; i++) {
+    for (const sourceArticles of sources) {
+      if (sourceArticles[i]) diverse.push(sourceArticles[i]!);
+    }
+  }
+
+  return diverse;
 }

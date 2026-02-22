@@ -11,6 +11,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "format": "prettier --write .",
+    "test:pipeline": "tsx src/test-pipeline.ts",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [],
