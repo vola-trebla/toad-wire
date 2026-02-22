@@ -646,7 +646,7 @@ export default function App() {
                     fontSize: '11px',
                     color: 'var(--text-muted)',
                 }}>
-                    © 2025 El Sapo Cripto · No es asesoramiento financiero · El sapo no es responsable de tus decisiones
+                    © 2026 El Sapo Cripto · No es asesoramiento financiero · El sapo no es responsable de tus decisiones
                 </div>
                 <div style={{
                     fontFamily: 'var(--font-mono)',
