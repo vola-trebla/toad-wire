@@ -3,7 +3,7 @@ import cron from 'node-cron';
 import { fetchFeeds } from './sources/rss.js';
 import { fetchPrices, formatPricesPost } from './sources/prices.js';
 import { isDuplicate, saveArticle, markAsPosted } from './pipeline/dedup.js';
-import {generateGoodNight, summarizeArticle} from './pipeline/summarize.js';
+import { generateGoodNight, summarizeArticle } from './pipeline/summarize.js';
 import { formatPost } from './pipeline/format.js';
 import { sendToTelegram } from './pipeline/post.js';
 import { logger } from './utils/logger.js';

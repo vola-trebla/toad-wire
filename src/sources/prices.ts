@@ -62,7 +62,7 @@ export function formatPricesPost(prices: CoinPrice[]): string {
         ? `$${coin.price.toFixed(6)}`
         : `$${coin.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
 
-    return `${getCoinEmoji(coin.symbol)} *${coin.symbol}* ${price}\n   1h: ${formatChange(coin.change1h)} | 24h: ${formatChange(coin.change24h)} | 7d: ${formatChange(coin.change7d)}`;
+    return `${getCoinEmoji(coin.symbol)} *${coin.symbol}* ${price}\n   1h: ${formatChange(coin.change1h)}\n   24h: ${formatChange(coin.change24h)}\n   7d: ${formatChange(coin.change7d)}`;
   });
 
   return `🌅 *Buenos días mis sapos* 🐸

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import {generateObject, generateText} from 'ai';
+import { generateObject, generateText } from 'ai';
 import { google } from '@ai-sdk/google';
 import { z } from 'zod';
 import { type FeedArticle } from '../sources/rss.js';
@@ -93,10 +93,10 @@ Reglas:
 }
 
 export async function generateGoodNight(): Promise<string> {
-    try {
-        const { text } = await generateText({
-            model: google('gemini-2.5-flash'),
-            prompt: `
+  try {
+    const { text } = await generateText({
+      model: google('gemini-2.5-flash'),
+      prompt: `
 Eres el editor de El Sapo Cripto. Escribe un mensaje de buenas noches para el canal de Telegram.
 
 Reglas:
@@ -107,10 +107,10 @@ Reglas:
 - Solo español latinoamericano
 - Sin emojis en el texto (se añaden aparte)
       `.trim(),
-        });
+    });
 
-        return `🌙 *Buenas noches mis sapos* 🐸\n\n${text}`;
-    } catch {
-        return `🌙 *Buenas noches mis sapos* 🐸\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
-    }
+    return `🌙 *Buenas noches mis sapos* 🐸\n\n${text}`;
+  } catch {
+    return `🌙 *Buenas noches mis sapos* 🐸\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
+  }
 }
