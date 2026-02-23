@@ -8,45 +8,51 @@ function getColor(value: number): string {
     return '#00ff99';
 }
 
-export function FearGreed() {
+interface Props {
+    compact?: boolean;
+}
+
+export function FearGreed({ compact = false }: Props) {
     const data = useFearGreed();
 
-    return (
-        <div
-            style={{
-                padding: '8px 24px',
-                background: 'var(--surface)',
-                borderBottom: '1px solid var(--border)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '24px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-            }}
-        >
-            <span style={{ color: 'var(--text-muted)', letterSpacing: '0.2em' }}>
-                // FEAR_GREED.exe
-            </span>
+    if (compact) {
+        return (
+            <div className="font-mono text-[11px] flex items-center gap-2">
+                <span className="text-(--text-muted) tracking-widest">// FEAR_GREED.exe</span>
+                {data ? (
+                    <>
+                        <span
+                            style={{ color: getColor(data.value) }}
+                            className="font-black text-sm"
+                        >
+                            {data.value}
+                        </span>
+                        <span style={{ color: getColor(data.value) }} className="font-bold">
+                            · {data.classification.toUpperCase()}
+                        </span>
+                    </>
+                ) : (
+                    <span className="text-(--text-muted)">...</span>
+                )}
+            </div>
+        );
+    }
 
+    return (
+        <div className="px-6 py-2 bg-(--bg) border-b border-(--border) flex items-center gap-6 font-mono text-[11px]">
+            <span className="text-(--text-muted) tracking-widest">// FEAR_GREED.exe</span>
             {data ? (
                 <>
-                    <span
-                        style={{ color: getColor(data.value), fontWeight: 900, fontSize: '16px' }}
-                    >
+                    <span style={{ color: getColor(data.value) }} className="font-black text-base">
                         {data.value}
                     </span>
                     <span
-                        style={{
-                            color: getColor(data.value),
-                            fontWeight: 700,
-                            letterSpacing: '0.12em',
-                        }}
+                        style={{ color: getColor(data.value) }}
+                        className="font-bold tracking-widest"
                     >
                         {data.classification.toUpperCase()}
                     </span>
-
-                    <span style={{ color: 'var(--border)' }}>|</span>
-
+                    <span className="text-(--border)">|</span>
                     {[
                         { range: '0–24', label: 'Extreme Fear', color: '#ff3b3b' },
                         { range: '25–45', label: 'Fear', color: '#ff8c00' },
@@ -70,7 +76,7 @@ export function FearGreed() {
                     })}
                 </>
             ) : (
-                <span style={{ color: 'var(--text-muted)' }}>...</span>
+                <span className="text-(--text-muted)">...</span>
             )}
         </div>
     );

@@ -9,71 +9,40 @@ export function Header({ time }: Props) {
         d.toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
     return (
-        <header
-            style={{
-                padding: '20px 40px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderBottom: '1px solid var(--border)',
-                background: 'var(--bg)',
-            }}
-        >
-            <div
-                style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '14px',
-                    fontWeight: 700,
-                    color: 'var(--green)',
-                    letterSpacing: '0.1em',
-                }}
-            >
-                EL SAPO CRIPTO
-            </div>
-            <FearGreed />
-            <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-                <button
-                    onClick={() =>
-                        document.getElementById('roadmap')?.scrollIntoView({ behavior: 'smooth' })
-                    }
-                    style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        letterSpacing: '0.12em',
-                        color: 'var(--text-muted)',
-                        background: 'transparent',
-                        border: 'none',
-                        cursor: 'pointer',
-                        transition: 'color 0.2s',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--green)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-                >
-                    ROADMAP
-                </button>
-                <div
-                    style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '12px',
-                        color: 'var(--text-dim)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                    }}
-                >
-                    <span
-                        style={{
-                            width: '6px',
-                            height: '6px',
-                            borderRadius: '50%',
-                            background: 'var(--green)',
-                            display: 'inline-block',
-                            animation: 'pulse-green 2s infinite',
-                        }}
-                    />
-                    LIVE · {formatTime(time)} UY
+        <header className="bg-(--bg) border-b border-(--border) px-5 py-3 md:px-10 md:py-5">
+            <div className="flex items-center justify-between">
+                {/* Logo */}
+                <div className="font-display text-sm font-bold text-(--green) tracking-widest whitespace-nowrap">
+                    EL SAPO CRIPTO
                 </div>
+
+                {/* Center: Fear & Greed — только десктоп */}
+                <div className="hidden md:flex flex-1 justify-center px-8">
+                    <FearGreed />
+                </div>
+
+                {/* Right: Roadmap + Live */}
+                <div className="flex items-center gap-6">
+                    <button
+                        onClick={() =>
+                            document
+                                .getElementById('roadmap')
+                                ?.scrollIntoView({ behavior: 'smooth' })
+                        }
+                        className="font-display text-[11px] font-bold tracking-widest text-(--text-muted) bg-transparent border-none cursor-pointer transition-colors hover:text-(--green) whitespace-nowrap"
+                    >
+                        ROADMAP
+                    </button>
+                    <div className="font-mono text-xs text-(--text-dim) flex items-center gap-2 whitespace-nowrap">
+                        <span className="w-1.5 h-1.5 rounded-full bg-(--green) inline-block animate-[pulse-green_2s_infinite] shrink-0" />
+                        LIVE · {formatTime(time)} UY
+                    </div>
+                </div>
+            </div>
+
+            {/* Fear & Greed compact — только мобайл */}
+            <div className="mt-2 md:hidden flex justify-center">
+                <FearGreed compact />
             </div>
         </header>
     );

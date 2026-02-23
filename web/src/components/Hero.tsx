@@ -1,6 +1,7 @@
 import { MOODS, type Mood } from '../constants/moods';
 import { LastPost } from './LastPost';
 import { HowSapoThinks } from './HowSapoThinks';
+import * as React from "react";
 
 interface Props {
     mood: Mood;
@@ -24,10 +25,11 @@ export function Hero({ mood }: Props) {
                     display: 'flex',
                     gap: '48px',
                     alignItems: 'flex-start',
+                    flexWrap: 'wrap',
                 }}
             >
                 {/* Left column */}
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, minWidth: '280px' }}>
                     <div
                         className="animate-fade-up"
                         style={{
@@ -151,14 +153,7 @@ export function Hero({ mood }: Props) {
                 </div>
 
                 {/* Right column */}
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '16px',
-                        minWidth: '260px',
-                    }}
-                >
+                <div className="flex flex-col gap-4 w-full md:max-w-115">
                     <HowSapoThinks />
                     <LastPost />
                 </div>
