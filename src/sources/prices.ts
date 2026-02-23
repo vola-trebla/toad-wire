@@ -1,5 +1,6 @@
 import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
+import { type FearGreedData, formatFearGreed } from './feargreed.js';
 
 export interface CoinPrice {
     name: string;
@@ -10,7 +11,7 @@ export interface CoinPrice {
     change7d: number;
 }
 
-const COINS = 'BTC,ETH,SOL,PEPE,DOGE';
+const COINS = 'BTC,ETH,SOL,DOGE';
 
 export async function fetchPrices(): Promise<CoinPrice[]> {
     try {
@@ -55,7 +56,7 @@ export async function fetchPrices(): Promise<CoinPrice[]> {
     }
 }
 
-export function formatPricesPost(prices: CoinPrice[]): string {
+export function formatPricesPost(prices: CoinPrice[], fearGreed?: FearGreedData | null): string {
     const lines = prices.map((coin) => {
         const price =
             coin.price < 0.01
@@ -65,9 +66,14 @@ export function formatPricesPost(prices: CoinPrice[]): string {
         return `${getCoinEmoji(coin.symbol)} *${coin.symbol}* ${price}\n   1h: ${formatChange(coin.change1h)}\n   24h: ${formatChange(coin.change24h)}\n   7d: ${formatChange(coin.change7d)}`;
     });
 
+    const fearGreedLine = fearGreed
+        ? `\n🧠 *Fear & Greed:* ${formatFearGreed(fearGreed.value)}`
+        : '';
+
     return `🌅 *Buenos días mis sapos* 🐸
 
 Así amanece el mercado hoy:
+${fearGreedLine}
 
 ${lines.join('\n\n')}
 
@@ -75,17 +81,29 @@ _Datos: CoinMarketCap_`;
 }
 
 function formatChange(change: number): string {
-    const arrow = change >= 0 ? '🟢' : '🔴';
-    const sign = change >= 0 ? '+' : '';
-    return `${arrow} ${sign}${change.toFixed(2)}%`;
+    const abs = Math.abs(change);
+
+    let emoji: string;
+
+    if (abs < 0.05) {
+        emoji = '🌫️';
+    } else if (change > 0) {
+        if (change >= 2) emoji = '🔥🔥';
+        else emoji = '🔥';
+    } else {
+        if (change <= -3) emoji = '🌪️';
+        else emoji = '💧';
+    }
+
+    const sign = change > 0 ? '+' : '';
+    return `${emoji} ${sign}${change.toFixed(2)}%`;
 }
 
 function getCoinEmoji(symbol: string): string {
     const map: Record<string, string> = {
         BTC: '₿',
-        ETH: '🔷',
+        ETH: '💎',
         SOL: '☀️',
-        PEPE: '🐸',
         DOGE: '🐶',
     };
     return map[symbol] ?? '🪙';

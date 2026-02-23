@@ -10,6 +10,7 @@ import { logger } from './utils/logger.js';
 import { db } from './db/client.js';
 import { sql } from 'drizzle-orm';
 import { rankArticles } from './pipeline/ranker.js';
+import { fetchFearGreed } from './sources/feargreed.js';
 
 const KEYWORDS = [
     'bitcoin',
@@ -47,10 +48,9 @@ async function runMorningDigest(): Promise<void> {
     logger.info('🌅 Starting morning digest...');
 
     try {
-        const prices = await fetchPrices();
-        await sendToTelegram(formatPricesPost(prices));
+        const [prices, fearGreed] = await Promise.all([fetchPrices(), fetchFearGreed()]);
 
-        // After prices — top-1 fresh news
+        await sendToTelegram(formatPricesPost(prices, fearGreed));
         await runNewsPipeline(1);
     } catch (error) {
         logger.error(`❌ Morning digest error: ${error}`);

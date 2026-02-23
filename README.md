@@ -48,13 +48,13 @@ El Sapo doesn't just pick random news - it uses a multi-stage AI pipeline to sel
 
 ## 📆 Schedule (Montevideo time, UTC-3)
 
-| Time  | Content                                              |
-|-------|------------------------------------------------------|
-| 10:00 | 🌅 Morning prices (BTC/ETH/SOL/PEPE/DOGE) + top news |
-| 12:00 | 📰 News digest (up to n articles)                    |
-| 15:00 | 📰 News digest (up to n articles)                    |
-| 18:00 | 📰 News digest (up to n articles)                    |
-| 21:00 | 🌙 Evening sign-off + fun news pick                  |
+| Time  | Content                                           |
+|-------|---------------------------------------------------|
+| 10:00 | 🌅 Morning prices (BTC/ETH/SOL/DOGE) + top news   |
+| 12:00 | 📰 News digest (up to n articles)                 |
+| 15:00 | 📰 News digest (up to n articles)                 |
+| 18:00 | 📰 News digest (up to n articles)                 |
+| 21:00 | 🌙 Evening sign-off + fun news pick               |
 
 ---
 
