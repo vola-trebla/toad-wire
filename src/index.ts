@@ -11,6 +11,7 @@ import { db } from './db/client.js';
 import { sql } from 'drizzle-orm';
 import { rankArticles } from './pipeline/ranker.js';
 import { fetchFearGreed } from './sources/feargreed.js';
+import { isSimilarToPublished } from './pipeline/similarity.js';
 
 const KEYWORDS = [
     'bitcoin',
@@ -66,15 +67,14 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 
     logger.info(`🔍 After filter: ${filtered.length} of ${allArticles.length}`);
 
-    // Exclude duplicates
+    // Exclude URL duplicates + semantic duplicates
     const nonDuplicates: FeedArticle[] = [];
     for (const article of filtered) {
-        if (!(await isDuplicate(article.url))) {
-            nonDuplicates.push(article);
-        }
+        if (await isDuplicate(article.url)) continue;
+        if (await isSimilarToPublished(article.title)) continue;
+        nonDuplicates.push(article);
     }
 
-    // Rank via LLM with buffer
     const ranked = await rankArticles(nonDuplicates, limit * 3);
 
     let posted = 0;

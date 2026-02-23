@@ -7,5 +7,6 @@ export const articles = sqliteTable('articles', {
     source: text('source').notNull(),
     publishedAt: text('published_at').notNull(),
     posted: integer('posted', { mode: 'boolean' }).default(false),
+    embedding: text('embedding'), // JSON-serialized number[]
     createdAt: text('created_at').default(new Date().toISOString()),
 });

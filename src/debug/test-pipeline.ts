@@ -1,8 +1,8 @@
 import 'dotenv/config';
-import { fetchFeeds } from './sources/rss.js';
-import { summarizeArticle } from './pipeline/summarize.js';
-import { formatPost } from './pipeline/format.js';
-import { rankArticles } from './pipeline/ranker.js';
+import { fetchFeeds } from '../sources/rss.js';
+import { summarizeArticle } from '../pipeline/summarize.js';
+import { formatPost } from '../pipeline/format.js';
+import { rankArticles } from '../pipeline/ranker.js';
 
 const KEYWORDS = [
     'bitcoin',
