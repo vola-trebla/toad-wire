@@ -1,7 +1,7 @@
 export function Mission() {
     const stats = [
-        { val: '5×', label: 'posts por día' },
-        { val: '4', label: 'fuentes cripto' },
+        { val: '7×', label: 'posts por día' },
+        { val: '9', label: 'fuentes cripto' },
         { val: '∞', label: 'ranas' },
     ];
 
