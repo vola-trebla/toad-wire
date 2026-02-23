@@ -27,14 +27,36 @@ export async function scrapeArticle(url: string): Promise<string | null> {
 }
 
 function extractText(html: string): string {
-    return html
-        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-        .replace(/<[^>]+>/g, ' ')
-        .replace(/&nbsp;/g, ' ')
-        .replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/\s{2,}/g, ' ')
-        .trim();
+    // extra: try to capture only <article>
+    const articleMatch = html.match(/<article[\s\S]*?<\/article>/i);
+    if (articleMatch) html = articleMatch[0];
+
+    return (
+        html
+            // remove scripts & styles
+            .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+            .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+
+            // remove URLs
+            .replace(/https?:\/\/\S+/g, '')
+
+            // remove related/ads sections
+            .replace(/leer también:[^\n]+/gi, '')
+            .replace(/artículos relacionados:[^\n]+/gi, '')
+            .replace(/related articles?[^\n]+/gi, '')
+            .replace(/publicidad|advertisement/gi, '')
+
+            // remove all HTML tags
+            .replace(/<[^>]+>/g, ' ')
+
+            // decode entities
+            .replace(/&nbsp;/g, ' ')
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+
+            // cleanup
+            .replace(/\s{2,}/g, ' ')
+            .trim()
+    );
 }

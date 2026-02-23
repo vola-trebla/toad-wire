@@ -22,20 +22,89 @@ export async function rankArticles(
             model: google('gemini-2.5-flash'),
             schema: RankingSchema,
             prompt: `
-Eres el editor de El Sapo Cripto — canal de noticias cripto para Latinoamérica.
+You are the analytical brain of *El Sapo Cripto*, an expert curator that selects only high-impact and high-relevance crypto news for a Latin American audience.
 
-Aquí hay una lista de titulares de noticias cripto de hoy:
+Your task:
+From the list below, choose the indices of the **${limit} most important, impactful, diverse, and useful headlines**.
+
+Headlines:
 ${list}
 
-Selecciona los índices de los ${limit} titulares MÁS importantes e interesantes para nuestra audiencia latinoamericana.
+--------------------------------------------
+STRICT EVALUATION CRITERIA (in order)
+--------------------------------------------
 
-Criterios (en orden de prioridad):
-1. Breaking news o eventos de alto impacto (hacks, regulación, ETF, SEC, quiebras)
-2. Relevancia para BTC, ETH, SOL y mercado general
-3. Historias curiosas o sorprendentes con potencial viral
-4. Diversidad de temas (no selecciones 2 noticias del mismo tema)
+1) **Immediate Impact (highest priority)**
+   Select headlines involving:
+   - hacks, exploits, breaches, vulnerabilities, loss of funds
+   - strong regulation (SEC, ETFs, government actions, central banks)
+   - bankruptcies, investigations, lawsuits, arrests
+   - events affecting BTC, ETH, SOL, large exchanges or stablecoins
+   - protocol failures, chain halts, critical bugs
 
-Responde solo con los índices numéricos de los titulares seleccionados.
+2) **Latin America Relevance**
+   Prefer headlines involving:
+   - LATAM regulation, adoption, institutions, exchanges
+   - energy/mining, remittances, dollarization
+   - Argentina, Brazil, Mexico, Colombia, Chile, El Salvador
+
+3) **Macro / Market Signals**
+   Prioritize:
+   - major liquidity changes
+   - ETF flows
+   - on-chain anomalies with large impact
+   - significant market movements backed by data
+
+4) **Narrative / Human Interest Value**
+   Choose only if meaningful:
+   - unusual events with real context value
+   - surprising stories with legitimate informational weight
+   (Do NOT select trivial curiosities or empty hype.)
+
+5) **Thematic Diversity**
+   Avoid:
+   - two headlines about the same event, company, protocol, or issue
+   - duplicate or near-duplicate topics
+   Prefer a balanced mix of categories.
+
+--------------------------------------------
+NEGATIVE FILTERS (penalties)
+--------------------------------------------
+Reject or downrank:
+   - memecoins, celebrity pumps, hype with no substance
+   - trivial partnership announcements
+   - speculative predictions
+   - headlines with no measurable impact
+   - old news when newer alternatives exist
+
+--------------------------------------------
+KEYWORD WEIGHTING (boost these)
+--------------------------------------------
+hack, exploit, breach, ETF, SEC, regulation, lawsuit, arrest,
+liquidation, stablecoin, mining, LatAm, Argentina, Brazil,
+Mexico, El Salvador.
+
+--------------------------------------------
+SENTIMENT BALANCE
+--------------------------------------------
+If possible, avoid selecting headlines that produce a 100% bearish
+or 100% bullish set. Prefer a mixed emotional tone when variety exists.
+
+--------------------------------------------
+SELF-CHECK (MANDATORY)
+--------------------------------------------
+Before giving the final output:
+1. Ensure the selection maximizes:
+   - impact
+   - LATAM relevance
+   - diversity
+2. Replace the weakest item with a better candidate if needed.
+
+--------------------------------------------
+OUTPUT FORMAT
+--------------------------------------------
+Return ONLY a list of numeric indices (comma or space separated).
+No explanation, no text, no commentary.
       `.trim(),
         });
 

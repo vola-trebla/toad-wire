@@ -15,10 +15,28 @@ const FEEDS = [
     { url: 'https://cointelegraph.com/rss', source: 'CoinTelegraph' },
     { url: 'https://decrypt.co/feed', source: 'Decrypt' },
     { url: 'https://theblock.co/rss.xml', source: 'The Block' },
+    { url: 'https://bitcoinmagazine.com/.rss', source: 'Bitcoin Magazine' },
+    { url: 'https://cryptobriefing.com/feed/', source: 'CryptoBriefing' },
+    { url: 'https://blockworks.co/feed', source: 'Blockworks' },
+    { url: 'https://finbold.com/feed/', source: 'Finbold' },
+    { url: 'https://beincrypto.com/feed/', source: 'BeInCrypto' },
 ];
+
+// --- utility to remove duplicates ---
+function normalizeTitle(t: string): string {
+    return t
+        .toLowerCase()
+        .replace(/[^a-z0-9 ]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
 
 export async function fetchFeeds(): Promise<FeedArticle[]> {
     const results: FeedArticle[] = [];
+    const seenTitles = new Set<string>();
+
+    const now = Date.now();
+    const MAX_HOURS = 12;
 
     for (const feed of FEEDS) {
         try {
@@ -27,11 +45,22 @@ export async function fetchFeeds(): Promise<FeedArticle[]> {
             for (const item of parsed.items) {
                 if (!item.title || !item.link) continue;
 
+                const pub = item.pubDate ? new Date(item.pubDate) : new Date();
+
+                // ⏳ filter: max 12 hours old
+                const ageHours = (now - pub.getTime()) / 36e5;
+                if (ageHours > MAX_HOURS) continue;
+
+                // 🧹 remove literal duplicates
+                const norm = normalizeTitle(item.title);
+                if (seenTitles.has(norm)) continue;
+                seenTitles.add(norm);
+
                 results.push({
-                    title: item.title,
+                    title: item.title.trim(),
                     url: item.link,
                     source: feed.source,
-                    publishedAt: item.pubDate ?? new Date().toISOString(),
+                    publishedAt: pub.toISOString(),
                 });
             }
 
@@ -41,12 +70,14 @@ export async function fetchFeeds(): Promise<FeedArticle[]> {
         }
     }
 
+    // sort by time DESC (most recent → top)
     results.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
+    // diversify by interleaving sources
     const bySource = new Map<string, FeedArticle[]>();
-    for (const article of results) {
-        if (!bySource.has(article.source)) bySource.set(article.source, []);
-        bySource.get(article.source)!.push(article);
+    for (const a of results) {
+        if (!bySource.has(a.source)) bySource.set(a.source, []);
+        bySource.get(a.source)!.push(a);
     }
 
     const diverse: FeedArticle[] = [];
