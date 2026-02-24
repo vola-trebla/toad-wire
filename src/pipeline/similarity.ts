@@ -4,7 +4,8 @@ import { articles } from '../db/schema.js';
 import { eq, and, gte } from 'drizzle-orm';
 import { logger } from '../utils/logger.js';
 import { google } from '@ai-sdk/google';
-import { embed } from 'ai';
+import { embedMany } from 'ai';
+import { type FeedArticle } from '../sources/rss.js';
 
 const OBVIOUS_DUPLICATE_THRESHOLD = 0.85;
 const SEMANTIC_THRESHOLD = 0.8;
@@ -35,65 +36,83 @@ function cosineSimilarity(a: number[], b: number[]): number {
     return dot / (normA * normB);
 }
 
-async function getEmbedding(text: string): Promise<number[]> {
-    const { embedding } = await embed({
+async function getEmbeddings(texts: string[]): Promise<number[][]> {
+    const { embeddings } = await embedMany({
         model: google.textEmbedding('gemini-embedding-001'),
-        value: text,
+        values: texts,
     });
-    return embedding;
+    return embeddings;
 }
 
-export async function isSimilarToPublished(title: string): Promise<boolean> {
+export async function filterSimilar(candidates: FeedArticle[]): Promise<FeedArticle[]> {
     try {
         const since = new Date(Date.now() - DAYS_LOOKBACK * 24 * 60 * 60 * 1000).toISOString();
-        const recent = await db
+        const posted = await db
             .select()
             .from(articles)
             .where(and(eq(articles.posted, true), gte(articles.createdAt, since)));
 
-        if (recent.length === 0) return false;
+        if (posted.length === 0) return candidates;
 
-        // Step 1: obvious duplicate via token overlap
-        const obviousDuplicate = recent.find(
-            (a) => tokenOverlap(title, a.title) > OBVIOUS_DUPLICATE_THRESHOLD,
-        );
-
-        if (obviousDuplicate) {
-            logger.info(`🚫 Obvious duplicate (cheap filter): "${title}"`);
-            return true;
+        // Step 1: cheap token overlap filter
+        const afterCheap: FeedArticle[] = [];
+        for (const article of candidates) {
+            const isDupe = posted.some(
+                (p) => tokenOverlap(article.title, p.title) > OBVIOUS_DUPLICATE_THRESHOLD,
+            );
+            if (isDupe) {
+                logger.info(`🚫 Obvious duplicate: "${article.title}"`);
+            } else {
+                afterCheap.push(article);
+            }
         }
 
-        // Step 2: semantic check via embeddings
-        logger.info(`🔍 Running semantic check for "${title}"...`);
-        const newEmbedding = await getEmbedding(title);
+        if (afterCheap.length === 0) return [];
 
-        for (const candidate of recent) {
-            let candidateEmbedding: number[];
+        // Step 2: batch embeddings (1 API call instead of N)
+        logger.info(`🔍 Running batch semantic check for ${afterCheap.length} articles...`);
+        const candidateEmbeddings = await getEmbeddings(afterCheap.map((a) => a.title));
 
-            if (candidate.embedding) {
-                candidateEmbedding = JSON.parse(candidate.embedding);
-            } else {
-                candidateEmbedding = await getEmbedding(candidate.title);
+        // Ensure posted articles have embeddings
+        const postedEmbeddings: number[][] = [];
+        const needEmbedding = posted.filter((p) => !p.embedding);
+
+        if (needEmbedding.length > 0) {
+            const newEmbeds = await getEmbeddings(needEmbedding.map((p) => p.title));
+            for (let i = 0; i < needEmbedding.length; i++) {
                 await db
                     .update(articles)
-                    .set({ embedding: JSON.stringify(candidateEmbedding) })
-                    .where(eq(articles.id, candidate.id));
-            }
-
-            const similarity = cosineSimilarity(newEmbedding, candidateEmbedding);
-            logger.info(
-                `📐 Similarity "${title}" vs "${candidate.title}": ${similarity.toFixed(3)}`,
-            );
-
-            if (similarity > SEMANTIC_THRESHOLD) {
-                logger.info(`🚫 Semantic duplicate detected: "${title}"`);
-                return true;
+                    .set({ embedding: JSON.stringify(newEmbeds[i]) })
+                    .where(eq(articles.id, needEmbedding[i]!.id));
+                needEmbedding[i]!.embedding = JSON.stringify(newEmbeds[i]);
             }
         }
 
-        return false;
+        for (const p of posted) {
+            postedEmbeddings.push(JSON.parse(p.embedding!));
+        }
+
+        // Step 3: compare and filter
+        const result: FeedArticle[] = [];
+        for (let i = 0; i < afterCheap.length; i++) {
+            let isDupe = false;
+            for (let j = 0; j < postedEmbeddings.length; j++) {
+                const sim = cosineSimilarity(candidateEmbeddings[i]!, postedEmbeddings[j]!);
+                if (sim > SEMANTIC_THRESHOLD) {
+                    logger.info(
+                        `🚫 Semantic duplicate: "${afterCheap[i]!.title}" vs "${posted[j]!.title}" (${sim.toFixed(3)})`,
+                    );
+                    isDupe = true;
+                    break;
+                }
+            }
+            if (!isDupe) result.push(afterCheap[i]!);
+        }
+
+        logger.info(`✅ Similarity filter: ${candidates.length} → ${result.length} articles`);
+        return result;
     } catch (error) {
-        logger.error({ err: error }, '❌ Similarity check failed, skipping');
-        return false;
+        logger.error({ err: error }, '❌ Similarity filter failed, skipping');
+        return candidates;
     }
 }

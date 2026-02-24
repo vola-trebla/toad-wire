@@ -15,7 +15,7 @@ const FEEDS = [
     { url: 'https://cointelegraph.com/rss', source: 'CoinTelegraph' },
     { url: 'https://decrypt.co/feed', source: 'Decrypt' },
     { url: 'https://theblock.co/rss.xml', source: 'The Block' },
-    { url: 'https://bitcoinmagazine.com/.rss', source: 'Bitcoin Magazine' },
+    { url: 'https://www.dlnews.com/arc/outboundfeeds/rss/', source: 'DL News' },
     { url: 'https://cryptobriefing.com/feed/', source: 'CryptoBriefing' },
     { url: 'https://blockworks.co/feed', source: 'Blockworks' },
     { url: 'https://finbold.com/feed/', source: 'Finbold' },

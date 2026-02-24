@@ -11,37 +11,24 @@ import { db } from './db/client.js';
 import { sql } from 'drizzle-orm';
 import { rankArticles } from './pipeline/ranker.js';
 import { fetchFearGreed } from './sources/feargreed.js';
-import { isSimilarToPublished } from './pipeline/similarity.js';
+import { filterSimilar } from './pipeline/similarity.js';
 
-const KEYWORDS = [
-    'bitcoin',
-    'btc',
-    'ethereum',
-    'eth',
-    'solana',
-    'sol',
-    'defi',
-    'sec',
-    'etf',
-    'stablecoin',
-    'regulation',
-    'fed',
-    'blackrock',
-    'coinbase',
-    'binance',
-    'hack',
-    'exploit',
-    'pepe',
-    'doge',
-    'memecoin',
-    'layer2',
-    'l2',
-    'airdrop',
+const BLACKLIST = [
+    'nft game',
+    'play-to-earn',
+    'p2e',
+    'sponsored',
+    'press release',
+    'partner content',
+    'promoted',
+    'advertisement',
+    'podcast recap',
+    'weekly roundup',
 ];
 
 function isRelevant(title: string): boolean {
     const lower = title.toLowerCase();
-    return KEYWORDS.some((kw) => lower.includes(kw));
+    return !BLACKLIST.some((term) => lower.includes(term));
 }
 
 // 🌅 10:00 — Morning digest with prices
@@ -67,15 +54,15 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 
     logger.info(`🔍 After filter: ${filtered.length} of ${allArticles.length}`);
 
-    // Exclude URL duplicates + semantic duplicates
+    // Replace the old dedup loop with:
     const nonDuplicates: FeedArticle[] = [];
     for (const article of filtered) {
         if (await isDuplicate(article.url)) continue;
-        if (await isSimilarToPublished(article.title)) continue;
         nonDuplicates.push(article);
     }
-
-    const ranked = await rankArticles(nonDuplicates, limit * 3);
+    const fresh = await filterSimilar(nonDuplicates);
+    const MAX_RANKER_INPUT = 15;
+    const ranked = await rankArticles(fresh.slice(0, MAX_RANKER_INPUT), limit * 3);
 
     let posted = 0;
 
