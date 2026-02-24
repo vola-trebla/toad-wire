@@ -8,6 +8,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string().default('file:./dev.db'),
   COINMARKETCAP_API_KEY: z.string().min(1),
   SENTRY_DSN: z.string().optional(),
+  AXIOM_DATASET: z.string().optional(),
+  AXIOM_TOKEN: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);
