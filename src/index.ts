@@ -13,8 +13,10 @@ import { rankArticles } from './pipeline/ranker.js';
 import { fetchFearGreed } from './sources/feargreed.js';
 import { filterSimilar } from './pipeline/similarity.js';
 import { initSentry } from './utils/sentry.js';
+import { startHealthServer, updateLastPosted } from './health/server.js';
 
 initSentry();
+startHealthServer();
 
 const BLACKLIST = [
     'nft game',
@@ -80,6 +82,7 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 
         await saveArticle(article);
         await markAsPosted(article.url);
+        updateLastPosted();
 
         posted++;
         await new Promise((resolve) => setTimeout(resolve, 5000));

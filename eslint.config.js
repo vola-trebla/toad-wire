@@ -4,13 +4,11 @@ import globals from 'globals';
 
 export default tseslint.config(
     {
-        ignores: ['dist/', 'node_modules/', 'web/', 'src/debug/**'] },
+        ignores: ['dist/', 'node_modules/', 'web/', 'src/debug/**'],
+    },
     {
         files: ['**/*.ts'],
-        extends: [
-            js.configs.recommended,
-            ...tseslint.configs.recommended,
-        ],
+        extends: [js.configs.recommended, ...tseslint.configs.recommended],
         languageOptions: {
             globals: globals.node,
             parserOptions: {
@@ -23,5 +21,5 @@ export default tseslint.config(
             '@typescript-eslint/consistent-type-imports': 'error',
             'no-console': 'warn',
         },
-    }
+    },
 );
