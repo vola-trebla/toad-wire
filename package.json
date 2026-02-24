@@ -12,6 +12,7 @@
     "db:studio": "drizzle-kit studio",
     "format": "prettier --write .",
     "test:pipeline": "tsx src/debug/test-pipeline.ts",
+    "db:migrate": "drizzle-kit migrate",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit"
   },

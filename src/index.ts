@@ -14,6 +14,7 @@ import { fetchFearGreed } from './sources/feargreed.js';
 import { filterSimilar } from './pipeline/similarity.js';
 import { initSentry } from './utils/sentry.js';
 import { startHealthServer, updateLastPosted } from './health/server.js';
+import { runBackup } from './utils/backup.js';
 
 initSentry();
 startHealthServer();
@@ -107,6 +108,7 @@ async function runEveningDigest(): Promise<void> {
 
 const TIMEZONE = 'America/Montevideo';
 
+cron.schedule('0 2 * * *', () => runBackup(), { timezone: TIMEZONE });
 cron.schedule('0 10 * * *', () => void runMorningDigest(), { timezone: TIMEZONE });
 cron.schedule('0 12 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
 cron.schedule('0 15 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
