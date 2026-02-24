@@ -28,8 +28,8 @@ db.run(sql`
 
 // Add embedding column to existing DB if not exists
 try {
-    db.run(sql`ALTER TABLE articles ADD COLUMN embedding TEXT`);
-    logger.info('✅ Added embedding column');
+  db.run(sql`ALTER TABLE articles ADD COLUMN embedding TEXT`);
+  logger.info('✅ Added embedding column');
 } catch {
-    // Column already exists, skip
+  // Column already exists, skip
 }

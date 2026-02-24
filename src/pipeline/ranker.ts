@@ -5,23 +5,23 @@ import { type FeedArticle } from '../sources/rss.js';
 import { logger } from '../utils/logger.js';
 
 const RankingSchema = z.object({
-    selected: z.array(z.number()).min(1).max(5),
+  selected: z.array(z.number()).min(1).max(5),
 });
 
 export async function rankArticles(
-    articles: FeedArticle[],
-    limit: number = 3,
+  articles: FeedArticle[],
+  limit: number = 3,
 ): Promise<FeedArticle[]> {
-    try {
-        const list = articles
-            .slice(0, 20)
-            .map((a, i) => `${i}. [${a.source}] ${a.title}`)
-            .join('\n');
+  try {
+    const list = articles
+      .slice(0, 20)
+      .map((a, i) => `${i}. [${a.source}] ${a.title}`)
+      .join('\n');
 
-        const { object } = await generateObject({
-            model: google('gemini-2.5-flash'),
-            schema: RankingSchema,
-            prompt: `
+    const { object } = await generateObject({
+      model: google('gemini-2.5-flash'),
+      schema: RankingSchema,
+      prompt: `
 You are the analytical brain of *El Sapo Cripto*, an expert curator that selects only high-impact and high-relevance crypto news for a Latin American audience.
 
 Your task:
@@ -106,17 +106,17 @@ OUTPUT FORMAT
 Return ONLY a list of numeric indices (comma or space separated).
 No explanation, no text, no commentary.
       `.trim(),
-        });
+    });
 
-        const selected = object.selected
-            .filter((i) => i >= 0 && i < articles.length)
-            .slice(0, limit)
-            .map((i) => articles[i]!);
+    const selected = object.selected
+      .filter((i) => i >= 0 && i < articles.length)
+      .slice(0, limit)
+      .map((i) => articles[i]!);
 
-        logger.info(`🎯 Ranker seleccionó: ${selected.map((a) => a.title).join(' | ')}`);
-        return selected;
-    } catch (error) {
-        logger.error({ err: error }, '❌ Ranker failed, fallback to original order');
-        return articles.slice(0, limit);
-    }
+    logger.info(`🎯 Ranker seleccionó: ${selected.map((a) => a.title).join(' | ')}`);
+    return selected;
+  } catch (error) {
+    logger.error({ err: error }, '❌ Ranker failed, fallback to original order');
+    return articles.slice(0, limit);
+  }
 }
