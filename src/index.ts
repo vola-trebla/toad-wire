@@ -122,3 +122,9 @@ cron.schedule(
 );
 
 logger.info('🐸 El Sapo Cripto arrancó! Esperando el horario...');
+
+process.on('SIGTERM', () => {
+  logger.info('🛑 SIGTERM received, shutting down gracefully...');
+  db.run(sql`PRAGMA wal_checkpoint(TRUNCATE)`);
+  process.exit(0);
+});
