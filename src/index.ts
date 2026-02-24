@@ -12,6 +12,9 @@ import { sql } from 'drizzle-orm';
 import { rankArticles } from './pipeline/ranker.js';
 import { fetchFearGreed } from './sources/feargreed.js';
 import { filterSimilar } from './pipeline/similarity.js';
+import { initSentry } from './utils/sentry.js';
+
+initSentry();
 
 const BLACKLIST = [
     'nft game',

@@ -7,6 +7,7 @@ const envSchema = z.object({
     TELEGRAM_CHANNEL_ID: z.string().min(1),
     DATABASE_URL: z.string().default('file:./dev.db'),
     COINMARKETCAP_API_KEY: z.string().min(1),
+    SENTRY_DSN: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

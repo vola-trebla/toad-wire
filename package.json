@@ -35,11 +35,12 @@
     "dependencies": {
         "@ai-sdk/google": "^3.0.30",
         "@google/generative-ai": "^0.24.1",
+        "@sentry/node": "^10.40.0",
         "ai": "^6.0.97",
-        "globals": "^16.5.0",
         "better-sqlite3": "^12.6.2",
         "dotenv": "^17.3.1",
         "drizzle-orm": "^0.45.1",
+        "globals": "^16.5.0",
         "grammy": "^1.40.0",
         "node-cron": "^4.2.1",
         "openai": "^6.23.0",
