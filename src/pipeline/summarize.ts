@@ -94,7 +94,7 @@ Reglas:
 
 export async function generateGoodNight(): Promise<string> {
   if (!canMakeRequest()) {
-    return `🌙 *Buenas noches mis sapos* 🐸\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
+    return `🌙 *Buenas noches mis sapos* 🌚\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
   }
 
   try {
@@ -120,8 +120,8 @@ Reglas:
 `.trim(),
     });
 
-    return `🌙 *Buenas noches mis sapos* 🐸\n\n${text}`;
+    return `🌙 *Buenas noches mis sapos* 🌚\n\n${text}`;
   } catch {
-    return `🌙 *Buenas noches mis sapos* 🐸\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
+    return `🌙 *Buenas noches mis sapos* 🌚\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
   }
 }

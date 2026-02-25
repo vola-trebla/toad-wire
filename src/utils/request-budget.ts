@@ -33,6 +33,7 @@ export function canMakeRequest(): boolean {
 }
 
 export function trackRequest(label: string): void {
+  if (process.env.BYPASS_BUDGET === 'true') return;
   resetIfNewDay();
   state.used++;
   logger.info(`📊 LLM request [${label}] — used today: ${state.used}/${DAILY_LIMIT}`);

@@ -68,7 +68,7 @@ export function formatPricesPost(prices: CoinPrice[], fearGreed?: FearGreedData 
 
   const fearGreedLine = fearGreed ? `\n🧠 *Fear & Greed:* ${formatFearGreed(fearGreed.value)}` : '';
 
-  return `🌅 *Buenos días mis sapos* 🐸
+  return `🌅 *Buenos días mis sapos* 🌞
 
 Así amanece el mercado hoy:
 ${fearGreedLine}
