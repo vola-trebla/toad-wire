@@ -47,7 +47,12 @@ export async function getPendingCount(channel = 'x'): Promise<number> {
 export async function cleanOldMicroPosts(days = 7): Promise<void> {
   await db
     .delete(microPosts)
-    .where(and(eq(microPosts.posted, true), sql`created_at < datetime('now', '-${days} days')`));
+    .where(
+      and(
+        eq(microPosts.posted, true),
+        sql`created_at < datetime('now', '-' || ${days} || ' days')`,
+      ),
+    );
 
   logger.info(`🗑️ Cleaned old micro-posts (>${days} days)`);
 }
