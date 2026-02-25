@@ -11,3 +11,14 @@ export const articles = sqliteTable('articles', {
   embedding: text('embedding'), // JSON-serialized number[]
   createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
 });
+
+export const microPosts = sqliteTable('micro_posts', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  text: text('text').notNull(),
+  hashtags: text('hashtags').notNull(), // JSON array as string
+  mood: text('mood').notNull(),
+  batchType: text('batch_type').notNull(), // 'market_vibe' | 'raw_headlines' | 'philosophy'
+  channel: text('channel').notNull().default('x'),
+  posted: integer('posted', { mode: 'boolean' }).default(false),
+  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+});

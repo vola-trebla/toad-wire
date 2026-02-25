@@ -17,6 +17,13 @@ import { startHealthServer, updateLastPosted } from './health/server.js';
 import { runBackup } from './utils/backup.js';
 import { collectMarketSnapshot } from './sources/market-snapshot.js';
 import { generateBatch } from './pipeline/batch-generator.js';
+import {
+  enqueueMicroPosts,
+  getNextUnposted,
+  markMicroPostAsPosted,
+  getPendingCount,
+  cleanOldMicroPosts,
+} from './queue/micro-posts.js';
 
 initSentry();
 startHealthServer();
@@ -124,7 +131,10 @@ async function runMorningBatches(): Promise<void> {
     logger.info(
       `🎲 Morning batches ready — vibe: ${vibePosts.length}, philosophy: ${philosophyPosts.length}`,
     );
-    // TODO Коммит 5: enqueue posts to micro_posts table
+    await enqueueMicroPosts(vibePosts);
+    await enqueueMicroPosts(philosophyPosts);
+    const pending = await getPendingCount();
+    logger.info(`📊 Queue size after morning batches: ${pending}`);
   } catch (error) {
     logger.error(`❌ Morning batch error: ${error}`);
   }
@@ -141,10 +151,29 @@ async function runAfternoonBatch(): Promise<void> {
     const snapshot = await collectMarketSnapshot(lastUnusedHeadlines);
     const posts = await generateBatch('raw_headlines', snapshot);
     logger.info(`🎲 Afternoon batch ready — raw_headlines: ${posts.length}`);
-    // TODO Коммит 5: enqueue posts to micro_posts table
+    await enqueueMicroPosts(posts);
+    const pending = await getPendingCount();
+    logger.info(`📊 Queue size after afternoon batch: ${pending}`);
   } catch (error) {
     logger.error(`❌ Afternoon batch error: ${error}`);
   }
+}
+
+// 📤 Dispatcher — every 20 min, 08:00–23:00
+async function dispatchNextMicroPost(): Promise<void> {
+  const post = await getNextUnposted('x');
+  if (!post) return;
+
+  const hashtags = JSON.parse(post.hashtags) as string[];
+  const fullText = `${post.mood} ${post.text}\n\n${hashtags.join(' ')}`;
+
+  // DRY-RUN until X API is connected
+  logger.info(`📝 [DRY-RUN X] ${fullText}`);
+
+  await markMicroPostAsPosted(post.id);
+
+  const pending = await getPendingCount();
+  logger.info(`📤 Dispatched micro-post #${post.id} [${post.batchType}] — remaining: ${pending}`);
 }
 
 const TIMEZONE = 'America/Montevideo';
@@ -159,12 +188,14 @@ cron.schedule('0 18 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE 
 cron.schedule('0 21 * * *', () => void runEveningDigest(), { timezone: TIMEZONE });
 cron.schedule(
   '0 0 * * 0',
-  () => {
+  async () => {
     db.run(sql`DELETE FROM articles WHERE created_at < datetime('now', '-7 days')`);
     logger.info('🗑️ Old articles cleaned up');
+    await cleanOldMicroPosts(7);
   },
   { timezone: TIMEZONE },
 );
+cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
 
 logger.info('🐸 El Sapo Cripto arrancó! Esperando el horario...');
 
