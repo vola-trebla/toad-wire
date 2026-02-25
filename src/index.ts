@@ -15,9 +15,14 @@ import { filterSimilar } from './pipeline/similarity.js';
 import { initSentry } from './utils/sentry.js';
 import { startHealthServer, updateLastPosted } from './health/server.js';
 import { runBackup } from './utils/backup.js';
+import { collectMarketSnapshot } from './sources/market-snapshot.js';
+import { generateBatch } from './pipeline/batch-generator.js';
 
 initSentry();
 startHealthServer();
+
+// Unused headlines from last news pipeline run — shared between pipeline and batch
+let lastUnusedHeadlines: string[] = [];
 
 const BLACKLIST = [
   'nft game',
@@ -40,10 +45,8 @@ function isRelevant(title: string): boolean {
 // 🌅 10:00 — Morning digest with prices
 async function runMorningDigest(): Promise<void> {
   logger.info('🌅 Starting morning digest...');
-
   try {
     const [prices, fearGreed] = await Promise.all([fetchPrices(), fetchFearGreed()]);
-
     await sendToTelegram(formatPricesPost(prices, fearGreed));
     await runNewsPipeline(1);
   } catch (error) {
@@ -51,7 +54,7 @@ async function runMorningDigest(): Promise<void> {
   }
 }
 
-// 📰 Day runs — news only
+// 📰 News pipeline — returns unused headlines for batch generation
 async function runNewsPipeline(limit = 5): Promise<void> {
   logger.info('📰 Starting news pipeline...');
 
@@ -60,15 +63,21 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 
   logger.info(`🔍 After filter: ${filtered.length} of ${allArticles.length}`);
 
-  // Replace the old dedup loop with:
   const nonDuplicates: FeedArticle[] = [];
   for (const article of filtered) {
     if (await isDuplicate(article.url)) continue;
     nonDuplicates.push(article);
   }
+
   const fresh = await filterSimilar(nonDuplicates);
   const MAX_RANKER_INPUT = 15;
   const ranked = await rankArticles(fresh.slice(0, MAX_RANKER_INPUT), limit * 3);
+
+  // Save unused headlines for afternoon batch
+  const rankedUrls = new Set(ranked.map((a) => a.url));
+  lastUnusedHeadlines = fresh.filter((a) => !rankedUrls.has(a.url)).map((a) => a.title);
+
+  logger.info(`📦 Unused headlines saved: ${lastUnusedHeadlines.length}`);
 
   let posted = 0;
 
@@ -95,22 +104,56 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 // 🌙 21:00 — Evening digest
 async function runEveningDigest(): Promise<void> {
   logger.info('🌙 Starting evening digest...');
-
   try {
-    // One fun/unusual news pick
     await runNewsPipeline(1);
-
     await sendToTelegram(await generateGoodNight());
   } catch (error) {
     logger.error(`❌ Evening digest error: ${error}`);
   }
 }
 
+// 🎲 09:30 — Morning batch generation (market_vibe + philosophy)
+async function runMorningBatches(): Promise<void> {
+  logger.info('🎲 Starting morning batch generation...');
+  try {
+    const snapshot = await collectMarketSnapshot();
+    const [vibePosts, philosophyPosts] = await Promise.all([
+      generateBatch('market_vibe', snapshot),
+      generateBatch('philosophy', snapshot),
+    ]);
+    logger.info(
+      `🎲 Morning batches ready — vibe: ${vibePosts.length}, philosophy: ${philosophyPosts.length}`,
+    );
+    // TODO Коммит 5: enqueue posts to micro_posts table
+  } catch (error) {
+    logger.error(`❌ Morning batch error: ${error}`);
+  }
+}
+
+// 🎲 13:30 — Afternoon batch (raw_headlines from morning pipeline)
+async function runAfternoonBatch(): Promise<void> {
+  logger.info('🎲 Starting afternoon batch generation...');
+  try {
+    if (lastUnusedHeadlines.length === 0) {
+      logger.warn('⚠️ No unused headlines available, skipping raw_headlines batch');
+      return;
+    }
+    const snapshot = await collectMarketSnapshot(lastUnusedHeadlines);
+    const posts = await generateBatch('raw_headlines', snapshot);
+    logger.info(`🎲 Afternoon batch ready — raw_headlines: ${posts.length}`);
+    // TODO Коммит 5: enqueue posts to micro_posts table
+  } catch (error) {
+    logger.error(`❌ Afternoon batch error: ${error}`);
+  }
+}
+
 const TIMEZONE = 'America/Montevideo';
 
 cron.schedule('0 2 * * *', () => runBackup(), { timezone: TIMEZONE });
+cron.schedule('30 9 * * *', () => void runMorningBatches(), { timezone: TIMEZONE });
 cron.schedule('0 10 * * *', () => void runMorningDigest(), { timezone: TIMEZONE });
 cron.schedule('0 12 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+cron.schedule('30 13 * * *', () => void runAfternoonBatch(), { timezone: TIMEZONE });
 cron.schedule('0 15 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
 cron.schedule('0 18 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
 cron.schedule('0 21 * * *', () => void runEveningDigest(), { timezone: TIMEZONE });
