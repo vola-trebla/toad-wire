@@ -6,7 +6,7 @@ Autonomous AI-powered Telegram bot that monitors global crypto news, summarizes 
 
 ## Landing Page
 
-🌐 Website: [elsapocripto](https://elsapocripto.com/)]
+🌐 Website: [elsapocripto](https://elsapocripto.com/)
 
 Static landing page built with React + TypeScript + Vite. Live crypto prices via Binance WebSocket.
 
