@@ -1,7 +1,7 @@
 import { logger } from './logger.js';
 
-const DAILY_LIMIT = 18; // 2 reserve from 20 RPD
-const TIMEZONE_OFFSET_MS = -3 * 60 * 60 * 1000; // UTC-3 Montevideo
+const FLASH_DAILY_LIMIT = 18;
+const TIMEZONE_OFFSET_MS = -3 * 60 * 60 * 1000;
 
 function getTodayKey(): string {
   const now = new Date(Date.now() + TIMEZONE_OFFSET_MS);
@@ -10,51 +10,61 @@ function getTodayKey(): string {
 
 interface BudgetState {
   date: string;
-  used: number;
+  flashUsed: number;
+  flashLiteUsed: number;
 }
 
 const state: BudgetState = {
   date: getTodayKey(),
-  used: 0,
+  flashUsed: 0,
+  flashLiteUsed: 0,
 };
 
 function resetIfNewDay(): void {
   const today = getTodayKey();
   if (state.date !== today) {
-    logger.info(`🔄 Budget reset for new day: ${today} (yesterday used: ${state.used})`);
+    logger.info(
+      `🔄 Budget reset for new day: ${today} (yesterday — Flash: ${state.flashUsed}/${FLASH_DAILY_LIMIT}, Flash-Lite: ${state.flashLiteUsed})`,
+    );
     state.date = today;
-    state.used = 0;
+    state.flashUsed = 0;
+    state.flashLiteUsed = 0;
   }
 }
 
 export function canMakeRequest(): boolean {
+  if (process.env.BYPASS_BUDGET === 'true') return true;
   resetIfNewDay();
-  return state.used < DAILY_LIMIT;
+  return state.flashUsed < FLASH_DAILY_LIMIT;
 }
 
-export function trackRequest(label: string): void {
+export function trackRequest(label: string, model: 'flash' | 'flash-lite' = 'flash'): void {
   if (process.env.BYPASS_BUDGET === 'true') return;
   resetIfNewDay();
-  state.used++;
-  logger.info(`📊 LLM request [${label}] — used today: ${state.used}/${DAILY_LIMIT}`);
+
+  if (model === 'flash-lite') {
+    state.flashLiteUsed++;
+    logger.info(`📊 LLM [${label}] flash-lite — used today: ${state.flashLiteUsed}`);
+  } else {
+    state.flashUsed++;
+    logger.info(`📊 LLM [${label}] flash — used today: ${state.flashUsed}/${FLASH_DAILY_LIMIT}`);
+  }
 }
 
 export function getRemainingRequests(): number {
   resetIfNewDay();
-  return DAILY_LIMIT - state.used;
+  return FLASH_DAILY_LIMIT - state.flashUsed;
 }
 
-export function getBudgetStatus(): {
-  used: number;
-  limit: number;
-  remaining: number;
-  date: string;
-} {
+export function getBudgetStatus() {
   resetIfNewDay();
   return {
-    used: state.used,
-    limit: DAILY_LIMIT,
-    remaining: DAILY_LIMIT - state.used,
+    flash: {
+      used: state.flashUsed,
+      limit: FLASH_DAILY_LIMIT,
+      remaining: FLASH_DAILY_LIMIT - state.flashUsed,
+    },
+    flash_lite: { used: state.flashLiteUsed },
     date: state.date,
   };
 }

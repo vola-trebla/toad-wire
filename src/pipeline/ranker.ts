@@ -1,9 +1,9 @@
 import { generateObject } from 'ai';
-import { google } from '@ai-sdk/google';
 import { z } from 'zod';
 import { type FeedArticle } from '../sources/rss.js';
 import { logger } from '../utils/logger.js';
 import { canMakeRequest, trackRequest } from '../utils/request-budget.js';
+import { getModel } from '../llm/router.js';
 
 const RankingSchema = z.object({
   selected: z.array(z.number()).min(1).max(5),
@@ -24,10 +24,10 @@ export async function rankArticles(
       .map((a, i) => `${i}. [${a.source}] ${a.title}`)
       .join('\n');
 
-    trackRequest('ranker');
+    trackRequest('ranker', 'flash');
 
     const { object } = await generateObject({
-      model: google('gemini-2.5-flash'),
+      model: getModel('ranking'),
       schema: RankingSchema,
       prompt: `
 You are the analytical brain of *El Sapo Cripto*, an expert curator that selects only high-impact and high-relevance crypto news for a Latin American audience.

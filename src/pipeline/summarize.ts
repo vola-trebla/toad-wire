@@ -1,12 +1,12 @@
 import 'dotenv/config';
 import { generateObject, generateText } from 'ai';
-import { google } from '@ai-sdk/google';
 import { z } from 'zod';
 import { type FeedArticle } from '../sources/rss.js';
 import { scrapeArticle } from './scraper.js';
 import { logger } from '../utils/logger.js';
 import { truncateToWord } from '../utils/truncate.js';
 import { canMakeRequest, trackRequest } from '../utils/request-budget.js';
+import { getModel } from '../llm/router.js';
 
 const SummarySchema = z.object({
   title: z.string(),
@@ -67,10 +67,10 @@ Reglas:
 - Mantén siempre la voz del Sapo: claridad, calma, ironía suave, cero ruido.
 `.trim();
 
-    trackRequest('summarize');
+    trackRequest('summarize', 'flash');
 
     const { object: result } = await generateObject({
-      model: google('gemini-2.5-flash'),
+      model: getModel('news'),
       schema: SummarySchema,
       prompt,
     });
@@ -98,10 +98,10 @@ export async function generateGoodNight(): Promise<string> {
   }
 
   try {
-    trackRequest('goodnight');
+    trackRequest('goodnight', 'flash-lite');
 
     const { text } = await generateText({
-      model: google('gemini-2.5-flash'),
+      model: getModel('goodnight'),
       prompt: `
 Eres el editor de El Sapo Cripto. Escribe un mensaje de buenas noches para el canal.
 
