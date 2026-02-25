@@ -5,6 +5,7 @@ import { db } from '../db/client.js';
 import { articles } from '../db/schema.js';
 import { desc } from 'drizzle-orm';
 import { getBudgetStatus } from '../utils/request-budget.js';
+import { getPendingCount } from '../queue/micro-posts.js';
 
 const app = new Hono();
 
@@ -17,6 +18,7 @@ export function updateLastPosted(): void {
 
 app.get('/health', async (c) => {
   const lastArticle = await db.select().from(articles).orderBy(desc(articles.createdAt)).limit(1);
+  const microPostsPending = await getPendingCount('x');
 
   return c.json({
     status: 'ok',
@@ -24,6 +26,7 @@ app.get('/health', async (c) => {
     last_posted_at: lastPostedAt,
     last_article_in_db: lastArticle[0]?.title ?? null,
     llm_budget: getBudgetStatus(),
+    micro_posts_pending: microPostsPending,
   });
 });
 
