@@ -3,6 +3,7 @@ import { google } from '@ai-sdk/google';
 import { z } from 'zod';
 import { type FeedArticle } from '../sources/rss.js';
 import { logger } from '../utils/logger.js';
+import { canMakeRequest, trackRequest } from '../utils/request-budget.js';
 
 const RankingSchema = z.object({
   selected: z.array(z.number()).min(1).max(5),
@@ -13,10 +14,17 @@ export async function rankArticles(
   limit: number = 3,
 ): Promise<FeedArticle[]> {
   try {
+    if (!canMakeRequest()) {
+      logger.warn('⚠️ Budget exhausted, fallback to original order');
+      return articles.slice(0, limit);
+    }
+
     const list = articles
       .slice(0, 20)
       .map((a, i) => `${i}. [${a.source}] ${a.title}`)
       .join('\n');
+
+    trackRequest('ranker');
 
     const { object } = await generateObject({
       model: google('gemini-2.5-flash'),

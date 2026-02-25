@@ -4,6 +4,7 @@ import { logger } from '../utils/logger.js';
 import { db } from '../db/client.js';
 import { articles } from '../db/schema.js';
 import { desc } from 'drizzle-orm';
+import { getBudgetStatus } from '../utils/request-budget.js';
 
 const app = new Hono();
 
@@ -22,6 +23,7 @@ app.get('/health', async (c) => {
     uptime_seconds: Math.floor((Date.now() - startTime) / 1000),
     last_posted_at: lastPostedAt,
     last_article_in_db: lastArticle[0]?.title ?? null,
+    llm_budget: getBudgetStatus(),
   });
 });
 

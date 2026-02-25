@@ -6,6 +6,7 @@ import { type FeedArticle } from '../sources/rss.js';
 import { scrapeArticle } from './scraper.js';
 import { logger } from '../utils/logger.js';
 import { truncateToWord } from '../utils/truncate.js';
+import { canMakeRequest, trackRequest } from '../utils/request-budget.js';
 
 const SummarySchema = z.object({
   title: z.string(),
@@ -14,20 +15,18 @@ const SummarySchema = z.object({
   tags: z.array(z.string()).min(3).max(5),
   sentiment: z.enum(['bullish', 'bearish', 'neutral']),
   emoji: z.string(),
+  category: z.enum(['regulacion', 'defi', 'trading', 'seguridad', 'tecnologia', 'latam']),
+  tweet: z.string().describe('Versión compacta para X/Twitter, máx 260 caracteres'),
 });
 
 export type Summary = z.infer<typeof SummarySchema>;
 
-async function callLLM(prompt: string): Promise<Summary | null> {
-  const { object } = await generateObject({
-    model: google('gemini-2.5-flash'),
-    schema: SummarySchema,
-    prompt,
-  });
-  return object;
-}
-
 export async function summarizeArticle(article: FeedArticle): Promise<Summary | null> {
+  if (!canMakeRequest()) {
+    logger.warn('⚠️ Daily LLM budget exhausted, skipping article');
+    return null;
+  }
+
   try {
     const safeTitle = article.title.slice(0, 300);
     const rawContent = await scrapeArticle(article.url);
@@ -52,42 +51,40 @@ ${contentBlock}
 Responde en formato JSON EXACTO:
 - title: título en español, MÁXIMO 80 caracteres. Sugerente pero sin clickbait.
 - summary: resumen de 2–3 frases (máx 400 caracteres). Claro, directo, con calma y claridad del Sapo.
+- thought: UNA frase corta (máx 100 caracteres) con la reacción del Sapo. Ligera ironía, inteligencia, sin sarcasmo infantil.
 - tags: 3–5 hashtags con #, sin espacios.
 - sentiment: "bullish", "bearish" o "neutral".
 - emoji: UN solo emoji que refleje el tono real de la noticia.
-- thought: UNA frase corta (máx 100 caracteres) con la reacción del Sapo. Ligera ironía, inteligencia, sin sarcasmo infantil. Sonido sobrio, como un observador que no se sorprende fácilmente.
+- category: UNA categoría del enum: regulacion | defi | trading | seguridad | tecnologia | latam.
+- tweet: versión compacta para X/Twitter. MÁXIMO 260 caracteres. Emoji + dato clave + tono Sapo. Sin URL (se agrega después).
 
 Reglas:
 - Español latinoamericano.
 - Sin predicciones de precio.
 - Sin consejos financieros ("compra", "vende", "invierte").
 - Sin hype, sin exageraciones, sin tono de degen.
-- Si falta información: empieza el summary con "Según ${article.source},"
+- Si falta información: empieza summary con "Según ${article.source},"
 - Mantén siempre la voz del Sapo: claridad, calma, ironía suave, cero ruido.
 `.trim();
 
-    let result = await callLLM(prompt);
+    trackRequest('summarize');
 
-    // Repair: if summary or title too long — retry with explicit command
-    if (result && (result.summary.length > 420 || result.title.length > 85)) {
-      logger.warn(`⚠️ Output too long, retrying with repair prompt...`);
-      result = await callLLM(
-        `${prompt}\n\nANTERIOR INTENTO FALLÓ POR LONGITUD. Acorta: title < 80 chars, summary < 400 chars. Sin perder el sentido.`,
-      );
-    }
+    const { object: result } = await generateObject({
+      model: google('gemini-2.5-flash'),
+      schema: SummarySchema,
+      prompt,
+    });
 
-    if (!result) return null;
-
-    // Normalize tags
     const normalized: Summary = {
       ...result,
       tags: result.tags.map((t) => (t.startsWith('#') ? t : `#${t}`)),
       title: truncateToWord(result.title, 80),
       summary: truncateToWord(result.summary, 420),
+      tweet: truncateToWord(result.tweet, 260),
       emoji: result.emoji.slice(0, 6),
     };
 
-    logger.info(`🧠 Summarized: ${safeTitle}`);
+    logger.info(`🧠 Summarized [${normalized.category}]: ${safeTitle}`);
     return normalized;
   } catch (error) {
     logger.error({ err: error }, `❌ Failed to summarize: ${article.title}`);
@@ -96,7 +93,13 @@ Reglas:
 }
 
 export async function generateGoodNight(): Promise<string> {
+  if (!canMakeRequest()) {
+    return `🌙 *Buenas noches mis sapos* 🐸\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
+  }
+
   try {
+    trackRequest('goodnight');
+
     const { text } = await generateText({
       model: google('gemini-2.5-flash'),
       prompt: `
@@ -114,7 +117,7 @@ Reglas:
 - Siempre diferente, nunca repetitivo
 - Español latinoamericano
 - Sin emojis en el texto (se agregan fuera)
-      `.trim(),
+`.trim(),
     });
 
     return `🌙 *Buenas noches mis sapos* 🐸\n\n${text}`;
