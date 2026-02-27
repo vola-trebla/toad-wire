@@ -120,7 +120,9 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 async function runEveningDigest(): Promise<void> {
   logger.info('🌙 Starting evening digest...');
   try {
-    await sendToTelegram(await generateGoodNight());
+    const goodNightMsg = await generateGoodNight();
+    await sendToTelegram(goodNightMsg);
+    await postTweet(goodNightMsg);
   } catch (error) {
     logger.error(`❌ Evening digest error: ${error}`);
   }

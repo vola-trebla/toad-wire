@@ -92,9 +92,21 @@ Rules:
   }
 }
 
+const NIGHT_OPENERS = [
+  '🌙 *Buenas noches mis sapos* 🌚',
+  '🌙 *Cae la noche en el pantano…* 🌚',
+  '🌚 *La luna también observa el mercado…*',
+  '🌑 *Hora de cerrar los gráficos, sapos…*',
+  '🌙 *El pantano descansa. El mercado, no tanto…* 🌚',
+];
+
+function randomOpener(): string {
+  return NIGHT_OPENERS[Math.floor(Math.random() * NIGHT_OPENERS.length)]!;
+}
+
 export async function generateGoodNight(): Promise<string> {
   if (!canMakeRequest()) {
-    return `🌙 *Buenas noches mis sapos* 🌚\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
+    return `🌙 *Buenas noches mis sapos* 🌚\n\nA descansar, que mañana el mercado sigue ahí. (O no) 😄`;
   }
 
   try {
@@ -120,8 +132,8 @@ Rules:
 `.trim(),
     });
 
-    return `🌙 *Buenas noches mis sapos* 🌚\n\n${text}`;
+    return `${randomOpener()}\n\n${text}`;
   } catch {
-    return `🌙 *Buenas noches mis sapos* 🌚\n\nA descansar, que mañana el mercado sigue ahí. _O no._ 😄`;
+    return `${randomOpener()}\n\nA descansar, que mañana el mercado sigue ahí. (O no) 😄`;
   }
 }
