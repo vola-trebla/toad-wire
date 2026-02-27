@@ -16,6 +16,37 @@ const categoryMap = {
   latam: '🌎 LATAM',
 };
 
+const THOUGHT_EMOJIS = [
+  '🧠',
+  '🤖',
+  '🧩',
+  '🔍',
+  '📡',
+  '📊',
+  '📈',
+  '🛰️',
+  '⚙️',
+  '🧮',
+  '🧬',
+  '🔮',
+  '🪬',
+  '🦾',
+  '💭',
+  '🌐',
+  '⚡️',
+  '🔭',
+  '🧿',
+  '💡',
+  '🪐',
+  '🔬',
+  '🎯',
+];
+
+function getRandomThoughtEmojis(): string {
+  const shuffled = [...THOUGHT_EMOJIS].sort(() => Math.random() - 0.5);
+  return `${shuffled[0]!} ${shuffled[1]!}`;
+}
+
 export function formatPostTelegram(article: FeedArticle, summary: Summary): string {
   const tags = summary.tags.join(' ');
 
@@ -26,7 +57,7 @@ ${summary.emoji} *${summary.title}*
 
 ${summary.summary}
 
-_${summary.thought}_ 🧠🤖
+_${summary.thought}_ ${getRandomThoughtEmojis()}
 
 ${tags}`;
 }
@@ -37,11 +68,11 @@ export function formatPostX(article: FeedArticle, summary: Summary): string {
   return `${sentimentMap[summary.sentiment]} · ${categoryMap[summary.category]}
 
 ${summary.emoji} ${summary.title}
-Fuente: ${article.source}
+🔗 Fuente: ${article.source}
 
 ${summary.summary}
 
-${summary.thought} 🧠🤖
+${summary.thought} ${getRandomThoughtEmojis()}
 
 ${tags}`;
 }
