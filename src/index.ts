@@ -120,7 +120,6 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 async function runEveningDigest(): Promise<void> {
   logger.info('🌙 Starting evening digest...');
   try {
-    await runNewsPipeline(1);
     await sendToTelegram(await generateGoodNight());
   } catch (error) {
     logger.error(`❌ Evening digest error: ${error}`);
@@ -212,7 +211,8 @@ cron.schedule('0 12 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE 
 cron.schedule('30 13 * * *', () => void runAfternoonBatch(), { timezone: TIMEZONE });
 cron.schedule('0 15 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
 cron.schedule('0 18 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
-cron.schedule('0 21 * * *', () => void runEveningDigest(), { timezone: TIMEZONE });
+cron.schedule('0 21 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+cron.schedule('0 23 * * *', () => void runEveningDigest(), { timezone: TIMEZONE });
 cron.schedule(
   '0 0 * * 0',
   async () => {
