@@ -138,40 +138,40 @@ export function Hero({ mood }: Props) {
             className="animate-fade-up delay-3"
             style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}
           >
-            <a
-              href="https://t.me/ElSapoCripto"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '14px 28px',
-                background: 'var(--green)',
-                color: '#050f05',
-                fontFamily: 'var(--font-display)',
-                fontWeight: 700,
-                fontSize: '13px',
-                letterSpacing: '0.05em',
-                textDecoration: 'none',
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                const el = e.currentTarget;
-                el.style.transform = 'translate(-2px,-2px)';
-                el.style.boxShadow = '4px 4px 0 var(--green-dark)';
-              }}
-              onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                const el = e.currentTarget;
-                el.style.transform = 'none';
-                el.style.boxShadow = 'none';
-              }}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.026 9.547c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.51 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.306.97z" />
-              </svg>
-              {currentMood.cta}
-            </a>
+            {/*<a*/}
+            {/*  href="https://t.me/ElSapoCripto"*/}
+            {/*  target="_blank"*/}
+            {/*  rel="noopener noreferrer"*/}
+            {/*  style={{*/}
+            {/*    display: 'inline-flex',*/}
+            {/*    alignItems: 'center',*/}
+            {/*    gap: '10px',*/}
+            {/*    padding: '14px 28px',*/}
+            {/*    background: 'var(--green)',*/}
+            {/*    color: '#050f05',*/}
+            {/*    fontFamily: 'var(--font-display)',*/}
+            {/*    fontWeight: 700,*/}
+            {/*    fontSize: '13px',*/}
+            {/*    letterSpacing: '0.05em',*/}
+            {/*    textDecoration: 'none',*/}
+            {/*    transition: 'all 0.2s',*/}
+            {/*  }}*/}
+            {/*  onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {*/}
+            {/*    const el = e.currentTarget;*/}
+            {/*    el.style.transform = 'translate(-2px,-2px)';*/}
+            {/*    el.style.boxShadow = '4px 4px 0 var(--green-dark)';*/}
+            {/*  }}*/}
+            {/*  onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {*/}
+            {/*    const el = e.currentTarget;*/}
+            {/*    el.style.transform = 'none';*/}
+            {/*    el.style.boxShadow = 'none';*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">*/}
+            {/*    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.026 9.547c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.51 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.306.97z" />*/}
+            {/*  </svg>*/}
+            {/*  {currentMood.cta}*/}
+            {/*</a>*/}
 
             <a
               href="https://x.com/ElSapoCripto"
