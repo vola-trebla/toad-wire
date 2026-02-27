@@ -159,6 +159,25 @@ async function runAfternoonBatch(): Promise<void> {
   }
 }
 
+// 💊 13:45 — DegenTime (one chaotic post from unused headlines)
+async function runDegenTime(): Promise<void> {
+  logger.info('💊 Starting DegenTime...');
+  try {
+    if (lastUnusedHeadlines.length === 0) {
+      logger.warn('⚠️ No unused headlines for DegenTime, skipping');
+      return;
+    }
+    const snapshot = await collectMarketSnapshot(lastUnusedHeadlines);
+    const posts = await generateBatch('degen_time', snapshot);
+    if (posts.length > 0) {
+      await enqueueMicroPosts(posts);
+      logger.info(`💊 DegenTime enqueued: ${posts[0]!.text}`);
+    }
+  } catch (error) {
+    logger.error(`❌ DegenTime error: ${error}`);
+  }
+}
+
 // 📤 Dispatcher — every 20 min, 08:00–23:00
 async function dispatchNextMicroPost(): Promise<void> {
   const post = await getNextUnposted('x');
@@ -196,6 +215,7 @@ cron.schedule(
   { timezone: TIMEZONE },
 );
 cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
+cron.schedule('45 13 * * *', () => void runDegenTime(), { timezone: TIMEZONE });
 
 logger.info('🐸 El Sapo Cripto arrancó! Esperando el horario...');
 
