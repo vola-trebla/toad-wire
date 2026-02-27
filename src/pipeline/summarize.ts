@@ -12,7 +12,7 @@ const SummarySchema = z.object({
   title: z.string(),
   summary: z.string(),
   thought: z.string().describe('Comentario breve y con personalidad del Sapo, máx 100 caracteres'),
-  tags: z.array(z.string()).min(3).max(5),
+  tags: z.array(z.string()).min(3).max(3),
   sentiment: z.enum(['bullish', 'bearish', 'neutral']),
   emoji: z.string(),
   category: z.enum(['regulacion', 'defi', 'trading', 'seguridad', 'tecnologia', 'latam']),
@@ -52,7 +52,7 @@ Generate a JSON object with these fields:
 - title: headline in Spanish, MAX 80 characters. Suggestive but no clickbait.
 - summary: 2-3 sentence summary (max 400 characters). Clear, direct, calm and sharp in Sapo's voice.
 - thought: ONE short phrase (max 100 characters) with Sapo's reaction. Light irony, intelligence, no childish sarcasm.
-- tags: 3-5 hashtags with #, no spaces.
+- tags: exactly 3 hashtags. Use simple, common words people actually search for. Good: #Ethereum #Hack #Bitcoin. Bad: #SeguridadCripto #CoreaDelSur #ErroresGobierno
 - sentiment: "bullish", "bearish" or "neutral".
 - emoji: ONE single emoji that reflects the real tone of the news.
 - category: ONE category from enum: regulacion | defi | trading | seguridad | tecnologia | latam.
