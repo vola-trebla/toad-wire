@@ -16,7 +16,7 @@ const categoryMap = {
   latam: '🌎 LATAM',
 };
 
-export function formatPost(article: FeedArticle, summary: Summary): string {
+export function formatPostTelegram(article: FeedArticle, summary: Summary): string {
   const tags = summary.tags.join(' ');
 
   return `${sentimentMap[summary.sentiment]} · ${categoryMap[summary.category]}
@@ -31,12 +31,17 @@ _${summary.thought}_ 🧠🤖
 ${tags}`;
 }
 
-export function formatTweet(article: FeedArticle, summary: Summary): string {
-  return `${sentimentMap[summary.sentiment]} ${summary.emoji}
+export function formatPostX(article: FeedArticle, summary: Summary): string {
+  const tags = summary.tags.join(' ');
 
-${summary.tweet}
+  return `${sentimentMap[summary.sentiment]} · ${categoryMap[summary.category]}
 
-🔗 ${article.url}
+${summary.emoji} ${summary.title}
+Fuente: ${article.source}
 
-${summary.tags.slice(0, 3).join(' ')}`;
+${summary.summary}
+
+${summary.thought} 🧠🤖
+
+${tags}`;
 }

@@ -4,7 +4,7 @@ import { type FeedArticle, fetchFeeds } from './sources/rss.js';
 import { fetchPrices, formatPricesPost } from './sources/prices.js';
 import { isDuplicate, saveArticle, markAsPosted } from './pipeline/dedup.js';
 import { generateGoodNight, summarizeArticle } from './pipeline/summarize.js';
-import { formatPost } from './pipeline/format.js';
+import { formatPostTelegram, formatPostX } from './pipeline/format.js';
 import { sendToTelegram } from './pipeline/post.js';
 import { logger } from './utils/logger.js';
 import { db } from './db/client.js';
@@ -95,12 +95,14 @@ async function runNewsPipeline(limit = 5): Promise<void> {
     const summary = await summarizeArticle(article);
     if (!summary) continue;
 
-    const post = formatPost(article, summary);
-    await sendToTelegram(post);
+    // Telegram post
+    const tgPost = formatPostTelegram(article, summary);
+    await sendToTelegram(tgPost);
 
-    // Dual-publish to X
+    // X post (if enabled)
     if (isXEnabled()) {
-      await postTweet(post);
+      const xPost = formatPostX(article, summary);
+      await postTweet(xPost);
     }
 
     await saveArticle(article);
