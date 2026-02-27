@@ -31,16 +31,75 @@ export function Hero({ mood }: Props) {
         {/* Left column */}
         <div style={{ flex: 1, minWidth: '280px' }}>
           <div
-            className="animate-fade-up"
             style={{
-              fontSize: 'clamp(80px,15vw,140px)',
-              lineHeight: 1,
+              width: 'clamp(80px,15vw,140px)',
+              aspectRatio: '1/1',
               marginBottom: '24px',
+              display: 'inline-grid',
+              placeItems: 'center',
+              position: 'relative',
+              isolation: 'isolate',
+              transform: 'translateZ(0)',
+              willChange: 'transform, filter',
               animation: 'float 4s ease-in-out infinite, fadeUp 0.7s ease both',
-              display: 'inline-block',
             }}
           >
-            🐸
+            {/* halo */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: '-18%',
+                borderRadius: '9999px',
+                background:
+                  'radial-gradient(circle, rgba(45,255,110,0.18) 0%, rgba(45,255,110,0.06) 45%, rgba(0,0,0,0) 70%)',
+                filter: 'blur(10px)',
+                zIndex: 0,
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* ring */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: '6%',
+                borderRadius: '9999px',
+                border: '1px solid rgba(45,255,110,0.22)',
+                boxShadow: '0 0 18px rgba(45,255,110,0.10) inset',
+                zIndex: 1,
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* frog */}
+            <img
+              src="/frog.png"
+              alt="Frog"
+              style={{
+                width: '90%',
+                height: '90%',
+                objectFit: 'contain',
+                display: 'block',
+                zIndex: 2,
+
+                // “подтянуть” картинку под стиль сайта
+                filter: 'drop-shadow(0 16px 26px rgba(0,0,0,0.40)) saturate(1.06) contrast(1.04)',
+                transform: 'translateZ(0)',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                inset: '10%',
+                borderRadius: '9999px',
+                background:
+                  'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.14), rgba(255,255,255,0) 55%)',
+                mixBlendMode: 'screen',
+                opacity: 0.65,
+                zIndex: 3,
+                pointerEvents: 'none',
+              }}
+            />
           </div>
           <h1
             className="animate-fade-up delay-1"
