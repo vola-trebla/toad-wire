@@ -10,6 +10,10 @@ const envSchema = z.object({
   SENTRY_DSN: z.string().optional(),
   AXIOM_DATASET: z.string().optional(),
   AXIOM_TOKEN: z.string().optional(),
+  X_CONSUMER_KEY: z.string().optional(),
+  X_CONSUMER_SECRET: z.string().optional(),
+  X_ACCESS_TOKEN: z.string().optional(),
+  X_ACCESS_TOKEN_SECRET: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

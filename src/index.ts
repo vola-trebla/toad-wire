@@ -24,6 +24,7 @@ import {
   getPendingCount,
   cleanOldMicroPosts,
 } from './queue/micro-posts.js';
+import { isXEnabled, postTweet } from './channels/twitter.js';
 
 initSentry();
 startHealthServer();
@@ -96,6 +97,11 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 
     const post = formatPost(article, summary);
     await sendToTelegram(post);
+
+    // Dual-publish to X
+    if (isXEnabled()) {
+      await postTweet(post);
+    }
 
     await saveArticle(article);
     await markAsPosted(article.url);
