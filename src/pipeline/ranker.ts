@@ -4,6 +4,7 @@ import { type FeedArticle } from '../sources/rss.js';
 import { logger } from '../utils/logger.js';
 import { canMakeRequest, trackRequest } from '../utils/request-budget.js';
 import { getModel } from '../llm/router.js';
+import { scoreArticles } from './scorer.js';
 
 const RankingSchema = z.object({
   selected: z.array(z.number()).min(1).max(5),
@@ -19,9 +20,10 @@ export async function rankArticles(
       return articles.slice(0, limit);
     }
 
-    const list = articles
-      .slice(0, 20)
-      .map((a, i) => `${i}. [${a.source}] ${a.title}`)
+    const scored = scoreArticles(articles.slice(0, 20));
+
+    const list = scored
+      .map((a, i) => `${i}. [score:${a.importanceScore.toFixed(2)}] [${a.source}] ${a.title}`)
       .join('\n');
 
     trackRequest('ranker', 'flash');
