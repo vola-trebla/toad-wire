@@ -142,7 +142,7 @@ _Cuando los números hablan solos, el Sapo solo aplaude._ 🐸
 ```env
 GOOGLE_GENERATIVE_AI_API_KEY=
 TELEGRAM_BOT_TOKEN=
-TELEGRAM_CHANNEL_ID=@ElSapoCripto
+TELEGRAM_CHANNEL_ID=@EI_Sapo
 DATABASE_URL=file:/data/dev.db
 COINMARKETCAP_API_KEY=
 SENTRY_DSN=
