@@ -25,9 +25,18 @@ import {
   cleanOldMicroPosts,
 } from './queue/micro-posts.js';
 import { isXEnabled, postTweet } from './channels/twitter.js';
+import {
+  createXBudgetState,
+  canTweet,
+  recordTweet,
+  formatBudgetStatus,
+} from './channels/x-rate-limiter.js';
 
 initSentry();
 startHealthServer();
+
+// X rate limiter state — persists in memory, resets on restart (acceptable)
+const xBudgetState = createXBudgetState();
 
 // Unused headlines from last news pipeline run — shared between pipeline and batch
 let lastUnusedHeadlines: string[] = [];
@@ -193,19 +202,47 @@ async function runDegenTime(): Promise<void> {
 
 // 📤 Dispatcher — every 20 min, 08:00–23:00
 async function dispatchNextMicroPost(): Promise<void> {
-  const post = await getNextUnposted('x');
-  if (!post) return;
+  // 1. Check rate limits before doing anything
+  const rateCheck = canTweet(xBudgetState);
+  if (!rateCheck.allowed) {
+    logger.debug(
+      `⏸️ X dispatch skipped: ${rateCheck.reason} — ${formatBudgetStatus(xBudgetState)}`,
+    );
+    return;
+  }
 
+  // 2. Pull next queued post
+  const post = await getNextUnposted('x');
+  if (!post) {
+    logger.debug('📭 No micro-posts in queue');
+    return;
+  }
+
+  // 3. Build tweet text
   const hashtags = JSON.parse(post.hashtags) as string[];
   const fullText = `${post.mood} ${post.text}\n\n${hashtags.join(' ')}`;
 
-  // DRY-RUN until X API is connected
-  logger.info(`📝 [DRY-RUN X] ${fullText}`);
+  // 4. Post to X (guarded by isXEnabled inside postTweet)
+  if (isXEnabled()) {
+    const success = await postTweet(fullText);
+    if (!success) {
+      // Leave post as unposted — will retry on next dispatch cycle
+      logger.warn(`⚠️ Tweet failed for micro-post #${post.id}, will retry next cycle`);
+      return;
+    }
+    recordTweet(xBudgetState);
+  } else {
+    // Dry-run: mark as posted so queue doesn't accumulate stale items
+    logger.info(`📝 [DRY-RUN X] ${fullText}`);
+  }
 
+  // 5. Mark as dispatched
   await markMicroPostAsPosted(post.id);
 
   const pending = await getPendingCount();
-  logger.info(`📤 Dispatched micro-post #${post.id} [${post.batchType}] — remaining: ${pending}`);
+  logger.info(
+    `📤 Dispatched micro-post #${post.id} [${post.batchType}] — ${formatBudgetStatus(xBudgetState)} — remaining: ${pending}`,
+  );
 }
 
 const TIMEZONE = 'America/Montevideo';
