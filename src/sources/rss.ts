@@ -1,28 +1,21 @@
 import Parser from 'rss-parser';
 import { logger } from '../utils/logger.js';
+import { getActiveFeeds } from './feeds.config.js';
 
 export interface FeedArticle {
   title: string;
   url: string;
   source: string;
   publishedAt: string;
+  // v2.0 — propagated from FeedConfig
+  tier: 1 | 2 | 3;
+  authority: number;
+  language: 'en' | 'es' | 'pt';
+  specialization: string[];
 }
 
 const parser = new Parser();
 
-const FEEDS = [
-  { url: 'https://coindesk.com/arc/outboundfeeds/rss/', source: 'CoinDesk' },
-  { url: 'https://cointelegraph.com/rss', source: 'CoinTelegraph' },
-  { url: 'https://decrypt.co/feed', source: 'Decrypt' },
-  { url: 'https://theblock.co/rss.xml', source: 'The Block' },
-  { url: 'https://www.dlnews.com/arc/outboundfeeds/rss/', source: 'DL News' },
-  { url: 'https://cryptobriefing.com/feed/', source: 'CryptoBriefing' },
-  { url: 'https://blockworks.co/feed', source: 'Blockworks' },
-  { url: 'https://finbold.com/feed/', source: 'Finbold' },
-  { url: 'https://beincrypto.com/feed/', source: 'BeInCrypto' },
-];
-
-// --- utility to remove duplicates ---
 function normalizeTitle(t: string): string {
   return t
     .toLowerCase()
@@ -34,24 +27,22 @@ function normalizeTitle(t: string): string {
 export async function fetchFeeds(): Promise<FeedArticle[]> {
   const results: FeedArticle[] = [];
   const seenTitles = new Set<string>();
-
   const now = Date.now();
-  const MAX_HOURS = 12;
 
-  for (const feed of FEEDS) {
+  for (const feed of getActiveFeeds()) {
     try {
       const parsed = await parser.parseURL(feed.url);
+      let fetched = 0;
 
       for (const item of parsed.items) {
         if (!item.title || !item.link) continue;
 
         const pub = item.pubDate ? new Date(item.pubDate) : new Date();
-
-        // ⏳ filter: max 12 hours old
         const ageHours = (now - pub.getTime()) / 36e5;
-        if (ageHours > MAX_HOURS) continue;
 
-        // 🧹 remove literal duplicates
+        // Age filter from config (replaces hardcoded 12h)
+        if (ageHours > feed.maxAgeHours) continue;
+
         const norm = normalizeTitle(item.title);
         if (seenTitles.has(norm)) continue;
         seenTitles.add(norm);
@@ -61,19 +52,34 @@ export async function fetchFeeds(): Promise<FeedArticle[]> {
           url: item.link,
           source: feed.source,
           publishedAt: pub.toISOString(),
+          // v2.0 fields from config
+          tier: feed.tier,
+          authority: feed.authority,
+          language: feed.language,
+          specialization: feed.specialization,
         });
+
+        fetched++;
       }
 
-      logger.info(`✅ Fetched ${parsed.items.length} articles from ${feed.source}`);
+      // Update health state in memory
+      feed.consecutiveFailures = 0;
+      feed.healthStatus = 'healthy';
+      feed.lastSuccessfulFetch = new Date().toISOString();
+
+      logger.info(`✅ Fetched ${fetched} articles from ${feed.source} [tier ${feed.tier}]`);
     } catch (error) {
-      logger.error(`❌ Failed to fetch ${feed.source}: ${error}`);
+      feed.consecutiveFailures++;
+      if (feed.consecutiveFailures >= 3) feed.healthStatus = 'degraded';
+      if (feed.consecutiveFailures >= 10) feed.healthStatus = 'dead';
+      logger.warn(`⚠️ Feed ${feed.source} fail #${feed.consecutiveFailures}: ${error}`);
     }
   }
 
-  // sort by time DESC (most recent → top)
+  // Sort by time DESC
   results.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
-  // diversify by interleaving sources
+  // Interleave by source for diversity
   const bySource = new Map<string, FeedArticle[]>();
   for (const a of results) {
     if (!bySource.has(a.source)) bySource.set(a.source, []);

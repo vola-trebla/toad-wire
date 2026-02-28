@@ -8,6 +8,11 @@ function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
     url: 'https://example.com/news',
     source: 'CoinDesk',
     publishedAt: new Date().toISOString(),
+    // v2.0 defaults
+    tier: 1,
+    authority: 0.95,
+    language: 'en',
+    specialization: ['institutional'],
     ...overrides,
   };
 }
