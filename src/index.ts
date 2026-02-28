@@ -31,6 +31,9 @@ import {
   recordTweet,
   formatBudgetStatus,
 } from './channels/x-rate-limiter.js';
+import { clusterByStory, applyClusterBoosts } from './pipeline/story-cluster.js';
+import { scoreArticles, SCORE_THRESHOLDS } from './pipeline/scorer.js';
+import { checkFeedHealth, reportFeedHealth } from './sources/feed-health.js';
 
 initSentry();
 startHealthServer();
@@ -245,6 +248,75 @@ async function dispatchNextMicroPost(): Promise<void> {
   );
 }
 
+// 🚨 Breaking News Scanner — every 10 min, 07:00–23:00
+// Lightweight: RSS fetch + algorithmic scoring only, zero LLM RPD
+async function scanForBreaking(): Promise<void> {
+  try {
+    const allArticles = await fetchFeeds();
+    const filtered = allArticles.filter((a) => isRelevant(a.title));
+
+    // URL-only dedup (no embeddings — keep it fast)
+    const fresh: FeedArticle[] = [];
+    for (const article of filtered) {
+      if (await isDuplicate(article.url)) continue;
+      fresh.push(article);
+    }
+
+    if (fresh.length === 0) return;
+
+    const snapshot = await collectMarketSnapshot();
+    const scored = scoreArticles(fresh, snapshot);
+
+    // Story clustering — detect multi-source breaking events
+    const clusters = clusterByStory(fresh);
+    applyClusterBoosts(scored, clusters);
+
+    const breaking = scored.filter((a) => a.importanceScore > SCORE_THRESHOLDS.BREAKING);
+    if (breaking.length === 0) return;
+
+    const top = breaking[0]!;
+    logger.info(`🚨 Breaking detected: "${top.title}" (score: ${top.importanceScore.toFixed(2)})`);
+
+    // Guard: skip if already posted in last 2 hours
+    if (await isDuplicate(top.url)) {
+      logger.info('🚨 Breaking already posted, skipping');
+      return;
+    }
+
+    await runBreakingNewsPipeline(top);
+  } catch (error) {
+    logger.error(`❌ Breaking news scan error: ${error}`);
+  }
+}
+
+// 🚨 Breaking News Pipeline — immediate publish, no schedule
+async function runBreakingNewsPipeline(article: FeedArticle): Promise<void> {
+  logger.info(`🚨 Running breaking pipeline for: ${article.title}`);
+
+  const summary = await summarizeArticle(article);
+
+  if (summary) {
+    const tgPost = `🚨 ${formatPostTelegram(article, summary)}`;
+    await sendToTelegram(tgPost);
+
+    if (isXEnabled()) {
+      const xPost = formatPostX(article, summary);
+      await postTweet(`🚨 ${xPost}`);
+    }
+  } else {
+    // Budget exhausted fallback — title-only
+    const fallback = `🚨 *BREAKING*\n\n${article.title}\n\n🔗 ${article.url}`;
+    await sendToTelegram(fallback);
+    if (isXEnabled()) {
+      await postTweet(`🚨 ${article.title}\n${article.url}`);
+    }
+  }
+
+  await saveArticle(article);
+  await markAsPosted(article.url);
+  updateLastPosted();
+}
+
 const TIMEZONE = 'America/Montevideo';
 
 cron.schedule('0 2 * * *', () => runBackup(), { timezone: TIMEZONE });
@@ -267,6 +339,14 @@ cron.schedule(
 );
 cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
 cron.schedule('45 13 * * *', () => void runDegenTime(), { timezone: TIMEZONE });
+// Breaking news scanner — every 10 min, 07:00–23:00
+cron.schedule('*/10 7-23 * * *', () => void scanForBreaking(), { timezone: TIMEZONE });
+
+// Feed health check — every 30 min
+cron.schedule('*/30 * * * *', () => void checkFeedHealth(), { timezone: TIMEZONE });
+
+// Weekly feed health report — Monday 09:00
+cron.schedule('0 9 * * 1', () => void reportFeedHealth(), { timezone: TIMEZONE });
 
 logger.info('🐸 El Sapo Cripto arrancó! Esperando el horario...');
 
