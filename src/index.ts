@@ -41,6 +41,7 @@ initSentry();
 // Circuit breakers for external APIs
 const telegramCircuit = createCircuitState('telegram');
 const xCircuit = createCircuitState('x-api');
+const geminiCircuit = createCircuitState('gemini');
 
 startHealthServer();
 
@@ -100,8 +101,33 @@ async function runNewsPipeline(limit = 5): Promise<void> {
   }
 
   const fresh = await filterSimilar(nonDuplicates);
+
+  // Score articles — log breakdown for threshold calibration
+  const snapshot = await collectMarketSnapshot();
+  const scored = scoreArticles(fresh, snapshot);
+
+  // Log top-5 breakdown
+  logger.info('📊 Score breakdown (top 5):');
+  scored.slice(0, 5).forEach((a, i) => {
+    logger.info(
+      `  ${i + 1}. [${a.source}] ${a.importanceScore.toFixed(3)} — ${a.title.slice(0, 60)}`,
+    );
+    logger.info(
+      `     auth=${a.scoreBreakdown.authority.toFixed(2)} × fresh=${a.scoreBreakdown.freshness.toFixed(2)}` +
+        ` + kw=${a.scoreBreakdown.keywordBoost.toFixed(2)}` +
+        ` + ctx=${a.scoreBreakdown.contextBoost.toFixed(2)}` +
+        ` − dup=${a.scoreBreakdown.duplicatePenalty.toFixed(2)}` +
+        ` − spam=${a.scoreBreakdown.spamPenalty.toFixed(2)}`,
+    );
+  });
+
   const MAX_RANKER_INPUT = 15;
-  const ranked = await rankArticles(fresh.slice(0, MAX_RANKER_INPUT), limit * 3);
+  const ranked =
+    (await withCircuit(
+      geminiCircuit,
+      () => rankArticles(scored.slice(0, MAX_RANKER_INPUT), limit * 3),
+      logger,
+    )) ?? [];
 
   // Save unused headlines for afternoon batch
   const rankedUrls = new Set(ranked.map((a) => a.url));
@@ -114,7 +140,9 @@ async function runNewsPipeline(limit = 5): Promise<void> {
   for (const article of ranked) {
     if (posted >= limit) break;
 
-    const summary = await summarizeArticle(article);
+    const summary =
+      (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
+
     if (!summary) continue;
 
     // Telegram post
@@ -254,6 +282,9 @@ async function dispatchNextMicroPost(): Promise<void> {
   );
 }
 
+// In-memory lock — prevents same article triggering twice during processing
+const breakingInProgress = new Set<string>();
+
 // 🚨 Breaking News Scanner — every 10 min, 07:00–23:00
 // Lightweight: RSS fetch + algorithmic scoring only, zero LLM RPD
 async function scanForBreaking(): Promise<void> {
@@ -283,13 +314,18 @@ async function scanForBreaking(): Promise<void> {
     const top = breaking[0]!;
     logger.info(`🚨 Breaking detected: "${top.title}" (score: ${top.importanceScore.toFixed(2)})`);
 
-    // Guard: skip if already posted in last 2 hours
-    if (await isDuplicate(top.url)) {
-      logger.info('🚨 Breaking already posted, skipping');
+    // Fast in-memory guard (handles concurrent scans)
+    if (breakingInProgress.has(top.url)) {
+      logger.info('🚨 Breaking already in progress, skipping');
       return;
     }
 
-    await runBreakingNewsPipeline(top);
+    breakingInProgress.add(top.url);
+    try {
+      await runBreakingNewsPipeline(top);
+    } finally {
+      breakingInProgress.delete(top.url);
+    }
   } catch (error) {
     logger.error(`❌ Breaking news scan error: ${error}`);
   }
@@ -299,28 +335,34 @@ async function scanForBreaking(): Promise<void> {
 async function runBreakingNewsPipeline(article: FeedArticle): Promise<void> {
   logger.info(`🚨 Running breaking pipeline for: ${article.title}`);
 
-  const summary = await summarizeArticle(article);
+  // Early save — lock article BEFORE processing to prevent race conditions
+  // Worst case: article "burns" in dedup if pipeline fails after this point
+  // Best case: prevents double-publish on parallel pipeline runs
+  await saveArticle(article);
+  await markAsPosted(article.url);
+
+  const summary =
+    (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
 
   if (summary) {
     const tgPost = `🚨 ${formatPostTelegram(article, summary)}`;
-    await sendToTelegram(tgPost);
+    await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
 
     if (isXEnabled()) {
       const xPost = formatPostX(article, summary);
-      await postTweet(`🚨 ${xPost}`);
+      await withCircuit(xCircuit, () => postTweet(`🚨 ${xPost}`), logger);
     }
   } else {
     // Budget exhausted fallback — title-only
     const fallback = `🚨 *BREAKING*\n\n${article.title}\n\n🔗 ${article.url}`;
-    await sendToTelegram(fallback);
+    await withCircuit(telegramCircuit, () => sendToTelegram(fallback), logger);
     if (isXEnabled()) {
-      await postTweet(`🚨 ${article.title}\n${article.url}`);
+      await withCircuit(xCircuit, () => postTweet(`🚨 ${article.title}\n${article.url}`), logger);
     }
   }
 
-  await saveArticle(article);
-  await markAsPosted(article.url);
   updateLastPosted();
+  logger.info(`🚨 Breaking pipeline complete: "${article.title}"`);
 }
 
 const TIMEZONE = 'America/Montevideo';

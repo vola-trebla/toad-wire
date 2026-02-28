@@ -1,6 +1,6 @@
 import { logger } from './logger.js';
 
-const FLASH_DAILY_LIMIT = 18;
+const FLASH_DAILY_LIMIT = 100;
 const TIMEZONE_OFFSET_MS = -3 * 60 * 60 * 1000;
 
 function getTodayKey(): string {

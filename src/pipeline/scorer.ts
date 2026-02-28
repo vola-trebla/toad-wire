@@ -92,15 +92,8 @@ function getContextBoost(title: string, snapshot: MarketSnapshot): number {
   }
 
   // Volatility alerts — boost articles mentioning the volatile asset
-  const alerts = (snapshot as any).volatilityAlerts as
-    | Array<{
-        symbol: string;
-        severity: 'low' | 'medium' | 'high' | 'extreme';
-      }>
-    | undefined;
-
-  if (alerts) {
-    for (const alert of alerts) {
+  if (snapshot.volatilityAlerts) {
+    for (const alert of snapshot.volatilityAlerts) {
       if (new RegExp(alert.symbol, 'i').test(title) && alert.severity !== 'low') {
         boost += alert.severity === 'extreme' ? 0.3 : alert.severity === 'high' ? 0.2 : 0.1;
       }
