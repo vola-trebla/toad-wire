@@ -93,11 +93,18 @@ Rules:
 }
 
 const NIGHT_OPENERS = [
-  '🌙 *Buenas noches mis sapos* 🌚',
-  '🌙 *Cae la noche en el pantano…* 🌚',
-  '🌚 *La luna también observa el mercado…*',
-  '🌑 *Hora de cerrar los gráficos, sapos…*',
-  '🌙 *El pantano descansa. El mercado, no tanto…* 🌚',
+  '🌙 Buenas noches, mis sapos 🌚',
+  '🌙 Cae la noche en el pantano… y el mercado sigue respirando 💨',
+  '🌚 La luna también observa el mercado… con desconfianza 👀',
+  '🌑 Hora de cerrar gráficos, sapos… el ruido queda afuera 📉',
+  '🌙 El pantano descansa. El mercado, no tanto… 🐸',
+  '🌜 Noche tranquila… o la calma antes del susto 👀',
+  '🌘 Se apaga el día, pero las ballenas no duermen 🐋',
+  '🌙 La oscuridad cae y deja ver las verdaderas velas… 📊',
+  '🌚 Noche larga, sapos. El mercado siempre trama algo 💭',
+  '🌒 Cerramos el día, pero el pantano sigue atento 🐸📡',
+  '🌙 Luces bajas, gráficos rojos… típico de un día cripto 😅',
+  '🌑 El pantano se enfría, las narrativas no ❄️🔥',
 ];
 
 function randomOpener(): string {
@@ -106,7 +113,7 @@ function randomOpener(): string {
 
 export async function generateGoodNight(): Promise<string> {
   if (!canMakeRequest()) {
-    return `🌙 *Buenas noches mis sapos* 🌚\n\nA descansar, que mañana el mercado sigue ahí. (O no) 😄`;
+    return `🌙 Buenas noches mis sapos 🌚\n\nA descansar, que mañana el mercado sigue ahí. (O no) 😄`;
   }
 
   try {

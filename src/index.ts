@@ -55,7 +55,11 @@ async function runMorningDigest(): Promise<void> {
   logger.info('🌅 Starting morning digest...');
   try {
     const [prices, fearGreed] = await Promise.all([fetchPrices(), fetchFearGreed()]);
-    await sendToTelegram(formatPricesPost(prices, fearGreed));
+
+    const post = formatPricesPost(prices, fearGreed);
+
+    await sendToTelegram(post);
+    await postTweet(post);
     await runNewsPipeline(1);
   } catch (error) {
     logger.error(`❌ Morning digest error: ${error}`);

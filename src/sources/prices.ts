@@ -56,6 +56,23 @@ export async function fetchPrices(): Promise<CoinPrice[]> {
   }
 }
 
+const MORNING_OPENERS = [
+  '🌅 Buenos días, mis sapos. Arrancamos el día… 💹',
+  '🌄 Amaneció en el pantano y el mercado ya se mueve 👀',
+  '🌞 Despierten, sapos — hoy huele a volatilidad 💧📈',
+  '🌤️ Nuevo día, nuevas velas. Vámonos al lío ⚡📊',
+  '🌄 El sol sube… y algunas monedas también (otras lloran) 😅📉📈',
+  '🌅 El pantano despierta con rumores del mercado 🔍🐸',
+  '🌞 Buenos días, sapos. Hoy cazamos narrativa, no humo 💨❌',
+  '🌤️ El mercado abre un ojo… y nosotros abrimos los dos 🧠👀',
+  '🌄 Señales frescas desde el pantano — atentos, sapos 📡',
+  '🌞 La mañana trae oportunidades… si sabes olerlas 💹🐸',
+];
+
+function randomMorningOpener(): string {
+  return MORNING_OPENERS[Math.floor(Math.random() * MORNING_OPENERS.length)]!;
+}
+
 export function formatPricesPost(prices: CoinPrice[], fearGreed?: FearGreedData | null): string {
   const lines = prices.map((coin) => {
     const price =
@@ -63,19 +80,19 @@ export function formatPricesPost(prices: CoinPrice[], fearGreed?: FearGreedData 
         ? `$${coin.price.toFixed(6)}`
         : `$${coin.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
 
-    return `${getCoinEmoji(coin.symbol)} *${coin.symbol}* ${price}\n   1h: ${formatChange(coin.change1h)}\n   24h: ${formatChange(coin.change24h)}\n   7d: ${formatChange(coin.change7d)}`;
+    return `${getCoinEmoji(coin.symbol)} #${coin.symbol} ${price}\n   1h: ${formatChange(coin.change1h)}\n   24h: ${formatChange(coin.change24h)}\n   7d: ${formatChange(coin.change7d)}`;
   });
 
-  const fearGreedLine = fearGreed ? `\n🧠 *Fear & Greed:* ${formatFearGreed(fearGreed.value)}` : '';
+  const fearGreedLine = fearGreed ? `\n🧠 Fear & Greed: ${formatFearGreed(fearGreed.value)}` : '';
 
-  return `🌅 *Buenos días mis sapos* 🌞
+  return `${randomMorningOpener()}
 
 Así amanece el mercado hoy:
 ${fearGreedLine}
 
 ${lines.join('\n\n')}
 
-_Datos: CoinMarketCap_`;
+Datos: CoinMarketCap 📊`;
 }
 
 function formatChange(change: number): string {
