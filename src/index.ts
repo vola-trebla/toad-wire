@@ -34,9 +34,6 @@ import {
 import { clusterByStory, applyClusterBoosts } from './pipeline/story-cluster.js';
 import { scoreArticles, SCORE_THRESHOLDS } from './pipeline/scorer.js';
 import { checkFeedHealth, reportFeedHealth } from './sources/feed-health.js';
-import { runMigrations } from './db/migrate.js';
-
-await runMigrations();
 
 initSentry();
 startHealthServer();

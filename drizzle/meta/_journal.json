@@ -15,6 +15,13 @@
       "when": 1772058580657,
       "tag": "0001_bumpy_sir_ram",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1772301513467,
+      "tag": "0002_square_lester",
+      "breakpoints": true
     }
   ]
 }
