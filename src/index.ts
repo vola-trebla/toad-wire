@@ -34,8 +34,14 @@ import {
 import { clusterByStory, applyClusterBoosts } from './pipeline/story-cluster.js';
 import { scoreArticles, SCORE_THRESHOLDS } from './pipeline/scorer.js';
 import { checkFeedHealth, reportFeedHealth } from './sources/feed-health.js';
+import { createCircuitState, withCircuit } from './utils/circuit-breaker.js';
 
 initSentry();
+
+// Circuit breakers for external APIs
+const telegramCircuit = createCircuitState('telegram');
+const xCircuit = createCircuitState('x-api');
+
 startHealthServer();
 
 // X rate limiter state — persists in memory, resets on restart (acceptable)
@@ -113,12 +119,12 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 
     // Telegram post
     const tgPost = formatPostTelegram(article, summary);
-    await sendToTelegram(tgPost);
+    await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
 
     // X post (if enabled)
     if (isXEnabled()) {
       const xPost = formatPostX(article, summary);
-      await postTweet(xPost);
+      await withCircuit(xCircuit, () => postTweet(xPost), logger);
     }
 
     await saveArticle(article);
