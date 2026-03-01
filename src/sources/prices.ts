@@ -1,6 +1,8 @@
 import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
 import { type FearGreedData, formatFearGreed } from './feargreed.js';
+import { generateText } from 'ai';
+import { getModel } from '../llm/router.js';
 
 export interface CoinPrice {
   name: string;
@@ -61,12 +63,12 @@ const MORNING_OPENERS = [
   '🌄 Amaneció en el pantano y el mercado ya se mueve 👀',
   '🌞 Despierten, sapos — hoy huele a volatilidad 💧📈',
   '🌤️ Nuevo día, nuevas velas. Vámonos al lío ⚡📊',
-  '🌄 El sol sube… y algunas monedas también (otras lloran) 😅📉📈',
-  '🌅 El pantano despierta con rumores del mercado 🔍🐸',
-  '🌞 Buenos días, sapos. Hoy cazamos narrativa, no humo 💨❌',
-  '🌤️ El mercado abre un ojo… y nosotros abrimos los dos 🧠👀',
+  '🌄 El sol sube… y algunas monedas también (otras lloran) 📉📈',
+  '🌅 El pantano despierta con rumores del mercado 🔍',
+  '🌞 Buenos días, sapos. Hoy cazamos narrativa, no humo 💨',
+  '🌤️ El mercado abre un ojo… y nosotros abrimos los dos 🧠',
   '🌄 Señales frescas desde el pantano — atentos, sapos 📡',
-  '🌞 La mañana trae oportunidades… si sabes olerlas 💹🐸',
+  '🌞 La mañana trae oportunidades… si sabes olerlas 💹',
 ];
 
 function randomMorningOpener(): string {
@@ -93,6 +95,48 @@ ${fearGreedLine}
 ${lines.join('\n\n')}
 
 Datos: CoinMarketCap 📊`;
+}
+
+export async function formatPricesPostX(
+  prices: CoinPrice[],
+  fearGreed?: FearGreedData | null,
+): Promise<string> {
+  const coins = prices.filter((c) => ['BTC', 'ETH'].includes(c.symbol));
+
+  const lines = coins.map((coin) => {
+    const price = `$${coin.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
+    return `${getCoinEmoji(coin.symbol)} ${coin.symbol}  ${price}  ${formatChange(coin.change24h)}`;
+  });
+
+  const fg = fearGreed ? formatFearGreed(fearGreed.value) : '';
+
+  // Flash-Lite hook — one sharp observation
+  let hook = '';
+  try {
+    const best = [...coins].sort((a, b) => Math.abs(b.change24h) - Math.abs(a.change24h))[0];
+    const { text } = await generateText({
+      model: getModel('batch'),
+      prompt: `You are El Sapo Cripto — a crypto analyst with calm irony and sharp observations.
+Write ONE punchy opening line in Latin American Spanish for a market update tweet.
+Context: ${best?.symbol} is ${best && best.change24h > 0 ? 'up' : 'down'} ${best?.change24h.toFixed(1)}% today. Fear & Greed index: ${fearGreed?.value ?? 'unknown'} (${fearGreed ? formatFearGreed(fearGreed.value) : ''}).
+Rules:
+- Max 60 characters
+- No emojis (added externally)
+- Sapo voice: ironic, calm, sharp
+- One observation only, no advice`,
+    });
+    hook = text.trim().slice(0, 80);
+  } catch {
+    // Fallback — no hook
+  }
+
+  return `${randomMorningOpener()}
+
+${lines.join('\n')}
+
+${hook ? `${hook} 👀\n` : ''}${fg}
+
+#Bitcoin #Ethereum #Cripto`;
 }
 
 function formatChange(change: number): string {

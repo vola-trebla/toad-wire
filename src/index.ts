@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import cron from 'node-cron';
 import { type FeedArticle, fetchFeeds } from './sources/rss.js';
-import { fetchPrices, formatPricesPost } from './sources/prices.js';
+import { fetchPrices, formatPricesPost, formatPricesPostX } from './sources/prices.js';
 import { isDuplicate, saveArticle, markAsPosted } from './pipeline/dedup.js';
 import { generateGoodNight, summarizeArticle } from './pipeline/summarize.js';
 import { formatPostTelegram, formatPostX } from './pipeline/format.js';
@@ -80,10 +80,12 @@ async function runMorningDigest(): Promise<void> {
   try {
     const [prices, fearGreed] = await Promise.all([fetchPrices(), fetchFearGreed()]);
 
-    const post = formatPricesPost(prices, fearGreed);
+    const tgPost = formatPricesPost(prices, fearGreed);
+    const xPost = await formatPricesPostX(prices, fearGreed);
 
-    await sendToTelegram(post);
-    await postTweet(post);
+    await sendToTelegram(tgPost);
+    await postTweet(xPost);
+
     await runNewsPipeline(1);
   } catch (error) {
     logger.error(`❌ Morning digest error: ${error}`);
