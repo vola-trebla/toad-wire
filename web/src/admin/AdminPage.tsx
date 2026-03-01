@@ -1,5 +1,6 @@
 import { AdminGate } from './AdminGate';
 import { AdminDashboard } from './AdminDashboard';
+import { API_BASE_URL } from '../config';
 
 export function AdminPage() {
   return (
@@ -13,7 +14,11 @@ export function AdminPage() {
               </p>
               <h1 className="font-display text-2xl tracking-widest text-(--green)">Admin</h1>
             </div>
-            <span className="text-xs text-(--text-muted)">/admin</span>
+            <div className="text-right">
+              <div className="text-[10px] uppercase tracking-widest text-(--text-muted)">API</div>
+              <div className="text-xs text-(--text) max-w-[280px] truncate">{API_BASE_URL}</div>
+              <div className="text-[10px] text-(--text-muted)">/admin</div>
+            </div>
           </header>
           <AdminDashboard />
         </div>

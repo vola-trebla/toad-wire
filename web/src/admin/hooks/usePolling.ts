@@ -19,9 +19,17 @@ export function usePolling<T>(path: string, intervalMs = 30000): PollingState<T>
     const load = async () => {
       try {
         setError(null);
-        const response = await fetch(buildApiUrl(path));
+        const url = buildApiUrl(path);
+        const response = await fetch(url);
         if (!response.ok) {
-          throw new Error(`Request failed with ${response.status}`);
+          throw new Error(`Request failed with ${response.status} (${response.url})`);
+        }
+        const contentType = response.headers.get('content-type') ?? '';
+        if (!contentType.includes('application/json')) {
+          const text = await response.text();
+          throw new Error(
+            `Non-JSON response from ${response.url}: ${text.slice(0, 120).trim() || 'empty'}`,
+          );
         }
         const json = (await response.json()) as T;
         if (active) {
