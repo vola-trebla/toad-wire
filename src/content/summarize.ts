@@ -8,7 +8,8 @@ import { truncateToWord } from '../utils/truncate.js';
 import { canMakeRequest, trackRequest } from '../utils/request-budget.js';
 import { getModel } from '../llm/router.js';
 import {
-  buildSummarizePrompt,
+  SUMMARIZE_SYSTEM_PROMPT,
+  buildSummarizeUserPrompt,
   buildGoodnightPrompt,
   NIGHT_OPENERS,
 } from '../prompts/summarize.prompt.js';
@@ -44,16 +45,13 @@ export async function summarizeArticle(article: FeedArticle): Promise<Summary | 
     const rawContent = await scrapeArticle(article.url);
     const content = rawContent ? rawContent.slice(0, 1500) : null;
 
-    const prompt = buildSummarizePrompt(safeTitle, article.source, content);
-
     trackRequest('summarize', 'flash');
 
     const { output: result } = await generateText({
       model: getModel('news'),
-      prompt,
-      output: Output.object({
-        schema: SummarySchema,
-      }),
+      system: SUMMARIZE_SYSTEM_PROMPT,
+      prompt: buildSummarizeUserPrompt(safeTitle, article.source, content),
+      output: Output.object({ schema: SummarySchema }),
     });
 
     const normalized: Summary = {
