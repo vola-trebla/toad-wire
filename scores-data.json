@@ -1,0 +1,3980 @@
+[
+  {
+    "collectedAt": "2026-02-28T20:25:19.100Z",
+    "marketMood": "extreme_fear",
+    "timeOfDay": "afternoon",
+    "articles": [
+      {
+        "title": "Crypto treasury companies likely to consolidate in 2026: Crypto exec",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.9212,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.801,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin is stuck in a rut but JPMorgan says new legislation could be the ultimate spark",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.8675,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.808,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Lyn Alden: Bitcoin’s four-year cycle is evolving, retail participation remains muted, and integration into finance is crucial for global adoption | The Wolf Of All Streets",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.7698,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.893,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Former Mt. Gox CEO proposed a rewrite of bitcoin's code to recover $5 billion in stolen funds. Gets quickly shutdown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.7624,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.434,
+          "keywordBoost": 0.35,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto community fear of Iran choking oil supply and crashing markets may be overblown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.7619,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.486,
+          "keywordBoost": 0.15,
+          "contextBoost": 0.15,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "The 'stablecoin sandwich' is dead: Why the next phase of crypto payments is all about the user relationship",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.7606,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.695,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Iran crisis puts the regime's $7.8 billion crypto shadow economy in spotlight",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.7302,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.769,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Banking Regulator Floats New Stablecoin Yield Rules—Do They Hurt Coinbase?",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.7223,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.556,
+          "keywordBoost": 0.3,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Bitcoin Recovers Following Plunge as US, Israel Begin Bombing Iran",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.6415,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.637,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Judge blocks Binance from pushing class action suits over token sales into arbitration",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.6142,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.682,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Tokenised gold continues rally while Bitcoin slides on US attack against Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.6012,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.626,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Wall Street sets Netflix stock price target for next 12 months",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.484,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.437,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "11 US senators request federal probe into Binance’s sanctions compliance",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.4746,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.361,
+          "keywordBoost": 0.15,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Fresh accounts netted $1 million on Polymarket hours before US airstrikes on Iran: Bubblemaps",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.4491,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.499,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Buying Bitcoin? Hold for at least three years to avoid losses, data says",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.4443,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.383,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US Senator Targets Prediction Markets, Citing War Bets and Insider Risks",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.4429,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.633,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin, Ethereum drop after US and Israel strike Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.4154,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.394,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Morgan Stanley Targets Direct Crypto Custody With Trust Bank Application",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.4133,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.305,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin's five-month slide: why BTC is set for worst losing streak since 2018",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.4121,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.328,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Suspected insiders make over $1.2 million on Polymarket by betting on U.S.'s Iran strike",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3967,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.418,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Why institutions still prefer Ethereum despite faster blockchains",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3956,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.328,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Tether froze $4.2B in tokens tied to illicit activity in 3 years: Report",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3949,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.217,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin funding rates nearly plummet to three-year lows as tensions in Iran escalate",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.3942,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.453,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP tumbles 9% as break below $1.36 wipes out relief rally",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3864,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.354,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "BlackRock scooped up $0.5 billion of this cryptocurrency in the last week of February",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.3854,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.285,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP Price Analysis: What To Expect In March 2026?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.3406,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.487,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Namik Muduroglu: Token models incentivize selling over holding, governance structures in DAOs are failing, and regulatory fears stifle innovation | Unchained",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.3393,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.452,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Trading expert sets date when Bitcoin will hit $100,000",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.3349,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.361,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin sets up potential short squeeze as 'funding rate' plunges to three month low",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3312,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.243,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here’s what happened in crypto today",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3264,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.363,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin could see further downside risks as Iran attacks U.S. bases across Middle East",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3124,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.224,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Trump Family-Linked Stablecoin Unveils Live Reserve Tracker After De-Pegging Scare",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.29,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.271,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US-Israel Strikes on Iran Trigger $6.5 Million Wipeout on Polymarket",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.2879,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.411,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Why Is The Crypto Market Down Today?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.219,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.384,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Oil-linked futures on Hyperliquid surge 5% after U.S.-Israel strike on Iran",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.207,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.218,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Realty Income to pay dividends on March 13; Here’s how much 100 O shares will earn",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.1989,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.306,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Paradigm plans $1.5 billion fund to expand into AI, robotics",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.1744,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.233,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Market expert reveals what assets will ‘go ballistic’ following Iran strikes",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.142,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.218,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto trader nets $380,000 from U.S. strike on Iran",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.1412,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.217,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Trump confirms launch of operation against Iran",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.1292,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.172,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto market wipes out $70 billion in an hour as U.S. strikes Iran",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.1279,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.197,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      }
+    ]
+  },
+  {
+    "collectedAt": "2026-02-28T21:15:48.274Z",
+    "marketMood": "extreme_fear",
+    "timeOfDay": "evening",
+    "articles": [
+      {
+        "title": "Here's how bitcoin's price rise could be fueled by job-stealing AI software",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 1.0132,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.961,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin bottom fractal calls for 130% rally, but is the model valid in 2026?",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.8513,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.89,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Crypto treasury companies likely to consolidate in 2026: Crypto exec",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.8357,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.706,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin is stuck in a rut but JPMorgan says new legislation could be the ultimate spark",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.7765,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.712,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Former Mt. Gox CEO proposed a rewrite of bitcoin's code to recover $5 billion in stolen funds. Gets quickly shutdown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.7135,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.383,
+          "keywordBoost": 0.35,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto community fear of Iran choking oil supply and crashing markets may be overblown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.7072,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.429,
+          "keywordBoost": 0.15,
+          "contextBoost": 0.15,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Lyn Alden: Bitcoin’s four-year cycle is evolving, retail participation remains muted, and integration into finance is crucial for global adoption | The Wolf Of All Streets",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.6904,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.787,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "The 'stablecoin sandwich' is dead: Why the next phase of crypto payments is all about the user relationship",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.6823,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.613,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Banking Regulator Floats New Stablecoin Yield Rules—Do They Hurt Coinbase?",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.6663,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.49,
+          "keywordBoost": 0.3,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Iran crisis puts the regime's $7.8 billion crypto shadow economy in spotlight",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.6436,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.678,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin Recovers Following Plunge as US, Israel Begin Bombing Iran",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.5773,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.562,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Tokenised gold continues rally while Bitcoin slides on US attack against Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.5418,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.552,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Judge blocks Binance from pushing class action suits over token sales into arbitration",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.5414,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.602,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Wall Street sets Netflix stock price target for next 12 months",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.4503,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.385,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "11 US senators request federal probe into Binance’s sanctions compliance",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.4361,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.318,
+          "keywordBoost": 0.15,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Buying Bitcoin? Hold for at least three years to avoid losses, data says",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.4034,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.337,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Fresh accounts netted $1 million on Polymarket hours before US airstrikes on Iran: Bubblemaps",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.3958,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.44,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US Senator Targets Prediction Markets, Citing War Bets and Insider Risks",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.3903,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.558,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Morgan Stanley Targets Direct Crypto Custody With Trust Bank Application",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.388,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.269,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin, Ethereum drop after US and Israel strike Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.378,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.348,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin's five-month slide: why BTC is set for worst losing streak since 2018",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.375,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.29,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Tether froze $4.2B in tokens tied to illicit activity in 3 years: Report",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3718,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.191,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "BlackRock scooped up $0.5 billion of this cryptocurrency in the last week of February",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.3635,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.251,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Why institutions still prefer Ethereum despite faster blockchains",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3606,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.29,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin funding rates nearly plummet to three-year lows as tensions in Iran escalate",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.3593,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.399,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Suspected insiders make over $1.2 million on Polymarket by betting on U.S.'s Iran strike",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3497,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.368,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP tumbles 9% as break below $1.36 wipes out relief rally",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3465,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.312,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Trading expert sets date when Bitcoin will hit $100,000",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.3071,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.319,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin sets up potential short squeeze as 'funding rate' plunges to three month low",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3038,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.214,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP Price Analysis: What To Expect In March 2026?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.3002,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.429,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Namik Muduroglu: Token models incentivize selling over holding, governance structures in DAOs are failing, and regulatory fears stifle innovation | Unchained",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.2991,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.399,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here’s what happened in crypto today",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.2877,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.32,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin could see further downside risks as Iran attacks U.S. bases across Middle East",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.2872,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.197,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Trump Family-Linked Stablecoin Unveils Live Reserve Tracker After De-Pegging Scare",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.2675,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.239,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US-Israel Strikes on Iran Trigger $6.5 Million Wipeout on Polymarket",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.2538,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.363,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Why Is The Crypto Market Down Today?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1871,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.339,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Oil-linked futures on Hyperliquid surge 5% after U.S.-Israel strike on Iran",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.1825,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.192,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Realty Income to pay dividends on March 13; Here’s how much 100 O shares will earn",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.1753,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.27,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Paradigm plans $1.5 billion fund to expand into AI, robotics",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.1537,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.205,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Market expert reveals what assets will ‘go ballistic’ following Iran strikes",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.1252,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.193,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto trader nets $380,000 from U.S. strike on Iran",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.1245,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.191,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto market wipes out $70 billion in an hour as U.S. strikes Iran",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.1128,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.173,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      }
+    ]
+  },
+  {
+    "collectedAt": "2026-02-28T22:38:02.411Z",
+    "marketMood": "extreme_fear",
+    "timeOfDay": "evening",
+    "articles": [
+      {
+        "title": "Morgan Stanley files for bank charter to custody crypto",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.9694,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.962,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ether’s 60% down from its 2025 high, but TradFi keeps betting on ETH: Here’s why",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.8592,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.844,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here's how bitcoin's price rise could be fueled by job-stealing AI software",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.8435,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.783,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Developer embeds image on Bitcoin as a single transaction, challenging BIP-110’s core claims",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.835,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.817,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here’s what happened in crypto today",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.8283,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.92,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Anthropic CEO responds to Pentagon order prohibiting military use",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.7953,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.884,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto treasury companies likely to consolidate in 2026: Crypto exec",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.7176,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.575,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin bottom fractal calls for 130% rally, but is the model valid in 2026?",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.7024,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.725,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Ethereum Holder Retention Rebounds From a 4-Year Low",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.6877,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.84,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin is stuck in a rut but JPMorgan says new legislation could be the ultimate spark",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.6508,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.58,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Former Mt. Gox CEO proposed a rewrite of bitcoin's code to recover $5 billion in stolen funds. Gets quickly shutdown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.6459,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.311,
+          "keywordBoost": 0.35,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto community fear of Iran choking oil supply and crashing markets may be overblown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.6315,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.349,
+          "keywordBoost": 0.15,
+          "contextBoost": 0.15,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Banking Regulator Floats New Stablecoin Yield Rules—Do They Hurt Coinbase?",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.5889,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.399,
+          "keywordBoost": 0.3,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Lyn Alden: Bitcoin’s four-year cycle is evolving, retail participation remains muted, and integration into finance is crucial for global adoption | The Wolf Of All Streets",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.5807,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.641,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "The 'stablecoin sandwich' is dead: Why the next phase of crypto payments is all about the user relationship",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.5741,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.499,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Cardano Above Bear Market Floor – Can Price Withstand Rising Sell Pressure?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.564,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.806,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Iran crisis puts the regime's $7.8 billion crypto shadow economy in spotlight",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.524,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.552,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin Recovers Following Plunge as US, Israel Begin Bombing Iran",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.4886,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.457,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Tokenised gold continues rally while Bitcoin slides on US attack against Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.4597,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.45,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Judge blocks Binance from pushing class action suits over token sales into arbitration",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.4408,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.49,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Wall Street sets Netflix stock price target for next 12 months",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.4038,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.314,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "11 US senators request federal probe into Binance’s sanctions compliance",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3829,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.259,
+          "keywordBoost": 0.15,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Morgan Stanley Targets Direct Crypto Custody With Trust Bank Application",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.3531,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.219,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Buying Bitcoin? Hold for at least three years to avoid losses, data says",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3471,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.275,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "BlackRock scooped up $0.5 billion of this cryptocurrency in the last week of February",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.3331,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.205,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin, Ethereum drop after US and Israel strike Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.3264,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.283,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin's five-month slide: why BTC is set for worst losing streak since 2018",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3239,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.236,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Fresh accounts netted $1 million on Polymarket hours before US airstrikes on Iran: Bubblemaps",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.3223,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.358,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US Senator Targets Prediction Markets, Citing War Bets and Insider Risks",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.3178,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.454,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Why institutions still prefer Ethereum despite faster blockchains",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3122,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.236,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin funding rates nearly plummet to three-year lows as tensions in Iran escalate",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.3111,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.325,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP tumbles 9% as break below $1.36 wipes out relief rally",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.2914,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.254,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Suspected insiders make over $1.2 million on Polymarket by betting on U.S.'s Iran strike",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.2847,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.3,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Trading expert sets date when Bitcoin will hit $100,000",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.2686,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.259,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin sets up potential short squeeze as 'funding rate' plunges to three month low",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.2659,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.175,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP Price Analysis: What To Expect In March 2026?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.2444,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.349,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Namik Muduroglu: Token models incentivize selling over holding, governance structures in DAOs are failing, and regulatory fears stifle innovation | Unchained",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.2435,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.325,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Trump Family-Linked Stablecoin Unveils Live Reserve Tracker After De-Pegging Scare",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.2364,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.195,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US-Israel Strikes on Iran Trigger $6.5 Million Wipeout on Polymarket",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.2066,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.295,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Why Is The Crypto Market Down Today?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.143,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.276,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Realty Income to pay dividends on March 13; Here’s how much 100 O shares will earn",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.1427,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.22,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Paradigm plans $1.5 billion fund to expand into AI, robotics",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.1252,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.167,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      }
+    ]
+  },
+  {
+    "collectedAt": "2026-03-01T00:07:59.748Z",
+    "marketMood": "extreme_fear",
+    "timeOfDay": "evening",
+    "articles": [
+      {
+        "title": "Morgan Stanley files for bank charter to custody crypto",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.8144,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.768,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ether’s 60% down from its 2025 high, but TradFi keeps betting on ETH: Here’s why",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.7063,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.674,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here's how bitcoin's price rise could be fueled by job-stealing AI software",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.6938,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.625,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Developer embeds image on Bitcoin as a single transaction, challenging BIP-110’s core claims",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.687,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.652,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here’s what happened in crypto today",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.6615,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.735,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Anthropic CEO responds to Pentagon order prohibiting military use",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.6351,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.706,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto treasury companies likely to consolidate in 2026: Crypto exec",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.6133,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.459,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Former Mt. Gox CEO proposed a rewrite of bitcoin's code to recover $5 billion in stolen funds. Gets quickly shutdown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.5863,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.249,
+          "keywordBoost": 0.35,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin bottom fractal calls for 130% rally, but is the model valid in 2026?",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.571,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.579,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Ethereum Holder Retention Rebounds From a 4-Year Low",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.5693,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.67,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto community fear of Iran choking oil supply and crashing markets may be overblown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.5647,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.279,
+          "keywordBoost": 0.15,
+          "contextBoost": 0.15,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin is stuck in a rut but JPMorgan says new legislation could be the ultimate spark",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.5399,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.463,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Banking Regulator Floats New Stablecoin Yield Rules—Do They Hurt Coinbase?",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.5207,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.318,
+          "keywordBoost": 0.3,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Lyn Alden: Bitcoin’s four-year cycle is evolving, retail participation remains muted, and integration into finance is crucial for global adoption | The Wolf Of All Streets",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.4838,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.512,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "The 'stablecoin sandwich' is dead: Why the next phase of crypto payments is all about the user relationship",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.4786,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.399,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Cardano Above Bear Market Floor – Can Price Withstand Rising Sell Pressure?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.4504,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.643,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Iran crisis puts the regime's $7.8 billion crypto shadow economy in spotlight",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.4185,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.441,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin Recovers Following Plunge as US, Israel Begin Bombing Iran",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.4104,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.365,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Tokenised gold continues rally while Bitcoin slides on US attack against Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.3872,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.359,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Wall Street sets Netflix stock price target for next 12 months",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.3628,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.25,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Judge blocks Binance from pushing class action suits over token sales into arbitration",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.352,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.391,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "11 US senators request federal probe into Binance’s sanctions compliance",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.336,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.207,
+          "keywordBoost": 0.15,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Morgan Stanley Targets Direct Crypto Custody With Trust Bank Application",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.3223,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.175,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Buying Bitcoin? Hold for at least three years to avoid losses, data says",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.2973,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.219,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin, Ethereum drop after US and Israel strike Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.2808,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.226,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin's five-month slide: why BTC is set for worst losing streak since 2018",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.2788,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.188,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Why institutions still prefer Ethereum despite faster blockchains",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.2694,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.188,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin funding rates nearly plummet to three-year lows as tensions in Iran escalate",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.2686,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.259,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Fresh accounts netted $1 million on Polymarket hours before US airstrikes on Iran: Bubblemaps",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.2574,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.286,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US Senator Targets Prediction Markets, Citing War Bets and Insider Risks",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.2538,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.363,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP tumbles 9% as break below $1.36 wipes out relief rally",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.2428,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.203,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Trading expert sets date when Bitcoin will hit $100,000",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.2346,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.207,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Suspected insiders make over $1.2 million on Polymarket by betting on U.S.'s Iran strike",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.2273,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.239,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP Price Analysis: What To Expect In March 2026?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1952,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.279,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Namik Muduroglu: Token models incentivize selling over holding, governance structures in DAOs are failing, and regulatory fears stifle innovation | Unchained",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.1944,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.259,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US-Israel Strikes on Iran Trigger $6.5 Million Wipeout on Polymarket",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.165,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.236,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Realty Income to pay dividends on March 13; Here’s how much 100 O shares will earn",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.114,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.175,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Why Is The Crypto Market Down Today?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1041,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.22,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      }
+    ]
+  },
+  {
+    "collectedAt": "2026-03-01T01:56:42.995Z",
+    "marketMood": "extreme_fear",
+    "timeOfDay": "night",
+    "articles": [
+      {
+        "title": "Chaos in Bitcoin treasury land: Rebellions, mass sales and one big monopoly",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.9529,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.879,
+          "keywordBoost": 0.25,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Morgan Stanley files for bank charter to custody crypto",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.6682,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.585,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ether’s 60% down from its 2025 high, but TradFi keeps betting on ETH: Here’s why",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.562,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.513,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here's how bitcoin's price rise could be fueled by job-stealing AI software",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.5524,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.476,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Developer embeds image on Bitcoin as a single transaction, challenging BIP-110’s core claims",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.5473,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.497,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Former Mt. Gox CEO proposed a rewrite of bitcoin's code to recover $5 billion in stolen funds. Gets quickly shutdown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.5301,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.19,
+          "keywordBoost": 0.35,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto treasury companies likely to consolidate in 2026: Crypto exec",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.515,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.35,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Arbitrum Price Under Pressure: 60 Million ARB Whale Sale Sparks ATL Fear",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.5118,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.731,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here’s what happened in crypto today",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.5041,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.56,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto community fear of Iran choking oil supply and crashing markets may be overblown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.5017,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.212,
+          "keywordBoost": 0.15,
+          "contextBoost": 0.15,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Anthropic CEO responds to Pentagon order prohibiting military use",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.4839,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.538,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ethereum Holder Retention Rebounds From a 4-Year Low",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.4576,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.511,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Banking Regulator Floats New Stablecoin Yield Rules—Do They Hurt Coinbase?",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.4563,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.243,
+          "keywordBoost": 0.3,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Bitcoin bottom fractal calls for 130% rally, but is the model valid in 2026?",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.447,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.441,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Bitcoin is stuck in a rut but JPMorgan says new legislation could be the ultimate spark",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.4352,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.353,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Lyn Alden: Bitcoin’s four-year cycle is evolving, retail participation remains muted, and integration into finance is crucial for global adoption | The Wolf Of All Streets",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.3925,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.39,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "The 'stablecoin sandwich' is dead: Why the next phase of crypto payments is all about the user relationship",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3885,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.304,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Cardano Above Bear Market Floor – Can Price Withstand Rising Sell Pressure?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.3432,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.49,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Bitcoin Recovers Following Plunge as US, Israel Begin Bombing Iran",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.3365,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.278,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Wall Street sets Netflix stock price target for next 12 months",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.324,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.191,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Iran crisis puts the regime's $7.8 billion crypto shadow economy in spotlight",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3189,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.336,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Tokenised gold continues rally while Bitcoin slides on US attack against Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.3189,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.274,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Judge blocks Binance from pushing class action suits over token sales into arbitration",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.2682,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.298,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Buying Bitcoin? Hold for at least three years to avoid losses, data says",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.2503,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.167,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin, Ethereum drop after US and Israel strike Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.2378,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.172,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin funding rates nearly plummet to three-year lows as tensions in Iran escalate",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.2285,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.198,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Fresh accounts netted $1 million on Polymarket hours before US airstrikes on Iran: Bubblemaps",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.1961,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.218,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US Senator Targets Prediction Markets, Citing War Bets and Insider Risks",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1934,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.276,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Suspected insiders make over $1.2 million on Polymarket by betting on U.S.'s Iran strike",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.1732,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.182,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP Price Analysis: What To Expect In March 2026?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1487,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.212,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Namik Muduroglu: Token models incentivize selling over holding, governance structures in DAOs are failing, and regulatory fears stifle innovation | Unchained",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.1482,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.198,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US-Israel Strikes on Iran Trigger $6.5 Million Wipeout on Polymarket",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1257,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.18,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Why Is The Crypto Market Down Today?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.0675,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.168,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      }
+    ]
+  },
+  {
+    "collectedAt": "2026-03-01T03:00:54.674Z",
+    "marketMood": "extreme_fear",
+    "timeOfDay": "night",
+    "articles": [
+      {
+        "title": "Ethereum smart accounts are finally coming 'within a year' — Vitalik Buterin",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.9847,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.983,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Chaos in Bitcoin treasury land: Rebellions, mass sales and one big monopoly",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.8487,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.748,
+          "keywordBoost": 0.25,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Morgan Stanley files for bank charter to custody crypto",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.5988,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.498,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto treasury companies likely to consolidate in 2026: Crypto exec",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.5683,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.298,
+          "keywordBoost": 0.2,
+          "contextBoost": 0.1,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ether’s 60% down from its 2025 high, but TradFi keeps betting on ETH: Here’s why",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.4935,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.437,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here's how bitcoin's price rise could be fueled by job-stealing AI software",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.4854,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.406,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Developer embeds image on Bitcoin as a single transaction, challenging BIP-110’s core claims",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.481,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.423,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Crypto community fear of Iran choking oil supply and crashing markets may be overblown",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.4718,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.181,
+          "keywordBoost": 0.15,
+          "contextBoost": 0.15,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Arbitrum Price Under Pressure: 60 Million ARB Whale Sale Sparks ATL Fear",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.4359,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.623,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here’s what happened in crypto today",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.4293,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.477,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Banking Regulator Floats New Stablecoin Yield Rules—Do They Hurt Coinbase?",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.4257,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.207,
+          "keywordBoost": 0.3,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Anthropic CEO responds to Pentagon order prohibiting military use",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.4122,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.458,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ethereum Holder Retention Rebounds From a 4-Year Low",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.4046,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.435,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin bottom fractal calls for 130% rally, but is the model valid in 2026?",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3881,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.376,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Bitcoin is stuck in a rut but JPMorgan says new legislation could be the ultimate spark",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3855,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.301,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Lyn Alden: Bitcoin’s four-year cycle is evolving, retail participation remains muted, and integration into finance is crucial for global adoption | The Wolf Of All Streets",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.3491,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.332,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "The 'stablecoin sandwich' is dead: Why the next phase of crypto payments is all about the user relationship",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3457,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.259,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin Recovers Following Plunge as US, Israel Begin Bombing Iran",
+        "source": "Decrypt",
+        "tier": 1,
+        "score": 0.3014,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.85,
+          "freshness": 0.237,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Cardano Above Bear Market Floor – Can Price Withstand Rising Sell Pressure?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.2923,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.418,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Tokenised gold continues rally while Bitcoin slides on US attack against Iran",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.2864,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.233,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Iran crisis puts the regime's $7.8 billion crypto shadow economy in spotlight",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.2716,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.286,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Judge blocks Binance from pushing class action suits over token sales into arbitration",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.2285,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.254,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin funding rates nearly plummet to three-year lows as tensions in Iran escalate",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.2094,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.168,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Fresh accounts netted $1 million on Polymarket hours before US airstrikes on Iran: Bubblemaps",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.167,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.186,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "US Senator Targets Prediction Markets, Citing War Bets and Insider Risks",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1647,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.235,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "XRP Price Analysis: What To Expect In March 2026?",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1267,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.181,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0.05
+        }
+      },
+      {
+        "title": "Namik Muduroglu: Token models incentivize selling over holding, governance structures in DAOs are failing, and regulatory fears stifle innovation | Unchained",
+        "source": "CryptoBriefing",
+        "tier": 2,
+        "score": 0.1262,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.75,
+          "freshness": 0.168,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      }
+    ]
+  },
+  {
+    "collectedAt": "2026-03-01T09:15:42.715Z",
+    "marketMood": "extreme_fear",
+    "timeOfDay": "morning",
+    "articles": [
+      {
+        "title": "Ether, solana, xrp surge up to 10% as majors recover Saturday's war-driven losses",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 1.0717,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.76,
+          "keywordBoost": 0.15,
+          "contextBoost": 0.2,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin recovers to $68K following death of Iranian Supreme Leader",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.7231,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.526,
+          "keywordBoost": 0.25,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "6 Polymarket traders net $1M on US-Iran strike, spark insider fears: Report",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.6681,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.742,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Polymarket attracts record trading 'world' volumes as U.S.-Iran bets top $529 million",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.6034,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.477,
+          "keywordBoost": 0.15,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ethereum smart accounts are finally coming 'within a year' — Vitalik Buterin",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.5466,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.385,
+          "keywordBoost": 0.1,
+          "contextBoost": 0.1,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin tops $68,000 after Iran confirms leader killed in U.S., Israel airstrikes",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.5064,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.428,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Chaos in Bitcoin treasury land: Rebellions, mass sales and one big monopoly",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.4846,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.293,
+          "keywordBoost": 0.25,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Morgan Stanley files for bank charter to custody crypto",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.3562,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.195,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ether’s 60% down from its 2025 high, but TradFi keeps betting on ETH: Here’s why",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3542,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.171,
+          "keywordBoost": 0.1,
+          "contextBoost": 0.1,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ethereum Holder Retention Rebounds From a 4-Year Low",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.3193,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.17,
+          "keywordBoost": 0.1,
+          "contextBoost": 0.1,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Developer embeds image on Bitcoin as a single transaction, challenging BIP-110’s core claims",
+        "source": "The Block",
+        "tier": 1,
+        "score": 0.2493,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.166,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Arbitrum Price Under Pressure: 60 Million ARB Whale Sale Sparks ATL Fear",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1708,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.244,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Here’s what happened in crypto today",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.1682,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.187,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Anthropic CEO responds to Pentagon order prohibiting military use",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.1615,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.179,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      }
+    ]
+  },
+  {
+    "collectedAt": "2026-03-01T10:05:37.753Z",
+    "marketMood": "extreme_fear",
+    "timeOfDay": "morning",
+    "articles": [
+      {
+        "title": "Ether, solana, xrp surge up to 10% as majors recover Saturday's war-driven losses",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.887,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.671,
+          "keywordBoost": 0.15,
+          "contextBoost": 0.1,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "AI predicts XRP price for March 31, 2026",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.6997,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 1,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin recovers to $68K following death of Iranian Supreme Leader",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.6676,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.464,
+          "keywordBoost": 0.25,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "6 Polymarket traders net $1M on US-Iran strike, spark insider fears: Report",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.5897,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.655,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Polymarket attracts record trading 'world' volumes as U.S.-Iran bets top $529 million",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.5502,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.421,
+          "keywordBoost": 0.15,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin tops $68,000 after Iran confirms leader killed in U.S., Israel airstrikes",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.4587,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.378,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Chaos in Bitcoin treasury land: Rebellions, mass sales and one big monopoly",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.4571,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.259,
+          "keywordBoost": 0.25,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ethereum smart accounts are finally coming 'within a year' — Vitalik Buterin",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.406,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.34,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Morgan Stanley files for bank charter to custody crypto",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.3379,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.172,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Arbitrum Price Under Pressure: 60 Million ARB Whale Sale Sparks ATL Fear",
+        "source": "BeInCrypto",
+        "tier": 2,
+        "score": 0.1508,
+        "tier_label": "noise",
+        "breakdown": {
+          "authority": 0.7,
+          "freshness": 0.215,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      }
+    ]
+  },
+  {
+    "collectedAt": "2026-03-01T12:20:46.189Z",
+    "marketMood": "extreme_fear",
+    "timeOfDay": "morning",
+    "articles": [
+      {
+        "title": "US military used Anthropic in Iran strike despite ban order by Trump: WSJ",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.8388,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.71,
+          "keywordBoost": 0.2,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Tokenized gold leads ‘100% of weekend price discovery’ while CME futures are closed",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.831,
+        "tier_label": "top",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.923,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin, Ethereum ‘pumping hard’ after Iran strikes, but states brace for financial fallout",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.7503,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.813,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Russian pyramid scheme operators have turned to crypto en masse, warns Moscow",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.735,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.919,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ether, solana, xrp surge up to 10% as majors recover Saturday's war-driven losses",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.7044,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.478,
+          "keywordBoost": 0.15,
+          "contextBoost": 0.1,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "2 oil stocks to buy this week amid U.S. – Iran war",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.6382,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.982,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "This ‘insanely profitable’ Bitcoin strategy can earn you millions on Polymarket",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.628,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.812,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin recovers to $68K following death of Iranian Supreme Leader",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.5479,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.331,
+          "keywordBoost": 0.25,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "AI predicts XRP price for March 31, 2026",
+        "source": "Finbold",
+        "tier": 2,
+        "score": 0.5134,
+        "tier_label": "normal",
+        "breakdown": {
+          "authority": 0.65,
+          "freshness": 0.713,
+          "keywordBoost": 0.05,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Polymarket attracts record trading 'world' volumes as U.S.-Iran bets top $529 million",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.4355,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.301,
+          "keywordBoost": 0.15,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "6 Polymarket traders net $1M on US-Iran strike, spark insider fears: Report",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.4206,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.467,
+          "keywordBoost": 0,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Chaos in Bitcoin treasury land: Rebellions, mass sales and one big monopoly",
+        "source": "DL News",
+        "tier": 2,
+        "score": 0.3977,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.8,
+          "freshness": 0.185,
+          "keywordBoost": 0.25,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Bitcoin tops $68,000 after Iran confirms leader killed in U.S., Israel airstrikes",
+        "source": "CoinDesk",
+        "tier": 1,
+        "score": 0.3559,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.95,
+          "freshness": 0.269,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      },
+      {
+        "title": "Ethereum smart accounts are finally coming 'within a year' — Vitalik Buterin",
+        "source": "CoinTelegraph",
+        "tier": 1,
+        "score": 0.3182,
+        "tier_label": "secondary",
+        "breakdown": {
+          "authority": 0.9,
+          "freshness": 0.242,
+          "keywordBoost": 0.1,
+          "contextBoost": 0,
+          "duplicatePenalty": 0,
+          "spamPenalty": 0
+        }
+      }
+    ]
+  }
+]

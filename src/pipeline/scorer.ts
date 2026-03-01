@@ -84,11 +84,17 @@ function getKeywordBoost(title: string): number {
 function getContextBoost(title: string, snapshot: MarketSnapshot): number {
   let boost = 0;
 
-  if (snapshot.marketMood === 'extreme_fear' && /crash|dump|liquidat/i.test(title)) {
-    boost += 0.15;
-  }
-  if (snapshot.marketMood === 'extreme_greed' && /ath|record|surge/i.test(title)) {
-    boost += 0.15;
+  const MOOD_PATTERNS: Record<string, RegExp> = {
+    extreme_fear:
+      /crash|dump|liquidat|sell.off|plunge|fear|panic|uncertain|risk|decline|drop|loss|below|worst|crisis|collapse/i,
+    fear: /sell.off|decline|pressure|concern|risk|caution|drop|below|uncertain|weak|struggle/i,
+    extreme_greed: /ath|all.time.high|record|surge|rally|pump|soar|bull|above|best|boom|euphoria/i,
+    greed: /rally|surge|gain|rise|above|bull|optimis|recover|momentum|breakout/i,
+  };
+
+  const pattern = MOOD_PATTERNS[snapshot.marketMood];
+  if (pattern && pattern.test(title)) {
+    boost += snapshot.marketMood.includes('extreme') ? 0.15 : 0.1;
   }
 
   // Volatility alerts — boost articles mentioning the volatile asset
