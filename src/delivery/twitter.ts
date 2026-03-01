@@ -30,6 +30,26 @@ export function isXEnabled(): boolean {
   return getClient() !== null;
 }
 
+export async function postTweetWithMedia(text: string, imageData: Buffer): Promise<boolean> {
+  const twitter = getClient();
+
+  if (!twitter) {
+    logger.warn('⚠️ X client not configured, skipping tweet');
+    return false;
+  }
+
+  try {
+    const mediaId = await twitter.v1.uploadMedia(imageData, { mimeType: 'image/png' });
+    const result = await twitter.v2.tweet(text, { media: { media_ids: [mediaId] } });
+    logger.info(`🐦 Tweet with media posted: ${result.data.id}`);
+    return true;
+  } catch (error) {
+    logger.error({ err: error }, '❌ Failed to post tweet with media');
+    // Fallback — пост без картинки
+    return postTweet(text);
+  }
+}
+
 export async function postTweet(text: string): Promise<boolean> {
   const twitter = getClient();
 

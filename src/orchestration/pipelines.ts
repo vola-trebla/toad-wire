@@ -18,7 +18,7 @@ import {
   markMicroPostAsPosted,
   getPendingCount,
 } from '../queue/micro-posts.js';
-import { isXEnabled, postTweet } from '../delivery/twitter.js';
+import { isXEnabled, postTweet, postTweetWithMedia } from '../delivery/twitter.js';
 import { canTweet, recordTweet, formatBudgetStatus } from '../delivery/x-rate-limiter.js';
 import { clusterByStory, applyClusterBoosts } from '../intelligence/story-cluster.js';
 import { scoreArticles, SCORE_THRESHOLDS } from '../intelligence/scorer.js';
@@ -177,7 +177,11 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
 
       if (isXEnabled()) {
         const xPost = formatPostX(article, summary);
-        await withCircuit(xCircuit, () => postTweet(xPost), logger);
+        if (image) {
+          await withCircuit(xCircuit, () => postTweetWithMedia(xPost, image.data), logger);
+        } else {
+          await withCircuit(xCircuit, () => postTweet(xPost), logger);
+        }
       }
 
       await saveArticle(article, undefined, summary.entities);
@@ -438,13 +442,17 @@ export async function runBreakingNewsPipeline(article: FeedArticle): Promise<voi
 
       if (isXEnabled()) {
         const xPost = formatPostX(article, summary);
-        await withCircuit(xCircuit, () => postTweet(`🚨 ${xPost}`), logger);
+        if (image) {
+          await withCircuit(xCircuit, () => postTweetWithMedia(xPost, image.data), logger);
+        } else {
+          await withCircuit(xCircuit, () => postTweet(xPost), logger);
+        }
       }
     } else {
       const fallback = `🚨 *BREAKING*\n\n${article.title}\n\n🔗 ${article.url}`;
       await withCircuit(telegramCircuit, () => sendToTelegram(fallback), logger);
       if (isXEnabled()) {
-        await withCircuit(xCircuit, () => postTweet(`🚨 ${article.title}\n${article.url}`), logger);
+        await withCircuit(xCircuit, () => postTweet(`⚡ ${article.title}\n${article.url}`), logger);
       }
     }
 
