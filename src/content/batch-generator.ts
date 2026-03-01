@@ -1,4 +1,4 @@
-import { generateObject } from 'ai';
+import { generateText, Output } from 'ai';
 import { z } from 'zod';
 import { getModel } from '../llm/router.js';
 import { trackRequest } from '../utils/request-budget.js';
@@ -58,16 +58,18 @@ export async function generateBatch(
     trackRequest('batch:degen_time', 'flash-lite');
 
     try {
-      const { object } = await generateObject({
+      const { output } = await generateText({
         model: getModel('batch'),
-        schema: DegenPostSchema,
         prompt: buildDegenPrompt(headline),
+        output: Output.object({
+          schema: DegenPostSchema,
+        }),
       });
 
       const post: MicroPost = {
-        text: object.text,
-        hashtags: object.hashtags.map((h) => (h.startsWith('#') ? h : `#${h}`)),
-        mood: object.mood,
+        text: output.text,
+        hashtags: output.hashtags.map((h) => (h.startsWith('#') ? h : `#${h}`)),
+        mood: output.mood,
         batchType: 'degen_time',
       };
 
@@ -95,13 +97,15 @@ export async function generateBatch(
 
   trackRequest(`batch:${type}`, 'flash-lite');
 
-  const { object } = await generateObject({
+  const { output } = await generateText({
     model: getModel('batch'),
-    schema: MicroPostSchema,
     prompt,
+    output: Output.object({
+      schema: MicroPostSchema,
+    }),
   });
 
-  const posts: MicroPost[] = object.posts.map((p) => ({
+  const posts: MicroPost[] = output.posts.map((p) => ({
     text: p.text,
     hashtags: p.hashtags.map((h) => (h.startsWith('#') ? h : `#${h}`)),
     mood: p.mood,

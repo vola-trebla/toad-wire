@@ -1,4 +1,4 @@
-import { generateObject } from 'ai';
+import { generateText, Output } from 'ai';
 import { z } from 'zod';
 import { type FeedArticle } from '../ingestion/rss.js';
 import { logger } from '../utils/logger.js';
@@ -29,13 +29,15 @@ export async function rankArticles(
 
     trackRequest('ranker', 'flash');
 
-    const { object } = await generateObject({
+    const { output } = await generateText({
       model: getModel('ranking'),
-      schema: RankingSchema,
       prompt: buildRankerPrompt(list, limit),
+      output: Output.object({
+        schema: RankingSchema,
+      }),
     });
 
-    const selected = object.selected
+    const selected = output.selected
       .filter((i) => i >= 0 && i < articles.length)
       .slice(0, limit)
       .map((i) => articles[i]!);

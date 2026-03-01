@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { generateObject, generateText } from 'ai';
+import { generateText, Output } from 'ai';
 import { z } from 'zod';
 import { type FeedArticle } from '../ingestion/rss.js';
 import { scrapeArticle } from '../ingestion/scraper.js';
@@ -48,10 +48,12 @@ export async function summarizeArticle(article: FeedArticle): Promise<Summary | 
 
     trackRequest('summarize', 'flash');
 
-    const { object: result } = await generateObject({
+    const { output: result } = await generateText({
       model: getModel('news'),
-      schema: SummarySchema,
       prompt,
+      output: Output.object({
+        schema: SummarySchema,
+      }),
     });
 
     const normalized: Summary = {
