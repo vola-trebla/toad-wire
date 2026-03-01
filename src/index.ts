@@ -338,10 +338,31 @@ async function scanForBreaking(): Promise<void> {
     const clusters = clusterByStory(fresh);
     applyClusterBoosts(scored, clusters);
 
-    const breaking = scored.filter((a) => a.importanceScore > SCORE_THRESHOLDS.BREAKING);
-    if (breaking.length === 0) return;
+    // Fast-track: Tier-1 + score > 1.05 + security/crisis category
+    // Catches "first-to-publish" breaking before cluster forms
+    const FAST_TRACK_CATEGORIES =
+      /hack|exploit|breach|crash|collapse|bankrupt|liquidat|sec|ban|arrest/i;
+    const fastTrack = scored.find(
+      (a) =>
+        a.tier === 1 &&
+        a.importanceScore > 1.05 &&
+        FAST_TRACK_CATEGORIES.test(a.title) &&
+        !breakingInProgress.has(a.url),
+    );
 
-    const top = breaking[0]!;
+    if (fastTrack) {
+      logger.info(
+        `⚡ Fast-track breaking: "${fastTrack.title}" (score: ${fastTrack.importanceScore.toFixed(2)})`,
+      );
+    }
+
+    // Standard breaking threshold
+    const breaking = scored.filter((a) => a.importanceScore > SCORE_THRESHOLDS.BREAKING);
+
+    // Pick top candidate — fast-track takes priority over standard breaking
+    const top = fastTrack ?? breaking[0];
+    if (!top) return;
+
     logger.info(`🚨 Breaking detected: "${top.title}" (score: ${top.importanceScore.toFixed(2)})`);
 
     // Fast in-memory guard (handles concurrent scans)
