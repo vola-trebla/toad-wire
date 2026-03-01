@@ -1,6 +1,6 @@
 import { generateObject } from 'ai';
 import { z } from 'zod';
-import { type FeedArticle } from '../sources/rss.js';
+import { type FeedArticle } from '../ingestion/rss.js';
 import { logger } from '../utils/logger.js';
 import { canMakeRequest, trackRequest } from '../utils/request-budget.js';
 import { getModel } from '../llm/router.js';

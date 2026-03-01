@@ -10,7 +10,7 @@
  * Runs after Levels 0–3 dedup (URL + token + semantic).
  */
 
-import type { FeedArticle } from '../sources/rss.js';
+import type { FeedArticle } from '../ingestion/rss.js';
 import type { ScoredArticle } from './scorer.js';
 
 // ─── Constants ───────────────────────────────────────────────────────────────

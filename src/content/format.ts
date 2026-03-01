@@ -1,5 +1,5 @@
 import { type Summary } from './summarize.js';
-import { type FeedArticle } from '../sources/rss.js';
+import { type FeedArticle } from '../ingestion/rss.js';
 
 const sentimentMap = {
   bullish: '🟢 Bullish',

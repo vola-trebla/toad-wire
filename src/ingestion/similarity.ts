@@ -5,7 +5,7 @@ import { eq, and, gte } from 'drizzle-orm';
 import { logger } from '../utils/logger.js';
 import { google } from '@ai-sdk/google';
 import { embedMany } from 'ai';
-import { type FeedArticle } from '../sources/rss.js';
+import { type FeedArticle } from './rss.js';
 
 const OBVIOUS_DUPLICATE_THRESHOLD = 0.85;
 const SEMANTIC_THRESHOLD = 0.8;

@@ -2,7 +2,7 @@ import { generateObject } from 'ai';
 import { z } from 'zod';
 import { getModel } from '../llm/router.js';
 import { trackRequest } from '../utils/request-budget.js';
-import { type MarketSnapshot } from '../sources/market-snapshot.js';
+import { type MarketSnapshot } from '../market/market-snapshot.js';
 import { logger } from '../utils/logger.js';
 
 export type BatchType = 'market_vibe' | 'raw_headlines' | 'philosophy' | 'degen_time';

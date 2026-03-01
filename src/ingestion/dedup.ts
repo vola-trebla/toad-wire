@@ -1,7 +1,7 @@
 import { and, eq } from 'drizzle-orm';
 import { db } from '../db/client.js';
 import { articles } from '../db/schema.js';
-import { type FeedArticle } from '../sources/rss.js';
+import { type FeedArticle } from './rss.js';
 import { logger } from '../utils/logger.js';
 
 export async function isDuplicate(url: string): Promise<boolean> {

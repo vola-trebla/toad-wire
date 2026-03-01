@@ -1,16 +1,16 @@
 // src/orchestration/pipelines.ts
-import { type FeedArticle, fetchFeeds } from '../sources/rss.js';
-import { fetchPrices, formatPricesPost, formatPricesPostX } from '../sources/prices.js';
+import { type FeedArticle, fetchFeeds } from '../ingestion/rss.js';
+import { fetchPrices, formatPricesPost, formatPricesPostX } from '../market/prices.js';
 import { isDuplicate, saveArticle, markAsPosted } from '../ingestion/dedup.js';
 import { generateGoodNight, summarizeArticle } from '../content/summarize.js';
 import { formatPostTelegram, formatPostX } from '../content/format.js';
 import { sendToTelegram, sendToTelegramWithPhoto } from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 import { rankArticles } from '../intelligence/ranker.js';
-import { fetchFearGreed } from '../sources/feargreed.js';
+import { fetchFearGreed } from '../market/feargreed.js';
 import { filterSimilar } from '../ingestion/similarity.js';
 import { updateLastPosted } from '../health/server.js';
-import { collectMarketSnapshot } from '../sources/market-snapshot.js';
+import { collectMarketSnapshot } from '../market/market-snapshot.js';
 import { generateBatch } from '../content/batch-generator.js';
 import {
   enqueueMicroPosts,

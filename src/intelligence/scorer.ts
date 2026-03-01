@@ -13,8 +13,8 @@
  *   < 0.30  → 🗑️ NOISE    — discard
  */
 
-import type { FeedArticle } from '../sources/rss.js';
-import type { MarketSnapshot } from '../sources/market-snapshot.js';
+import type { FeedArticle } from '../ingestion/rss.js';
+import type { MarketSnapshot } from '../market/market-snapshot.js';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 

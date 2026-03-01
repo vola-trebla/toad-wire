@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { scoreArticles } from '../intelligence/scorer.js';
-import type { FeedArticle } from '../sources/rss.js';
+import type { FeedArticle } from '../ingestion/rss.js';
 
 function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
   return {

@@ -6,7 +6,7 @@ import { articles, pipelineRuns } from '../db/schema.js';
 import { desc, gte } from 'drizzle-orm';
 import { getBudgetStatus } from '../utils/request-budget.js';
 import { getPendingCount } from '../queue/micro-posts.js';
-import { FEEDS } from '../sources/feeds.config.js';
+import { FEEDS } from '../ingestion/feeds.config.js';
 
 const app = new Hono();
 

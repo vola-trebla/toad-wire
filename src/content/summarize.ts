@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { generateObject, generateText } from 'ai';
 import { z } from 'zod';
-import { type FeedArticle } from '../sources/rss.js';
+import { type FeedArticle } from '../ingestion/rss.js';
 import { scrapeArticle } from '../ingestion/scraper.js';
 import { logger } from '../utils/logger.js';
 import { truncateToWord } from '../utils/truncate.js';

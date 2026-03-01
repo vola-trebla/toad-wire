@@ -3,7 +3,7 @@ import cron from 'node-cron';
 import { db } from '../db/client.js';
 import { sql } from 'drizzle-orm';
 import { runBackup } from '../utils/backup.js';
-import { checkFeedHealth, reportFeedHealth } from '../sources/feed-health.js';
+import { checkFeedHealth, reportFeedHealth } from '../ingestion/feed-health.js';
 import { cleanOldMicroPosts } from '../queue/micro-posts.js';
 import { logger } from '../utils/logger.js';
 import { TIMEZONE } from '../utils/constants.js';
