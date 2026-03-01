@@ -19,6 +19,11 @@ import {
 } from './pipelines.js';
 
 export function startScheduler(): void {
+  if (process.env.NODE_ENV === 'development') {
+    logger.warn('⚠️ Scheduler disabled in development mode. Use debug scripts instead.');
+    return;
+  }
+
   // ─── Maintenance ───────────────────────────────────────────────────────────
   cron.schedule('0 2 * * *', () => runBackup(), { timezone: TIMEZONE });
 

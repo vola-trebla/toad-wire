@@ -39,7 +39,9 @@ describe('scorer — smoke tests', () => {
 
     const [freshScored, oldScored] = scoreArticles([old, fresh]);
     expect(freshScored.scoreBreakdown.authority).toBe(0.9);
-    expect(freshScored.scoreBreakdown.freshness).toBeGreaterThan(oldScored.scoreBreakdown.freshness);
+    expect(freshScored.scoreBreakdown.freshness).toBeGreaterThan(
+      oldScored.scoreBreakdown.freshness,
+    );
   });
 
   it('adds keyword and context boosts when patterns match', () => {
@@ -49,7 +51,9 @@ describe('scorer — smoke tests', () => {
     const snapshot = makeSnapshot({
       marketMood: 'extreme_fear',
       timeOfDay: 'morning',
-      volatilityAlerts: [{ symbol: 'BTC', type: 'dump', change1h: -6, change24h: -9, severity: 'high' }],
+      volatilityAlerts: [
+        { symbol: 'BTC', type: 'dump', change1h: -6, change24h: -9, severity: 'high' },
+      ],
     });
 
     const [scored] = scoreArticles([article], snapshot);

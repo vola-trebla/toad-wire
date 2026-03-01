@@ -3,7 +3,7 @@ import { serve } from '@hono/node-server';
 import { logger } from '../utils/logger.js';
 import { db } from '../db/client.js';
 import { articles, pipelineRuns } from '../db/schema.js';
-import { desc, gte } from 'drizzle-orm';
+import { desc, eq, gte, sql } from 'drizzle-orm';
 import { getBudgetStatus } from '../utils/request-budget.js';
 import { getPendingCount } from '../queue/micro-posts.js';
 import { FEEDS } from '../ingestion/feeds.config.js';
@@ -18,9 +18,13 @@ export function updateLastPosted(): void {
 }
 
 app.get('/health', async (c) => {
-  const [lastArticle, microPostsPending] = await Promise.all([
+  const [lastArticle, microPostsPending, articlesPending] = await Promise.all([
     db.select().from(articles).orderBy(desc(articles.createdAt)).limit(1),
     getPendingCount('x'),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(articles)
+      .where(eq(articles.posted, false)),
   ]);
 
   // ── Feed health (from in-memory FEEDS config) ───────────────────────────
@@ -51,6 +55,8 @@ app.get('/health', async (c) => {
     last_article_in_db: lastArticle[0]?.title ?? null,
     llm_budget: getBudgetStatus(),
     micro_posts_pending: microPostsPending,
+    articles_pending: articlesPending[0]?.count ?? 0,
+    total_posts_pending: (articlesPending[0]?.count ?? 0) + microPostsPending,
     // v2.0 additions
     feeds: {
       total: enabledFeeds.length,
@@ -63,6 +69,88 @@ app.get('/health', async (c) => {
       posts: postsToday,
     },
   });
+});
+
+app.get('/metrics', async (c) => {
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
+  try {
+    const [runs24h, recentRuns] = await Promise.all([
+      db.select().from(pipelineRuns).where(gte(pipelineRuns.startedAt, since)),
+      db.select().from(pipelineRuns).orderBy(desc(pipelineRuns.startedAt)).limit(20),
+    ]);
+
+    const totals = runs24h.reduce(
+      (acc, run) => {
+        acc.runs += 1;
+        acc.posts += run.articlesPosted ?? 0;
+        acc.articlesFetched += run.articlesFetched ?? 0;
+        acc.articlesFiltered += run.articlesFiltered ?? 0;
+        acc.microPostsGenerated += run.microPostsGenerated ?? 0;
+        if (run.error) acc.errors += 1;
+        if (run.durationMs != null) {
+          acc.durationSum += run.durationMs;
+          acc.durationCount += 1;
+        }
+        return acc;
+      },
+      {
+        runs: 0,
+        posts: 0,
+        articlesFetched: 0,
+        articlesFiltered: 0,
+        microPostsGenerated: 0,
+        errors: 0,
+        durationSum: 0,
+        durationCount: 0,
+      },
+    );
+
+    const avgDuration =
+      totals.durationCount > 0 ? Math.round(totals.durationSum / totals.durationCount) : null;
+
+    return c.json({
+      status: 'ok',
+      since,
+      summary: {
+        runs: totals.runs,
+        posts: totals.posts,
+        avg_duration_ms: avgDuration,
+        articles_fetched: totals.articlesFetched,
+        articles_filtered: totals.articlesFiltered,
+        micro_posts_generated: totals.microPostsGenerated,
+        errors: totals.errors,
+      },
+      recent_runs: recentRuns.map((run) => ({
+        id: run.id,
+        type: run.type,
+        started_at: run.startedAt,
+        completed_at: run.completedAt ?? null,
+        duration_ms: run.durationMs ?? null,
+        articles_fetched: run.articlesFetched ?? null,
+        articles_filtered: run.articlesFiltered ?? null,
+        articles_posted: run.articlesPosted ?? null,
+        micro_posts_generated: run.microPostsGenerated ?? null,
+        error: run.error ?? null,
+      })),
+    });
+  } catch (error) {
+    logger.warn({ err: error }, 'metrics endpoint failed');
+    return c.json({
+      status: 'error',
+      since,
+      summary: {
+        runs: 0,
+        posts: 0,
+        avg_duration_ms: null,
+        articles_fetched: 0,
+        articles_filtered: 0,
+        micro_posts_generated: 0,
+        errors: 0,
+      },
+      recent_runs: [],
+    });
+  }
 });
 
 export function startHealthServer(port = 3000): void {
