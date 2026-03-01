@@ -7,6 +7,25 @@ const HEADERS = {
   'User-Agent': 'Mozilla/5.0 (compatible; ElSapoCripto/1.0)',
 };
 
+// Source-specific CSS selectors for better content extraction
+const SOURCE_SELECTORS: Record<string, string[]> = {
+  'coindesk.com': ['article .at-content-wrapper', 'article .article-body', 'article'],
+  'cointelegraph.com': ['article .post-content', '.post__content', 'article'],
+  'theblock.co': ['.article-body', '.post-body', 'article'],
+  'blockworks.co': ['.article-content', '.post-content', 'article'],
+  'decrypt.co': ['.article-content', '.post-content', 'article'],
+  'dlnews.com': ['.article-body', 'article'],
+  'cryptobriefing.com': ['.article-content', 'article'],
+  'beincrypto.com': ['.article-body', '.content-body', 'article'],
+  'cryptoslate.com': ['.article-content', 'article'],
+  'criptonoticias.com': ['.article-body', '.entry-content', 'article'],
+};
+
+function getSelectorsForUrl(url: string): string[] {
+  const domain = Object.keys(SOURCE_SELECTORS).find((d) => url.includes(d));
+  return domain ? SOURCE_SELECTORS[domain]! : ['article'];
+}
+
 export async function validateUrl(url: string): Promise<boolean> {
   try {
     const response = await fetch(url, {
@@ -37,7 +56,8 @@ export async function scrapeArticle(url: string): Promise<string | null> {
       });
 
       const html = await response.text();
-      const text = extractText(html);
+      const selectors = getSelectorsForUrl(url);
+      const text = extractText(html, selectors);
 
       if (!text || text.length < 100) {
         logger.warn(`⚠️ Too short or empty content: ${url}`);
@@ -58,11 +78,35 @@ export async function scrapeArticle(url: string): Promise<string | null> {
   return null;
 }
 
-function extractText(html: string): string {
-  const articleMatch = html.match(/<article[\s\S]*?<\/article>/i);
-  if (articleMatch) html = articleMatch[0];
+function extractText(html: string, selectors: string[]): string {
+  let extracted = html;
 
-  return html
+  // Try each selector in order, use first match
+  for (const selector of selectors) {
+    // Simple tag match (e.g. 'article')
+    const tagMatch = selector.match(/^(\w+)$/);
+    if (tagMatch) {
+      const tag = tagMatch[1];
+      const match = html.match(new RegExp(`<${tag}[\\s\\S]*?<\\/${tag}>`, 'i'));
+      if (match) {
+        extracted = match[0];
+        break;
+      }
+    }
+
+    // Class selector (e.g. 'article .post-content')
+    const classMatch = selector.match(/\.([\\w-]+)$/);
+    if (classMatch) {
+      const cls = classMatch[1];
+      const match = html.match(new RegExp(`<[^>]+class="[^"]*${cls}[^"]*"[\\s\\S]*?</[^>]+>`, 'i'));
+      if (match) {
+        extracted = match[0];
+        break;
+      }
+    }
+  }
+
+  return extracted
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
     .replace(/https?:\/\/\S+/g, '')
