@@ -1,16 +1,25 @@
+// src/index.ts
 import 'dotenv/config';
 import { initSentry } from './utils/sentry.js';
 import { startHealthServer } from './health/server.js';
 import { startScheduler } from './orchestration/scheduler.js';
+import { restoreFeedHealthFromDB } from './ingestion/feed-health.js';
 import { db } from './db/client.js';
 import { sql } from 'drizzle-orm';
 import { logger } from './utils/logger.js';
 
-initSentry();
-startHealthServer();
-startScheduler();
+async function main(): Promise<void> {
+  initSentry();
+  startHealthServer();
+  await restoreFeedHealthFromDB();
+  startScheduler();
+  logger.info('🐸 El Sapo Cripto arrancó! Esperando el horario...');
+}
 
-logger.info('🐸 El Sapo Cripto arrancó! Esperando el horario...');
+main().catch((err) => {
+  logger.info('❌ Fatal startup error:', err);
+  process.exit(1);
+});
 
 process.on('SIGTERM', () => {
   logger.info('🛑 SIGTERM received, shutting down gracefully...');

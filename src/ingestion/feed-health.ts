@@ -143,3 +143,34 @@ export async function reportFeedHealth(): Promise<void> {
   await sendToTelegram(lines.join('\n'));
   logger.info('📊 Weekly feed health report sent');
 }
+
+/**
+ * Restores in-memory FEEDS state from DB on startup.
+ * Prevents losing health history after Railway restart.
+ */
+export async function restoreFeedHealthFromDB(): Promise<void> {
+  try {
+    const rows = await db.select().from(feedHealth);
+    if (rows.length === 0) {
+      logger.info('🏥 No feed health data in DB, starting fresh');
+      return;
+    }
+
+    let restored = 0;
+    for (const row of rows) {
+      const feed = FEEDS.find((f) => f.source === row.source);
+      if (!feed) continue;
+
+      feed.healthStatus = (row.healthStatus as FeedConfig['healthStatus']) ?? 'healthy';
+      feed.consecutiveFailures = row.consecutiveFailures ?? 0;
+      if (row.lastSuccessfulFetch) {
+        feed.lastSuccessfulFetch = row.lastSuccessfulFetch;
+      }
+      restored++;
+    }
+
+    logger.info(`🏥 Feed health restored from DB: ${restored}/${FEEDS.length} feeds`);
+  } catch (error) {
+    logger.error(`❌ Failed to restore feed health from DB: ${error}`);
+  }
+}
