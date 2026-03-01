@@ -3,6 +3,7 @@ import { logger } from '../utils/logger.js';
 import { type FearGreedData, formatFearGreed } from './feargreed.js';
 import { generateText } from 'ai';
 import { getModel } from '../llm/router.js';
+import { MORNING_OPENERS, buildPricesHookPrompt } from '../prompts/prices.prompt.js';
 
 export interface CoinPrice {
   name: string;
@@ -58,19 +59,6 @@ export async function fetchPrices(): Promise<CoinPrice[]> {
   }
 }
 
-const MORNING_OPENERS = [
-  '🌅 Buenos días, mis sapos. Arrancamos el día… 💹',
-  '🌄 Amaneció en el pantano y el mercado ya se mueve 👀',
-  '🌞 Despierten, sapos — hoy huele a volatilidad 💧📈',
-  '🌤️ Nuevo día, nuevas velas. Vámonos al lío ⚡📊',
-  '🌄 El sol sube… y algunas monedas también (otras lloran) 📉📈',
-  '🌅 El pantano despierta con rumores del mercado 🔍',
-  '🌞 Buenos días, sapos. Hoy cazamos narrativa, no humo 💨',
-  '🌤️ El mercado abre un ojo… y nosotros abrimos los dos 🧠',
-  '🌄 Señales frescas desde el pantano — atentos, sapos 📡',
-  '🌞 La mañana trae oportunidades… si sabes olerlas 💹',
-];
-
 function randomMorningOpener(): string {
   return MORNING_OPENERS[Math.floor(Math.random() * MORNING_OPENERS.length)]!;
 }
@@ -110,22 +98,21 @@ export async function formatPricesPostX(
 
   const fg = fearGreed ? formatFearGreed(fearGreed.value) : '';
 
-  // Flash-Lite hook — one sharp observation
   let hook = '';
   try {
     const best = [...coins].sort((a, b) => Math.abs(b.change24h) - Math.abs(a.change24h))[0];
-    const { text } = await generateText({
-      model: getModel('batch'),
-      prompt: `You are El Sapo Cripto — a crypto analyst with calm irony and sharp observations.
-Write ONE punchy opening line in Latin American Spanish for a market update tweet.
-Context: ${best?.symbol} is ${best && best.change24h > 0 ? 'up' : 'down'} ${best?.change24h.toFixed(1)}% today. Fear & Greed index: ${fearGreed?.value ?? 'unknown'} (${fearGreed ? formatFearGreed(fearGreed.value) : ''}).
-Rules:
-- Max 60 characters
-- No emojis (added externally)
-- Sapo voice: ironic, calm, sharp
-- One observation only, no advice`,
-    });
-    hook = text.trim().slice(0, 80);
+    if (best) {
+      const { text } = await generateText({
+        model: getModel('batch'),
+        prompt: buildPricesHookPrompt(
+          best.symbol,
+          best.change24h,
+          fearGreed?.value,
+          fearGreed ? formatFearGreed(fearGreed.value) : '',
+        ),
+      });
+      hook = text.trim().slice(0, 80);
+    }
   } catch {
     // Fallback — no hook
   }
