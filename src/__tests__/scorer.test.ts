@@ -37,7 +37,10 @@ describe('scorer — smoke tests', () => {
       publishedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
     });
 
-    const [freshScored, oldScored] = scoreArticles([old, fresh]);
+    const scored = scoreArticles([old, fresh]);
+    expect(scored.length).toBe(2);
+    const freshScored = scored[0]!;
+    const oldScored = scored[1]!;
     expect(freshScored.scoreBreakdown.authority).toBe(0.9);
     expect(freshScored.scoreBreakdown.freshness).toBeGreaterThan(
       oldScored.scoreBreakdown.freshness,
@@ -56,9 +59,10 @@ describe('scorer — smoke tests', () => {
       ],
     });
 
-    const [scored] = scoreArticles([article], snapshot);
-    expect(scored.scoreBreakdown.keywordBoost).toBeGreaterThan(0);
-    expect(scored.scoreBreakdown.contextBoost).toBeGreaterThan(0);
+    const scored = scoreArticles([article], snapshot);
+    expect(scored.length).toBe(1);
+    expect(scored[0]!.scoreBreakdown.keywordBoost).toBeGreaterThan(0);
+    expect(scored[0]!.scoreBreakdown.contextBoost).toBeGreaterThan(0);
   });
 
   it('applies duplicate and spam penalties when applicable', () => {
@@ -67,9 +71,10 @@ describe('scorer — smoke tests', () => {
     });
     const recentTitles = ['Top 5 Bitcoin price prediction could BTC reach $1M'];
 
-    const [scored] = scoreArticles([article], undefined, recentTitles);
-    expect(scored.scoreBreakdown.duplicatePenalty).toBeGreaterThan(0);
-    expect(scored.scoreBreakdown.spamPenalty).toBeGreaterThan(0);
+    const scored = scoreArticles([article], undefined, recentTitles);
+    expect(scored.length).toBe(1);
+    expect(scored[0]!.scoreBreakdown.duplicatePenalty).toBeGreaterThan(0);
+    expect(scored[0]!.scoreBreakdown.spamPenalty).toBeGreaterThan(0);
   });
 
   it('maps score to tiers correctly', () => {

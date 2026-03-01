@@ -101,11 +101,16 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
   const startedAt = new Date().toISOString();
   const startMs = Date.now();
   let articlesPosted = 0;
+  let articlesFetched = 0;
+  let articlesFiltered = 0;
   let error: string | undefined;
 
   try {
     const allArticles = await fetchFeeds();
+    articlesFetched = allArticles.length;
+
     const filtered = allArticles.filter((a) => isRelevant(a.title));
+    articlesFiltered = filtered.length;
 
     logger.info(`🔍 After filter: ${filtered.length} of ${allArticles.length}`);
 
@@ -193,7 +198,8 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
         type: 'news',
         startedAt,
         completedAt: new Date().toISOString(),
-        articlesFetched: 0, // scored before ranked — good enough approximation
+        articlesFetched,
+        articlesFiltered,
         articlesPosted,
         flashRpdUsed: 100 - getRemainingRequests(), // remaining tracked globally
         durationMs: Date.now() - startMs,
