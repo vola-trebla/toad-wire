@@ -38,15 +38,30 @@ export function startScheduler(): void {
   );
 
   // ─── Content Pipeline ──────────────────────────────────────────────────────
+
+  // Morning — 10:00 UTC-3
   cron.schedule('30 9 * * *', () => void runMorningBatches(), { timezone: TIMEZONE });
   cron.schedule('0 10 * * *', () => void runMorningDigest(), { timezone: TIMEZONE });
-  cron.schedule('0 12 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+
+  // Midday — 13:00 UTC-3 = 10:00 Mex — оба онлайн
+  cron.schedule('0 13 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
   cron.schedule('30 13 * * *', () => void runAfternoonBatch(), { timezone: TIMEZONE });
   cron.schedule('45 13 * * *', () => void runDegenTime(), { timezone: TIMEZONE });
-  cron.schedule('0 15 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
-  cron.schedule('0 18 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
-  cron.schedule('0 21 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
-  cron.schedule('0 23 * * *', () => void runEveningDigest(), { timezone: TIMEZONE });
+
+  // Prime time будни — 18:00, 20:00, 22:00 UTC-3
+  cron.schedule('0 18 * * 1-5', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+  cron.schedule('0 20 * * 1-5', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+  cron.schedule('0 22 * * 1-5', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+
+  // Prime time выходные — плотнее: 17:00, 19:00, 21:00, 23:00 UTC-3
+  cron.schedule('0 17 * * 6,0', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+  cron.schedule('0 19 * * 6,0', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+  cron.schedule('0 21 * * 6,0', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+  cron.schedule('0 23 * * 6,0', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+
+  // Evening digest — 22:30 будни, 23:30 выходные
+  cron.schedule('30 22 * * 1-5', () => void runEveningDigest(), { timezone: TIMEZONE });
+  cron.schedule('30 23 * * 6,0', () => void runEveningDigest(), { timezone: TIMEZONE });
 
   // ─── Micro-post Dispatcher (currently paused — enable when X is stable) ───
   // cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
