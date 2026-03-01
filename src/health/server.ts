@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
 import { logger } from '../utils/logger.js';
 import { db } from '../db/client.js';
@@ -9,6 +10,14 @@ import { getPendingCount } from '../queue/micro-posts.js';
 import { FEEDS } from '../ingestion/feeds.config.js';
 
 const app = new Hono();
+
+app.use(
+  '*',
+  cors({
+    origin: '*',
+    allowMethods: ['GET'],
+  }),
+);
 
 const startTime = Date.now();
 let lastPostedAt: string | null = null;
