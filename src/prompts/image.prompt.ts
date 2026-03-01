@@ -11,27 +11,87 @@ export const VISUAL_STYLES: VisualStyle[] = [
   {
     name: 'terminal',
     description:
-      'Dark CRT terminal screen, phosphor glow, horizontal scanlines, pixel font readouts, vintage monitor frame',
+      'Old CRT terminal interface, subtle phosphor glow, scanlines, rectangular UI panels, structured grid layout',
   },
   {
     name: 'circuit',
     description:
-      'Dark PCB circuit board, glowing copper traces, through-hole components, binary data flowing through pathways',
+      'Printed circuit board layout, visible copper traces, microchip blocks, structured electronic pathways',
   },
   {
     name: 'radar',
     description:
-      'Radar/sonar display, sweeping beam, concentric rings, blips on dark screen, military-grade interface',
+      'Circular radar interface, sweeping beam arc, concentric rings, minimal blip signals on dark screen',
   },
   {
-    name: 'matrix',
+    name: 'signal-rain',
     description:
-      'Falling digital code rain, cascading glyphs, dark void background, streams of data dissolving into symbols',
+      'Vertical falling light columns, segmented digital streaks, controlled cascading data particles',
   },
   {
     name: 'oscilloscope',
     description:
-      'Oscilloscope waveform display, electric signal lines, dark phosphor screen, frequency patterns and waveforms',
+      'Oscilloscope display with sharp waveform lines, horizontal scan grid, precise signal amplitude patterns',
+  },
+  {
+    name: 'datastream',
+    description:
+      'Parallel vertical data streams, structured numeric blocks, motion blur limited to straight channels',
+  },
+  {
+    name: 'neon-grid',
+    description:
+      'Symmetrical glowing grid, rectangular cells, layered financial geometry, precise perspective alignment',
+  },
+  {
+    name: 'fracture',
+    description:
+      'Geometric shards splitting along straight vector lines, controlled fragmentation, sharp angular contrast',
+  },
+  {
+    name: 'signal-wireframe',
+    description:
+      '3D polygon wireframe mesh, glowing edges, structured triangular surfaces, clean spatial depth',
+  },
+  {
+    name: 'heatmap',
+    description:
+      'Clustered rectangular heat zones, smooth gradient blocks, density visualization across a grid plane',
+  },
+  {
+    name: 'holo-chart',
+    description:
+      'Floating translucent chart panels, vertical candlestick silhouettes, layered holographic UI frames',
+  },
+  {
+    name: 'bio-circuit',
+    description:
+      'Hybrid organic circuitry, branching neon filaments, structured yet natural signal pathways',
+  },
+  {
+    name: 'quantum-field',
+    description:
+      'Interference wave patterns, layered probability arcs, symmetrical luminous distortions across dark space',
+  },
+  {
+    name: 'static-noise',
+    description:
+      'Digital static field, controlled glitch fragments, rectangular corrupted blocks on dark background',
+  },
+  {
+    name: 'market-topography',
+    description:
+      'Contour elevation lines forming structured terrain map, layered height bands, smooth gradient slopes',
+  },
+  {
+    name: 'flow-map',
+    description:
+      'Directional vector arrows, curved liquidity paths, structured flow channels across dark grid',
+  },
+  {
+    name: 'pulse-grid',
+    description:
+      'Symmetrical grid with horizontal signal pulses, evenly spaced energy waves, rhythmic visual cadence',
   },
 ];
 
@@ -39,27 +99,58 @@ export const VISUAL_STYLES_NIGHT: VisualStyle[] = [
   {
     name: 'moonlit-terminal',
     description:
-      'Dark terminal screen lit only by moonlight, dim phosphor glow, slow blinking cursor, peaceful standby mode',
+      'Dim CRT interface with low phosphor brightness, sparse UI panels, single blinking cursor glow',
   },
   {
     name: 'deep-swamp',
     description:
-      'Dark swamp at night, bioluminescent reflections on still water, fireflies as data points, foggy atmosphere',
+      'Dark reflective surface with scattered light particles, low fog layer, minimal glowing reflections',
   },
   {
     name: 'starfield-radar',
     description:
-      'Night sky radar, stars as market signals, slow sweeping beam, constellations forming chart patterns',
+      'Dark circular radar grid with faint star-like points, slow sweeping beam arc, minimal motion',
   },
   {
     name: 'sleeping-circuit',
     description:
-      'PCB circuit board in low-power mode, dim traces, most lights off, single heartbeat pulse remaining',
+      'Circuit board in low-power mode, faint trace lines, single subtle pulse across microchip nodes',
   },
   {
     name: 'night-oscilloscope',
+    description: 'Minimal oscilloscope waveform, low amplitude signal, dim grid background',
+  },
+  {
+    name: 'nocturnal-grid',
     description:
-      'Oscilloscope in the dark, slow calm waveform, minimal signal, quiet frequency, standby glow',
+      'Soft symmetrical grid fading into darkness, muted blue-green highlights, sparse signal activity',
+  },
+  {
+    name: 'swamp-lanterns',
+    description:
+      'Scattered glowing orbs over dark reflective plane, soft light halos, slow drifting particles',
+  },
+  {
+    name: 'neon-mist',
+    description:
+      'Thin fog layer with faint linear neon accents, soft drifting particles across dark void',
+  },
+  {
+    name: 'silent-topography',
+    description: 'Low-contrast contour terrain map, faint elevation lines, smooth dark gradients',
+  },
+  {
+    name: 'deep-circuit-dream',
+    description: 'Minimal circuit pathways with slow rhythmic pulse, low brightness microchip glow',
+  },
+  {
+    name: 'void-stream',
+    description:
+      'Thin luminous streams flowing across empty dark space, controlled particle motion',
+  },
+  {
+    name: 'night-fracture',
+    description: 'Dark geometric surfaces with faint edge highlights, subtle controlled cracks',
   },
 ];
 
@@ -108,13 +199,16 @@ COLOR PALETTE: ${palette}
 MOOD: ${descriptor}
 
 STRICT RULES:
-- NO readable text, NO recognizable letters or numbers  
-- abstract glyphs are allowed ONLY if they do not form real characters
-- NO real company logos, NO real faces
-- Dark background always (#0a0a0a base)
-- Small pixel art frog (🐸) hidden in bottom-right corner as Easter egg
-- High contrast, cinematic composition
-- Pure pixel art / 8-bit aesthetic throughout
+- Dark background base (#0a0a0a)
+- Strict 8-bit pixel grid, visible square pixel blocks
+- No anti-aliasing, no soft brush strokes
+- No smooth gradients, use limited color banding
+- High contrast between foreground and background
+- Clean geometric composition, strong silhouettes
+- Abstract UI elements only, no readable characters
+- No logos, no real-world branding, no faces
+- Tiny low-contrast pixel frog silhouette in bottom-right corner, subtle and secondary
+- No photorealism, no volumetric lighting
 - Aspect ratio: 16:9
 `.trim();
 }

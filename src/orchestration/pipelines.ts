@@ -310,7 +310,7 @@ export async function runDegenTime(): Promise<void> {
 }
 
 // ─── Micro-post Dispatcher ────────────────────────────────────────────────────
-
+// TODO :: dispatchNextMicroPost
 export async function dispatchNextMicroPost(): Promise<void> {
   const rateCheck = canTweet(xBudgetState);
   if (!rateCheck.allowed) {
@@ -420,7 +420,21 @@ export async function runBreakingNewsPipeline(article: FeedArticle): Promise<voi
 
     if (summary) {
       const tgPost = `🚨 ${formatPostTelegram(article, summary)}`;
-      await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
+      const image = await generatePostImage(
+        summary.summary,
+        summary.sentiment as ImageSentiment,
+        summary.category,
+      );
+
+      if (image) {
+        await withCircuit(
+          telegramCircuit,
+          () => sendToTelegramWithPhoto(image.data, tgPost),
+          logger,
+        );
+      } else {
+        await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
+      }
 
       if (isXEnabled()) {
         const xPost = formatPostX(article, summary);
