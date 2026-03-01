@@ -11,6 +11,7 @@ export function usePolling<T>(path: string, intervalMs = 30000): PollingState<T>
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const adminToken = (import.meta.env.VITE_ADMIN_API_TOKEN as string | undefined)?.trim();
 
   useEffect(() => {
     let active = true;
@@ -20,7 +21,9 @@ export function usePolling<T>(path: string, intervalMs = 30000): PollingState<T>
       try {
         setError(null);
         const url = buildApiUrl(path);
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          headers: adminToken ? { 'x-admin-token': adminToken } : undefined,
+        });
         if (!response.ok) {
           throw new Error(`Request failed with ${response.status} (${response.url})`);
         }

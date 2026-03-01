@@ -10,14 +10,23 @@ import { getPendingCount } from '../queue/micro-posts.js';
 import { FEEDS } from '../ingestion/feeds.config.js';
 
 const app = new Hono();
+const adminToken = process.env.ADMIN_API_TOKEN?.trim();
 
 app.use(
   '*',
   cors({
     origin: '*',
     allowMethods: ['GET'],
+    allowHeaders: ['Content-Type', 'x-admin-token', 'authorization'],
   }),
 );
+
+function isAuthorized(headerValue?: string | null): boolean {
+  if (!adminToken) return true;
+  if (!headerValue) return false;
+  const token = headerValue.startsWith('Bearer ') ? headerValue.slice(7) : headerValue;
+  return token === adminToken;
+}
 
 const startTime = Date.now();
 let lastPostedAt: string | null = null;
@@ -27,6 +36,11 @@ export function updateLastPosted(): void {
 }
 
 app.get('/health', async (c) => {
+  const tokenHeader = c.req.header('x-admin-token') ?? c.req.header('authorization');
+  if (!isAuthorized(tokenHeader)) {
+    return c.json({ status: 'unauthorized' }, 401);
+  }
+
   const [lastArticle, microPostsPending, articlesPending] = await Promise.all([
     db.select().from(articles).orderBy(desc(articles.createdAt)).limit(1),
     getPendingCount('x'),
@@ -81,6 +95,11 @@ app.get('/health', async (c) => {
 });
 
 app.get('/metrics', async (c) => {
+  const tokenHeader = c.req.header('x-admin-token') ?? c.req.header('authorization');
+  if (!isAuthorized(tokenHeader)) {
+    return c.json({ status: 'unauthorized', since: new Date().toISOString() }, 401);
+  }
+
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
   try {
