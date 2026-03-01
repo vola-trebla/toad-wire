@@ -9,6 +9,7 @@ import { Mission } from './components/Mission';
 import { Roadmap } from './components/Roadmap';
 import { Footer } from './components/Footer';
 import type { Mood } from './constants/moods';
+import { RecentPosts } from './components/RecentPosts.tsx';
 
 export default function LandingPage() {
   const prices = useCryptoPrices(['BTC', 'ETH', 'SOL', 'BNB', 'ADA', 'AVAX', 'DOT', 'LINK', 'UNI']);
@@ -34,6 +35,7 @@ export default function LandingPage() {
       <Ticker prices={prices} color={mood === 'bearish' ? '#ff3b3b' : '#2dff6e'} />
       <Header time={time} />
       <Hero mood={mood} />
+      <RecentPosts />
       {/*<FearGreed />*/}
       <SapoMood mood={mood} glitching={glitching} onSwitch={switchMood} />
       <Schedule />
