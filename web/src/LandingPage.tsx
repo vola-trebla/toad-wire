@@ -3,7 +3,6 @@ import { useCryptoPrices } from './hooks/useCryptoPrices';
 import { Ticker } from './components/Ticker';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { SapoMood } from './components/SapoMood';
 import { Schedule } from './components/Schedule';
 import { Mission } from './components/Mission';
 import { Roadmap } from './components/Roadmap';
@@ -34,10 +33,8 @@ export default function LandingPage() {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Ticker prices={prices} color={mood === 'bearish' ? '#ff3b3b' : '#2dff6e'} />
       <Header time={time} />
-      <Hero mood={mood} />
+      <Hero mood={mood} glitching={glitching} switchMood={switchMood} />
       <RecentPosts />
-      {/*<FearGreed />*/}
-      <SapoMood mood={mood} glitching={glitching} onSwitch={switchMood} />
       <Schedule />
       <Mission />
       <Roadmap />

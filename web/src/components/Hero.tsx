@@ -1,13 +1,14 @@
 import { MOODS, type Mood } from '../constants/moods';
-import { LastPost } from './LastPost';
 import { HowSapoThinks } from './HowSapoThinks';
 import * as React from 'react';
 
 interface Props {
   mood: Mood;
+  glitching: boolean;
+  switchMood: (m: Mood) => void;
 }
 
-export function Hero({ mood }: Props) {
+export function Hero({ mood, glitching, switchMood }: Props) {
   const currentMood = MOODS[mood];
 
   return (
@@ -30,6 +31,7 @@ export function Hero({ mood }: Props) {
       >
         {/* Left column */}
         <div style={{ flex: 1, minWidth: '280px' }}>
+          {/* Frog */}
           <div
             style={{
               width: 'clamp(80px,15vw,140px)',
@@ -44,7 +46,6 @@ export function Hero({ mood }: Props) {
               animation: 'float 4s ease-in-out infinite, fadeUp 0.7s ease both',
             }}
           >
-            {/* halo */}
             <div
               style={{
                 position: 'absolute',
@@ -57,8 +58,6 @@ export function Hero({ mood }: Props) {
                 pointerEvents: 'none',
               }}
             />
-
-            {/* ring */}
             <div
               style={{
                 position: 'absolute',
@@ -70,8 +69,6 @@ export function Hero({ mood }: Props) {
                 pointerEvents: 'none',
               }}
             />
-
-            {/* frog */}
             <img
               src="/frog.png"
               alt="Frog"
@@ -81,8 +78,6 @@ export function Hero({ mood }: Props) {
                 objectFit: 'contain',
                 display: 'block',
                 zIndex: 2,
-
-                // “подтянуть” картинку под стиль сайта
                 filter: 'drop-shadow(0 16px 26px rgba(0,0,0,0.40)) saturate(1.06) contrast(1.04)',
                 transform: 'translateZ(0)',
               }}
@@ -101,6 +96,8 @@ export function Hero({ mood }: Props) {
               }}
             />
           </div>
+
+          {/* Title */}
           <h1
             className="animate-fade-up delay-1"
             style={{
@@ -116,13 +113,15 @@ export function Hero({ mood }: Props) {
             <br />
             <span style={{ color: 'var(--text)' }}>CRIPTO</span>
           </h1>
+
+          {/* Tagline */}
           <div
             className="animate-fade-up delay-2"
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 'clamp(13px,2vw,17px)',
               color: 'var(--text-dim)',
-              marginBottom: '48px',
+              marginBottom: '32px',
               maxWidth: '520px',
               lineHeight: 1.7,
             }}
@@ -134,45 +133,11 @@ export function Hero({ mood }: Props) {
             </span>
           </div>
 
+          {/* CTA */}
           <div
             className="animate-fade-up delay-3"
             style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}
           >
-            {/*<a*/}
-            {/*  href="https://t.me/ElSapoCripto"*/}
-            {/*  target="_blank"*/}
-            {/*  rel="noopener noreferrer"*/}
-            {/*  style={{*/}
-            {/*    display: 'inline-flex',*/}
-            {/*    alignItems: 'center',*/}
-            {/*    gap: '10px',*/}
-            {/*    padding: '14px 28px',*/}
-            {/*    background: 'var(--green)',*/}
-            {/*    color: '#050f05',*/}
-            {/*    fontFamily: 'var(--font-display)',*/}
-            {/*    fontWeight: 700,*/}
-            {/*    fontSize: '13px',*/}
-            {/*    letterSpacing: '0.05em',*/}
-            {/*    textDecoration: 'none',*/}
-            {/*    transition: 'all 0.2s',*/}
-            {/*  }}*/}
-            {/*  onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {*/}
-            {/*    const el = e.currentTarget;*/}
-            {/*    el.style.transform = 'translate(-2px,-2px)';*/}
-            {/*    el.style.boxShadow = '4px 4px 0 var(--green-dark)';*/}
-            {/*  }}*/}
-            {/*  onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {*/}
-            {/*    const el = e.currentTarget;*/}
-            {/*    el.style.transform = 'none';*/}
-            {/*    el.style.boxShadow = 'none';*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">*/}
-            {/*    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.026 9.547c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.51 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.306.97z" />*/}
-            {/*  </svg>*/}
-            {/*  {currentMood.cta}*/}
-            {/*</a>*/}
-
             <a
               href="https://x.com/ElSapoCripto"
               target="_blank"
@@ -209,12 +174,114 @@ export function Hero({ mood }: Props) {
               Seguir en X
             </a>
           </div>
+
+          {/* SAPO_MOOD compact */}
+          <div className="animate-fade-up delay-4" style={{ marginTop: '40px' }}>
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--text-muted)',
+                letterSpacing: '0.2em',
+                marginBottom: '12px',
+              }}
+            >
+              // SAPO_MOOD.exe
+            </div>
+
+            {/* Mood tabs */}
+            <div style={{ display: 'flex', gap: '2px', marginBottom: '12px' }}>
+              {(Object.keys(MOODS) as Mood[]).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => switchMood(m)}
+                  style={{
+                    flex: 1,
+                    padding: '8px 12px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    letterSpacing: '0.1em',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s',
+                    border:
+                      mood === m
+                        ? `1px solid ${m === 'bearish' ? 'var(--red)' : 'var(--green)'}`
+                        : '1px solid var(--border)',
+                    background:
+                      mood === m
+                        ? m === 'bearish'
+                          ? 'rgba(255,59,59,0.15)'
+                          : 'rgba(45,255,110,0.15)'
+                        : 'transparent',
+                    color:
+                      mood === m
+                        ? m === 'bearish'
+                          ? 'var(--red)'
+                          : 'var(--green)'
+                        : 'var(--text-muted)',
+                  }}
+                >
+                  {MOODS[m].emoji} {MOODS[m].label}
+                </button>
+              ))}
+            </div>
+
+            {/* Signal */}
+            <div
+              style={{
+                padding: '16px 20px',
+                background: 'var(--surface)',
+                border: `1px solid ${mood === 'bearish' ? 'rgba(255,59,59,0.3)' : 'rgba(45,255,110,0.2)'}`,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
+                transition: 'all 0.3s',
+                opacity: glitching ? 0 : 1,
+                transform: glitching ? 'translateX(4px)' : 'none',
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '28px',
+                  color: mood === 'bearish' ? 'var(--red)' : 'var(--green)',
+                  lineHeight: 1,
+                  minWidth: '36px',
+                }}
+              >
+                {currentMood.signal}
+              </span>
+              <div>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '9px',
+                    color: mood === 'bearish' ? 'var(--red)' : 'var(--green)',
+                    marginBottom: '4px',
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  ÚLTIMA SEÑAL DEL SAPO
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '12px',
+                    color: 'var(--text)',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {currentMood.signalText}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Right column */}
         <div className="flex flex-col gap-4 w-full md:max-w-115">
           <HowSapoThinks />
-          <LastPost />
         </div>
       </div>
     </section>
