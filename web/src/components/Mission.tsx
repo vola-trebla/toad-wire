@@ -1,7 +1,8 @@
 export function Mission() {
   const stats = [
-    { val: '7×', label: 'posts por día' },
-    { val: '9', label: 'fuentes cripto' },
+    { val: '8×', label: 'posts por día' },
+    { val: '13', label: 'fuentes cripto' },
+    { val: '2', label: 'canales (TG + X)' },
     { val: '∞', label: 'ranas' },
   ];
 
@@ -36,15 +37,36 @@ export function Mission() {
             color: 'var(--text-dim)',
             lineHeight: 1.9,
             maxWidth: '580px',
-            margin: '0 auto 32px',
+            margin: '0 auto 16px',
           }}
         >
           Las noticias cripto importantes aparecen primero en inglés. El sapo las traduce, las
-          resume y las envía a tu Telegram en español rioplatense — sin tecnicismos innecesarios,
-          sin hype, sin drama.
-          <br />
-          <br />
-          Como si un amigo que sabe cripto te mandara un mensaje.
+          resume y las publica en Telegram y X — sin tecnicismos innecesarios, sin hype, sin drama.
+        </p>
+        <p
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '14px',
+            color: 'var(--text-dim)',
+            lineHeight: 1.9,
+            maxWidth: '580px',
+            margin: '0 auto 16px',
+          }}
+        >
+          13 fuentes monitoreadas en tiempo real. Scoring algorítmico. Resúmenes con IA. Alertas de
+          breaking news en menos de 10 minutos.
+        </p>
+        <p
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '14px',
+            color: 'var(--text-dim)',
+            lineHeight: 1.9,
+            maxWidth: '580px',
+            margin: '0 auto 32px',
+          }}
+        >
+          Como si un amigo que sabe cripto te mandara un mensaje. Pero ese amigo no duerme.
         </p>
         <div
           style={{

@@ -181,6 +181,36 @@ app.get('/metrics', async (c) => {
   }
 });
 
+app.get('/recent', async (c) => {
+  const tokenHeader = c.req.header('x-admin-token') ?? c.req.header('authorization');
+  if (!isAuthorized(tokenHeader)) {
+    return c.json({ status: 'unauthorized' }, 401);
+  }
+
+  try {
+    const recent = await db
+      .select({
+        id: articles.id,
+        title: articles.title,
+        source: articles.source,
+        category: articles.category,
+        sentiment: articles.sentiment,
+        tweet: articles.tweet,
+        url: articles.url,
+        createdAt: articles.createdAt,
+      })
+      .from(articles)
+      .where(eq(articles.posted, true))
+      .orderBy(desc(articles.createdAt))
+      .limit(6);
+
+    return c.json({ status: 'ok', articles: recent });
+  } catch (error) {
+    logger.warn({ err: error }, 'recent endpoint failed');
+    return c.json({ status: 'error', articles: [] });
+  }
+});
+
 export function startHealthServer(port = 3000): void {
   serve({ fetch: app.fetch, port });
   logger.info(`🏥 Health server running on port ${port}`);

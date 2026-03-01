@@ -1,332 +1,404 @@
+import { useState } from 'react';
+
+interface CoreProcess {
+  id: string;
+  label: string;
+  title: string;
+  subtitle: string;
+  status: 'RUNNING' | 'QUEUED' | 'PENDING';
+  progress: number;
+  features: { text: string; done: boolean }[];
+  pid: string;
+  uptime?: string;
+}
+
+const CORES: CoreProcess[] = [
+  {
+    id: 'CORE_I',
+    label: 'PROCESS 001',
+    title: 'CORE I — LA MÁQUINA',
+    subtitle: 'Ingestion Engine v2.0',
+    status: 'RUNNING',
+    progress: 100,
+    pid: '1337',
+    uptime: '24/7',
+    features: [
+      { text: 'Pipeline global → español (13 fuentes)', done: true },
+      { text: 'Impact Score v2.0 — scoring multi-factor', done: true },
+      { text: 'Deduplicación 4 niveles + story clustering', done: true },
+      { text: 'LLM ranker + summarización con voz del Sapo', done: true },
+      { text: 'Breaking news detection < 10 min', done: true },
+      { text: 'Generación de imágenes pixel art (17 estilos)', done: true },
+      { text: 'Dual-channel: Telegram + X con imágenes', done: true },
+      { text: 'Market snapshot + Fear & Greed diario', done: true },
+      { text: 'Feed health monitoring + circuit breakers', done: true },
+      { text: 'Pipeline metrics + observability', done: true },
+    ],
+  },
+  {
+    id: 'CORE_II',
+    label: 'PROCESS 002',
+    title: 'CORE II — LA JABA SOCIAL',
+    subtitle: 'Social Intelligence Layer',
+    status: 'QUEUED',
+    progress: 0,
+    pid: '—',
+    features: [
+      { text: 'Lectura inteligente de X en tiempo real', done: false },
+      { text: 'Detección de posts clave por engagement', done: false },
+      { text: 'Respuestas automáticas con humor ácido', done: false },
+      { text: 'Clasificador noticia / meme / alerta', done: false },
+      { text: 'Persona persistente entre conversaciones', done: false },
+      { text: 'Catalina-mode 🔥', done: false },
+    ],
+  },
+  {
+    id: 'CORE_III',
+    label: 'PROCESS 003',
+    title: 'CORE III — ON-CHAIN',
+    subtitle: 'Blockchain Signal Processor',
+    status: 'QUEUED',
+    progress: 0,
+    pid: '—',
+    features: [
+      { text: 'Monitoreo de ballenas en tiempo real', done: false },
+      { text: 'Alertas de liquidaciones masivas', done: false },
+      { text: 'Movimientos on-chain sospechosos', done: false },
+      { text: 'Perfiles rápidos de wallets', done: false },
+      { text: 'Actividad por tokens y protocolos', done: false },
+      { text: 'Clasificación de señales DeFi', done: false },
+    ],
+  },
+];
+
+const FUTURE = [
+  'Archivo completo de señales históricas',
+  'API pública del Sapo',
+  'Extensión "El Sapo te lo explica"',
+  'Traducciones EN / PT',
+  'Dos Sapos hablando 🤣',
+  'Knowledge Graph de entidades cripto',
+];
+
+const STATUS_COLOR: Record<string, string> = {
+  RUNNING: '#2dff6e',
+  QUEUED: '#4a5568',
+  PENDING: '#2d3748',
+};
+
+const STATUS_DOT: Record<string, string> = {
+  RUNNING: '●',
+  QUEUED: '○',
+  PENDING: '◎',
+};
+
 export function Roadmap() {
-  const core1 = [
-    'Pipeline global → español',
-    'Resúmenes con voz del Sapo',
-    'Deduplicación + ranking LLM',
-    'Snapshot diario del mercado',
-    'Modo Degén v0',
-    'Publicación automática',
-  ];
-
-  const core2 = [
-    'Lectura inteligente de X',
-    'Detección de posts clave',
-    'Respuestas con humor ácido',
-    'Clasificador noticia/meme/alerta',
-    'Catalina-mode',
-    'Persona persistente',
-  ];
-
-  const core3 = [
-    'Monitoreo de ballenas',
-    'Alertas de liquidaciones',
-    'Movimientos on-chain',
-    'Perfiles rápidos de wallets',
-    'Actividad por tokens',
-    'Clasificación de señales',
-  ];
-
-  const future = [
-    'Archivo completo de señales',
-    'API del Sapo',
-    'Extensión “El Sapo te lo explica”',
-    'Traducciones EN/PT',
-    'Dos Sapos hablando 🤣',
-  ];
-
-  const sphereStyle = (active: boolean) => ({
-    width: '260px',
-    height: '260px',
-    borderRadius: '9999px',
-    background: active
-      ? 'radial-gradient(circle, rgba(0,255,100,0.25), rgba(0,0,0,0.70))'
-      : 'radial-gradient(circle, rgba(0,255,100,0.10), rgba(0,0,0,0.60))',
-    border: active ? '1px solid rgba(0,255,120,0.35)' : '1px solid rgba(0,255,120,0.20)',
-    boxShadow: active
-      ? '0 0 18px rgba(0,255,120,0.30) inset'
-      : '0 0 10px rgba(0,255,120,0.15) inset',
-
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    justifyContent: 'center', // ближе к центру сферы
-    padding: '22px 18px',
-    gap: '10px',
-    overflow: 'hidden',
-  });
-
-  const titleStyle = {
-    fontFamily: 'var(--font-display)',
-    fontSize: '12px',
-    letterSpacing: '0.04em',
-    color: 'var(--green)',
-    textAlign: 'center' as const,
-    lineHeight: 1.1,
-    marginBottom: '2px',
-  };
-
-  const listStyle = {
-    listStyle: 'none',
-    padding: 0,
-    margin: 0,
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '6px',
-    width: '100%',
-    alignItems: 'center',
-  };
-
-  const itemStyle = {
-    fontFamily: 'var(--font-mono)',
-    fontSize: '10.5px',
-    lineHeight: 1.15,
-    textAlign: 'center' as const,
-    whiteSpace: 'normal' as const,
-    wordBreak: 'break-word' as const,
-    hyphens: 'auto' as const,
-    maxWidth: '100%',
-  };
-
-  // FUTURO как “таблица/карточка”
-  const futureCard = {
-    padding: '28px 24px',
-    background: 'var(--surface)',
-    border: '1px solid var(--border)',
-    position: 'relative' as const,
-  };
+  const [expanded, setExpanded] = useState<string | null>('CORE_I');
 
   return (
     <section
       id="roadmap"
       style={{
         padding: 'clamp(60px,8vw,120px) clamp(20px,5vw,80px)',
-        maxWidth: '980px',
+        maxWidth: '900px',
         margin: '0 auto',
-        position: 'relative',
       }}
     >
-      <h2
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(26px,5vw,40px)',
-          fontWeight: 900,
-          color: 'var(--green)',
-          marginBottom: '46px',
-          textAlign: 'center',
-        }}
-      >
-        Mapa del Cerebro del Sapo
-      </h2>
+      {/* Header */}
+      <div style={{ marginBottom: '48px' }}>
+        <div
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+            color: 'var(--text-muted)',
+            letterSpacing: '0.2em',
+            marginBottom: '8px',
+          }}
+        >
+          // SAPO_BRAIN.sys
+        </div>
+        <h2
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(26px,5vw,40px)',
+            fontWeight: 900,
+            color: 'var(--text)',
+            lineHeight: 1.1,
+            margin: 0,
+          }}
+        >
+          Mapa del <span style={{ color: 'var(--green)' }}>Cerebro</span> del Sapo
+        </h2>
+      </div>
 
-      {/* TRIANGLE GRID */}
+      {/* Process list */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+        {CORES.map((core) => {
+          const isExpanded = expanded === core.id;
+          const isActive = core.status === 'RUNNING';
+
+          return (
+            <div
+              key={core.id}
+              style={{
+                background: isExpanded ? 'var(--surface)' : 'transparent',
+                border: '1px solid',
+                borderColor: isExpanded
+                  ? isActive
+                    ? 'rgba(45,255,110,0.25)'
+                    : 'var(--border)'
+                  : 'transparent',
+                transition: 'all 0.2s',
+                cursor: 'pointer',
+              }}
+              onClick={() => setExpanded(isExpanded ? null : core.id)}
+            >
+              {/* Process header row */}
+              <div
+                style={{
+                  padding: '20px 24px',
+                  display: 'grid',
+                  gridTemplateColumns: '110px 1fr auto auto',
+                  gap: '16px',
+                  alignItems: 'center',
+                  borderBottom: isExpanded ? '1px solid var(--border)' : 'none',
+                }}
+              >
+                {/* PID + label */}
+                <div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '10px',
+                      color: 'var(--text-muted)',
+                      letterSpacing: '0.15em',
+                      marginBottom: '2px',
+                    }}
+                  >
+                    {core.label}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '10px',
+                      color: 'var(--text-muted)',
+                    }}
+                  >
+                    PID {core.pid}
+                  </div>
+                </div>
+
+                {/* Title + progress bar */}
+                <div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      color: isActive ? 'var(--text)' : 'var(--text-muted)',
+                      marginBottom: '8px',
+                      letterSpacing: '0.02em',
+                    }}
+                  >
+                    {core.title}
+                  </div>
+                  {/* Progress bar */}
+                  <div
+                    style={{
+                      height: '3px',
+                      background: 'var(--border)',
+                      borderRadius: '0',
+                      overflow: 'hidden',
+                      maxWidth: '300px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${core.progress}%`,
+                        background: isActive ? 'var(--green)' : '#2d3748',
+                        transition: 'width 0.6s ease',
+                        boxShadow: isActive ? '0 0 8px rgba(45,255,110,0.5)' : 'none',
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '10px',
+                      color: 'var(--text-muted)',
+                      marginTop: '5px',
+                    }}
+                  >
+                    {core.subtitle}
+                    {core.uptime && (
+                      <span style={{ color: 'var(--green)', marginLeft: '12px' }}>
+                        ↑ {core.uptime}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Progress % */}
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '13px',
+                    color: isActive ? 'var(--green)' : 'var(--text-muted)',
+                    fontWeight: 700,
+                    minWidth: '42px',
+                    textAlign: 'right',
+                  }}
+                >
+                  {core.progress}%
+                </div>
+
+                {/* Status */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    minWidth: '90px',
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  <span style={{ color: STATUS_COLOR[core.status], fontSize: '10px' }}>
+                    {STATUS_DOT[core.status]}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '10px',
+                      color: STATUS_COLOR[core.status],
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    {core.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* Expanded feature list */}
+              {isExpanded && (
+                <div
+                  style={{
+                    padding: '20px 24px',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                    gap: '10px 32px',
+                  }}
+                >
+                  {core.features.map((f, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '11px',
+                          color: f.done ? 'var(--green)' : '#2d3748',
+                          marginTop: '1px',
+                          flexShrink: 0,
+                        }}
+                      >
+                        {f.done ? '✓' : '·'}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '12px',
+                          color: f.done ? 'var(--text-dim)' : 'var(--text-muted)',
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {f.text}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* FUTURE */}
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
-          gridTemplateRows: 'auto auto auto',
-          gap: '28px',
-          alignItems: 'center',
-          justifyItems: 'center',
+          marginTop: '40px',
+          padding: '24px',
+          border: '1px solid var(--border)',
           position: 'relative',
         }}
       >
-        {/* TOP (CORE 1) */}
-        <div style={{ gridColumn: 2, gridRow: 1 }}>
-          <div style={sphereStyle(true)}>
-            <div style={titleStyle}>CORE I — LA MÁQUINA</div>
-            <ul style={listStyle}>
-              {core1.map((t, i) => (
-                <li key={i} style={{ ...itemStyle, color: 'var(--text-dim)' }}>
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* LEFT (CORE 2) */}
-        <div style={{ gridColumn: 1, gridRow: 3 }}>
-          <div style={sphereStyle(false)}>
-            <div style={titleStyle}>CORE II — LA JABA SOCIAL</div>
-            <div
-              style={{
-                color: 'var(--green)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '10px',
-                lineHeight: 1.1,
-                textAlign: 'center',
-                marginTop: '-6px',
-              }}
-            >
-              EN DESARROLLO
-            </div>
-            <ul style={{ ...listStyle, marginTop: '2px' }}>
-              {core2.map((t, i) => (
-                <li key={i} style={{ ...itemStyle, color: 'var(--text-muted)' }}>
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* RIGHT (CORE 3) */}
-        <div style={{ gridColumn: 3, gridRow: 3 }}>
-          <div style={sphereStyle(false)}>
-            <div style={titleStyle}>CORE III — ON-CHAIN</div>
-            <div
-              style={{
-                color: 'var(--green)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '10px',
-                lineHeight: 1.1,
-                textAlign: 'center',
-                marginTop: '-6px',
-              }}
-            >
-              EN DESARROLLO
-            </div>
-            <ul style={{ ...listStyle, marginTop: '2px' }}>
-              {core3.map((t, i) => (
-                <li key={i} style={{ ...itemStyle, color: 'var(--text-muted)' }}>
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* CENTER (🧠🤖 only) */}
         <div
           style={{
-            gridColumn: 2,
-            gridRow: 2,
-            textAlign: 'center',
-            pointerEvents: 'none',
-            transform: 'translateY(2px)',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+            color: 'var(--text-muted)',
+            letterSpacing: '0.2em',
+            marginBottom: '20px',
           }}
         >
-          <div
-            style={{
-              width: '86px',
-              height: '86px',
-              lineHeight: 1,
-              margin: '0 auto',
-              transform: 'translateY(0px)',
-              filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.35))',
-            }}
-          >
-            <img
-              src="/frog.png"
-              alt="Sapo"
-              style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
-            />
-          </div>
+          ◎ FUTURO — en el horizonte del pantano
         </div>
-
-        {/* CENTER LABELS — чуть ниже между ядрами */}
-        <div
-          style={{
-            gridColumn: 2,
-            gridRow: 2,
-            textAlign: 'center',
-            pointerEvents: 'none',
-            transform: 'translateY(56px)', // <-- опустили
-          }}
-        >
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '12px',
-              color: 'var(--green)',
-              marginTop: '6px',
-            }}
-          >
-            SAPO BRAIN
-          </div>
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '11px',
-              color: 'var(--text-muted)',
-              marginTop: '4px',
-            }}
-          >
-            CORE 1 activo · CORE 2 + CORE 3 en desarrollo
-          </div>
-        </div>
-      </div>
-
-      {/* FUTURO — таблица/карточки */}
-      <div style={{ marginTop: '70px' }}>
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2px',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+            gap: '10px 32px',
           }}
         >
-          {[{ label: '◎ FUTURO', items: future, active: false }].map(({ label, items, active }) => (
-            <div key={label} style={futureCard}>
-              <div
+          {FUTURE.map((item, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+              <span
                 style={{
-                  fontFamily: 'var(--font-display)',
+                  fontFamily: 'var(--font-mono)',
                   fontSize: '11px',
-                  fontWeight: 700,
-                  color: active ? 'var(--green)' : 'var(--text-muted)',
-                  letterSpacing: '0.12em',
-                  marginBottom: '20px',
+                  color: 'var(--border)',
+                  marginTop: '1px',
+                  flexShrink: 0,
                 }}
               >
-                {label}
-              </div>
-
-              {items.map((item, i) => (
-                <div
-                  key={i}
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '12px',
-                    color: active ? 'var(--text-dim)' : 'var(--text-muted)',
-                    marginBottom: '12px',
-                    lineHeight: 1.6,
-                    paddingLeft: '12px',
-                    borderLeft: `1px solid ${active ? 'var(--green-dark)' : 'var(--border)'}`,
-                  }}
-                >
-                  {item}
-                </div>
-              ))}
-
-              <div
+                ···
+              </span>
+              <span
                 style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '20px',
-                  height: '20px',
-                  borderTop: `2px solid ${active ? 'rgba(45,255,110,0.3)' : 'var(--border)'}`,
-                  borderRight: `2px solid ${active ? 'rgba(45,255,110,0.3)' : 'var(--border)'}`,
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '12px',
+                  color: 'var(--text-muted)',
+                  lineHeight: 1.5,
                 }}
-              />
+              >
+                {item}
+              </span>
             </div>
           ))}
         </div>
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '20px',
+            height: '20px',
+            borderTop: '2px solid var(--border)',
+            borderRight: '2px solid var(--border)',
+          }}
+        />
       </div>
 
-      {/* Responsive: сферы в колонку */}
-      <style>{`
-        @media (max-width: 860px) {
-          #roadmap > div[style*="grid-template-columns: 1fr 1fr 1fr"] {
-            grid-template-columns: 1fr !important;
-            grid-template-rows: auto !important;
-          }
-          #roadmap > div[style*="grid-template-columns: 1fr 1fr 1fr"] > div {
-            grid-column: auto !important;
-            grid-row: auto !important;
-          }
-        }
-      `}</style>
+      {/* Bottom label */}
+      <div
+        style={{
+          marginTop: '24px',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '11px',
+          color: 'var(--text-muted)',
+          textAlign: 'right',
+        }}
+      >
+        SAPO BRAIN · CORE 1 activo · CORE 2 + CORE 3 en desarrollo
+      </div>
     </section>
   );
 }

@@ -1,6 +1,17 @@
+import { useState } from 'react';
 import { SCHEDULE } from '../constants/schedule';
 
+type DayType = 'weekday' | 'weekend';
+
 export function Schedule() {
+  const [dayType, setDayType] = useState<DayType>('weekday');
+
+  const filtered = SCHEDULE.filter((item) => {
+    if (dayType === 'weekday') return !item.weekendOnly;
+    if (dayType === 'weekend') return !item.weekdayOnly;
+    return true;
+  });
+
   return (
     <section style={{ padding: 'clamp(60px,8vw,100px) clamp(20px,5vw,80px)' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
@@ -21,12 +32,50 @@ export function Schedule() {
             fontSize: 'clamp(22px,4vw,36px)',
             fontWeight: 900,
             color: 'var(--text)',
-            marginBottom: '48px',
+            marginBottom: '32px',
             letterSpacing: '-0.01em',
           }}
         >
           ¿Qué publica <span style={{ color: 'var(--green)' }}>el sapo</span>?
         </h2>
+
+        {/* Tabs */}
+        <div style={{ display: 'flex', gap: '2px', marginBottom: '32px' }}>
+          {(['weekday', 'weekend'] as DayType[]).map((type) => (
+            <button
+              key={type}
+              onClick={() => setDayType(type)}
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                letterSpacing: '0.15em',
+                padding: '8px 20px',
+                background: dayType === type ? 'var(--green)' : 'var(--surface)',
+                color: dayType === type ? '#000' : 'var(--text-muted)',
+                border: '1px solid',
+                borderColor: dayType === type ? 'var(--green)' : 'var(--border)',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                fontWeight: dayType === type ? 700 : 400,
+              }}
+            >
+              {type === 'weekday' ? '// LUNES–VIERNES' : '// FIN DE SEMANA'}
+            </button>
+          ))}
+          <div
+            style={{
+              marginLeft: 'auto',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              color: 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {dayType === 'weekend' ? '↑ +2 posts vs semana' : `${filtered.length} posts / día`}
+          </div>
+        </div>
+
         <div
           style={{
             display: 'grid',
@@ -34,7 +83,7 @@ export function Schedule() {
             gap: '2px',
           }}
         >
-          {SCHEDULE.map((item, i) => (
+          {filtered.map((item, i) => (
             <div
               key={i}
               style={{
