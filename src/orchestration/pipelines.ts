@@ -180,7 +180,7 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
         await withCircuit(xCircuit, () => postTweet(xPost), logger);
       }
 
-      await saveArticle(article);
+      await saveArticle(article, undefined, summary.entities);
       await markAsPosted(article.url);
       updateLastPosted();
 
@@ -412,11 +412,11 @@ export async function runBreakingNewsPipeline(article: FeedArticle): Promise<voi
   let error: string | undefined;
 
   try {
-    await saveArticle(article);
-    await markAsPosted(article.url);
-
     const summary =
       (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
+
+    await saveArticle(article, undefined, summary?.entities);
+    await markAsPosted(article.url);
 
     if (summary) {
       const tgPost = `🚨 ${formatPostTelegram(article, summary)}`;

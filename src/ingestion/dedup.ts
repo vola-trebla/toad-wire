@@ -3,6 +3,7 @@ import { db } from '../db/client.js';
 import { articles } from '../db/schema.js';
 import { type FeedArticle } from './rss.js';
 import { logger } from '../utils/logger.js';
+import { type Summary } from '../content/summarize.js';
 
 export async function isDuplicate(url: string): Promise<boolean> {
   const existing = await db
@@ -14,7 +15,11 @@ export async function isDuplicate(url: string): Promise<boolean> {
   return existing.length > 0;
 }
 
-export async function saveArticle(article: FeedArticle, embedding?: number[]): Promise<void> {
+export async function saveArticle(
+  article: FeedArticle,
+  embedding?: number[],
+  entities?: Summary['entities'],
+): Promise<void> {
   await db.insert(articles).values({
     title: article.title,
     url: article.url,
@@ -22,6 +27,7 @@ export async function saveArticle(article: FeedArticle, embedding?: number[]): P
     publishedAt: article.publishedAt,
     posted: false,
     embedding: embedding ? JSON.stringify(embedding) : undefined,
+    entities: entities ? JSON.stringify(entities) : undefined,
   });
 
   logger.info(`💾 Saved: ${article.title}`);
