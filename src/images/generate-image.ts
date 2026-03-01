@@ -5,7 +5,7 @@
  *   summary (Spanish) → Flash-Lite visual descriptor (English) → Gemini Image
  *
  * Features:
- *   - 5 rotating visual styles (same DNA, different "screens")
+ *   - 17 rotating visual styles (same DNA, different "screens")
  *   - Sentiment-driven color palette
  *   - Flash-Lite for descriptor (free, unlimited)
  *   - Gemini 2.5 Flash Image for generation (500/month)
