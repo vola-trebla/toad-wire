@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { generateObject, generateText } from 'ai';
 import { z } from 'zod';
 import { type FeedArticle } from '../sources/rss.js';
-import { scrapeArticle } from './scraper.js';
+import { scrapeArticle } from '../ingestion/scraper.js';
 import { logger } from '../utils/logger.js';
 import { truncateToWord } from '../utils/truncate.js';
 import { canMakeRequest, trackRequest } from '../utils/request-budget.js';

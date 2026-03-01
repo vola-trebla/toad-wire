@@ -2,7 +2,7 @@ import { db } from '../db/client.js';
 import { microPosts } from '../db/schema.js';
 import { eq, and, sql } from 'drizzle-orm';
 import { logger } from '../utils/logger.js';
-import { type MicroPost } from '../pipeline/batch-generator.js';
+import { type MicroPost } from '../content/batch-generator.js';
 
 export async function enqueueMicroPosts(posts: MicroPost[], channel = 'x'): Promise<void> {
   if (posts.length === 0) return;

@@ -4,7 +4,7 @@ import {
   canTweet,
   recordTweet,
   type XBudgetState,
-} from '../channels/x-rate-limiter.js';
+} from '../delivery/x-rate-limiter.js';
 
 // Helper: patch Date.now() + new Date() via UTC-3 offset manipulation
 function makeState(overrides: Partial<XBudgetState> = {}): XBudgetState {

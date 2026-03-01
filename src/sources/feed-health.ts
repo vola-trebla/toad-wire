@@ -10,7 +10,7 @@ import { db } from '../db/client.js';
 import { feedHealth } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
 import { FEEDS, type FeedConfig } from './feeds.config.js';
-import { sendToTelegram } from '../pipeline/post.js';
+import { sendToTelegram } from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 
 const DEAD_THRESHOLD = 10;

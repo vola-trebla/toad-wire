@@ -81,23 +81,29 @@ function getKeywordBoost(title: string): number {
   return Math.min(boost, 0.5);
 }
 
+// scorer.ts — заменяем только getContextBoost
+
 function getContextBoost(title: string, snapshot: MarketSnapshot): number {
   let boost = 0;
 
+  // ─── Mood-aligned patterns ─────────────────────────────────────────────────
   const MOOD_PATTERNS: Record<string, RegExp> = {
     extreme_fear:
-      /crash|dump|liquidat|sell.off|plunge|fear|panic|uncertain|risk|decline|drop|loss|below|worst|crisis|collapse/i,
-    fear: /sell.off|decline|pressure|concern|risk|caution|drop|below|uncertain|weak|struggle/i,
-    extreme_greed: /ath|all.time.high|record|surge|rally|pump|soar|bull|above|best|boom|euphoria/i,
-    greed: /rally|surge|gain|rise|above|bull|optimis|recover|momentum|breakout/i,
+      /crash|dump|liquidat|sell.?off|plunge|panic|fear|uncertain|risk|decline|drop|loss|below|worst|crisis|collapse|contagion|insolvency|withdraw|depeg|exploit|hack|breach/i,
+    fear: /sell.?off|decline|pressure|concern|risk|caution|drop|below|uncertain|weak|struggle|outflow|redemption|delay|reject|probe|investigate/i,
+    extreme_greed:
+      /ath|all.?time.?high|record|surge|rally|pump|soar|bull|above|best|boom|euphoria|inflow|accumulate|breakout|milestone|approval|launch/i,
+    greed:
+      /rally|surge|gain|rise|above|bull|optimis|recover|momentum|breakout|inflow|adoption|partnership|integrate|expand|grow|profit/i,
+    neutral: /stable|sideways|consolidat|range|flat|hold|wait|watch|prepare|expect/i,
   };
 
   const pattern = MOOD_PATTERNS[snapshot.marketMood];
-  if (pattern && pattern.test(title)) {
+  if (pattern?.test(title)) {
     boost += snapshot.marketMood.includes('extreme') ? 0.15 : 0.1;
   }
 
-  // Volatility alerts — boost articles mentioning the volatile asset
+  // ─── Volatility alerts ─────────────────────────────────────────────────────
   if (snapshot.volatilityAlerts) {
     for (const alert of snapshot.volatilityAlerts) {
       if (new RegExp(alert.symbol, 'i').test(title) && alert.severity !== 'low') {
@@ -106,7 +112,33 @@ function getContextBoost(title: string, snapshot: MarketSnapshot): number {
     }
   }
 
-  return Math.min(boost, 0.3);
+  // ─── Time-of-day boost ─────────────────────────────────────────────────────
+  // Morning pipeline: boost articles with fresh market data signals
+  const TIME_PATTERNS: Record<string, RegExp> = {
+    morning: /open|overnight|asia|premarket|early|wake|morning|today|weekly|monday|outlook/i,
+    afternoon: /update|midday|intraday|session|now|current|live|breaking|just/i,
+    evening: /close|daily|recap|summary|eod|end.?of.?day|tonight|after.?hours/i,
+    night: /overnight|asia|futures|tomorrow|preview|next/i,
+  };
+
+  const timePattern = TIME_PATTERNS[snapshot.timeOfDay];
+  if (timePattern?.test(title)) {
+    boost += 0.05;
+  }
+
+  // ─── LATAM prime-time boost ────────────────────────────────────────────────
+  // Extra boost for regional news during peak LATAM hours (morning + afternoon)
+  const isLatamPrimeTime = snapshot.timeOfDay === 'morning' || snapshot.timeOfDay === 'afternoon';
+  const isLatamArticle =
+    /latin|latam|brazil|brasil|argentina|mexico|colombia|venezuela|chile|el.?salvador|peru|crypto.?hub/i.test(
+      title,
+    );
+
+  if (isLatamPrimeTime && isLatamArticle) {
+    boost += 0.1;
+  }
+
+  return Math.min(boost, 0.4); // поднял с 0.3 → 0.4, т.к. добавили новые сигналы
 }
 
 function getDuplicatePenalty(title: string, recentTitles: string[]): number {

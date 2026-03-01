@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { scoreArticles } from '../pipeline/scorer.js';
+import { scoreArticles } from '../intelligence/scorer.js';
 import type { FeedArticle } from '../sources/rss.js';
 
 function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
