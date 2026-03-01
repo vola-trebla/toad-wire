@@ -38,6 +38,9 @@ import {
   getUnusedHeadlines,
   setUnusedHeadlines,
 } from './state.js';
+import { db } from '../db/client.js';
+import { pipelineRuns } from '../db/schema.js';
+import { getRemainingRequests } from '../utils/request-budget.js';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -50,6 +53,10 @@ function isRelevant(title: string): boolean {
 
 export async function runMorningDigest(): Promise<void> {
   logger.info('🌅 Starting morning digest...');
+
+  const startedAt = new Date().toISOString();
+  const startMs = Date.now();
+
   try {
     const [prices, fearGreed] = await Promise.all([fetchPrices(), fetchFearGreed()]);
 
@@ -62,7 +69,28 @@ export async function runMorningDigest(): Promise<void> {
     await runNewsPipeline(1);
   } catch (error) {
     logger.error(`❌ Morning digest error: ${error}`);
+
+    db.insert(pipelineRuns)
+      .values({
+        type: 'morning',
+        startedAt,
+        completedAt: new Date().toISOString(),
+        durationMs: Date.now() - startMs,
+        error: String(error),
+      })
+      .run();
+
+    return;
   }
+
+  db.insert(pipelineRuns)
+    .values({
+      type: 'morning',
+      startedAt,
+      completedAt: new Date().toISOString(),
+      durationMs: Date.now() - startMs,
+    })
+    .run();
 }
 
 // ─── News Pipeline ─────────────────────────────────────────────────────────────
@@ -70,90 +98,120 @@ export async function runMorningDigest(): Promise<void> {
 export async function runNewsPipeline(limit = 5): Promise<void> {
   logger.info('📰 Starting news pipeline...');
 
-  const allArticles = await fetchFeeds();
-  const filtered = allArticles.filter((a) => isRelevant(a.title));
+  const startedAt = new Date().toISOString();
+  const startMs = Date.now();
+  let articlesPosted = 0;
+  let error: string | undefined;
 
-  logger.info(`🔍 After filter: ${filtered.length} of ${allArticles.length}`);
+  try {
+    const allArticles = await fetchFeeds();
+    const filtered = allArticles.filter((a) => isRelevant(a.title));
 
-  const nonDuplicates: FeedArticle[] = [];
-  for (const article of filtered) {
-    if (await isDuplicate(article.url)) continue;
-    nonDuplicates.push(article);
-  }
+    logger.info(`🔍 After filter: ${filtered.length} of ${allArticles.length}`);
 
-  const fresh = await filterSimilar(nonDuplicates);
-
-  const snapshot = await collectMarketSnapshot();
-  const scored = scoreArticles(fresh, snapshot);
-
-  logger.info('📊 Score breakdown (top 5):');
-  scored.slice(0, 5).forEach((a, i) => {
-    logger.info(
-      `  ${i + 1}. [${a.source}] ${a.importanceScore.toFixed(3)} — ${a.title.slice(0, 60)}`,
-    );
-    logger.info(
-      `     auth=${a.scoreBreakdown.authority.toFixed(2)} × fresh=${a.scoreBreakdown.freshness.toFixed(2)}` +
-        ` + kw=${a.scoreBreakdown.keywordBoost.toFixed(2)}` +
-        ` + ctx=${a.scoreBreakdown.contextBoost.toFixed(2)}` +
-        ` − dup=${a.scoreBreakdown.duplicatePenalty.toFixed(2)}` +
-        ` − spam=${a.scoreBreakdown.spamPenalty.toFixed(2)}`,
-    );
-  });
-
-  const ranked =
-    (await withCircuit(
-      geminiCircuit,
-      () => rankArticles(scored.slice(0, MAX_RANKER_INPUT), limit * 3),
-      logger,
-    )) ?? [];
-
-  const rankedUrls = new Set(ranked.map((a) => a.url));
-  setUnusedHeadlines(fresh.filter((a) => !rankedUrls.has(a.url)).map((a) => a.title));
-  logger.info(`📦 Unused headlines saved: ${getUnusedHeadlines().length}`);
-
-  let posted = 0;
-
-  for (const article of ranked) {
-    if (posted >= limit) break;
-
-    const summary =
-      (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
-
-    if (!summary) continue;
-
-    const tgPost = formatPostTelegram(article, summary);
-    const image = await generatePostImage(
-      summary.summary,
-      summary.sentiment as ImageSentiment,
-      summary.category,
-    );
-
-    if (image) {
-      await withCircuit(telegramCircuit, () => sendToTelegramWithPhoto(image.data, tgPost), logger);
-    } else {
-      await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
+    const nonDuplicates: FeedArticle[] = [];
+    for (const article of filtered) {
+      if (await isDuplicate(article.url)) continue;
+      nonDuplicates.push(article);
     }
 
-    if (isXEnabled()) {
-      const xPost = formatPostX(article, summary);
-      await withCircuit(xCircuit, () => postTweet(xPost), logger);
+    const fresh = await filterSimilar(nonDuplicates);
+
+    const snapshot = await collectMarketSnapshot();
+    const scored = scoreArticles(fresh, snapshot);
+
+    logger.info('📊 Score breakdown (top 5):');
+    scored.slice(0, 5).forEach((a, i) => {
+      logger.info(
+        `  ${i + 1}. [${a.source}] ${a.importanceScore.toFixed(3)} — ${a.title.slice(0, 60)}`,
+      );
+      logger.info(
+        `     auth=${a.scoreBreakdown.authority.toFixed(2)} × fresh=${a.scoreBreakdown.freshness.toFixed(2)}` +
+          ` + kw=${a.scoreBreakdown.keywordBoost.toFixed(2)}` +
+          ` + ctx=${a.scoreBreakdown.contextBoost.toFixed(2)}` +
+          ` − dup=${a.scoreBreakdown.duplicatePenalty.toFixed(2)}` +
+          ` − spam=${a.scoreBreakdown.spamPenalty.toFixed(2)}`,
+      );
+    });
+
+    const ranked =
+      (await withCircuit(
+        geminiCircuit,
+        () => rankArticles(scored.slice(0, MAX_RANKER_INPUT), limit * 3),
+        logger,
+      )) ?? [];
+
+    const rankedUrls = new Set(ranked.map((a) => a.url));
+    setUnusedHeadlines(fresh.filter((a) => !rankedUrls.has(a.url)).map((a) => a.title));
+    logger.info(`📦 Unused headlines saved: ${getUnusedHeadlines().length}`);
+
+    for (const article of ranked) {
+      if (articlesPosted >= limit) break;
+
+      const summary =
+        (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
+
+      if (!summary) continue;
+
+      const tgPost = formatPostTelegram(article, summary);
+      const image = await generatePostImage(
+        summary.summary,
+        summary.sentiment as ImageSentiment,
+        summary.category,
+      );
+
+      if (image) {
+        await withCircuit(
+          telegramCircuit,
+          () => sendToTelegramWithPhoto(image.data, tgPost),
+          logger,
+        );
+      } else {
+        await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
+      }
+
+      if (isXEnabled()) {
+        const xPost = formatPostX(article, summary);
+        await withCircuit(xCircuit, () => postTweet(xPost), logger);
+      }
+
+      await saveArticle(article);
+      await markAsPosted(article.url);
+      updateLastPosted();
+
+      articlesPosted++;
+      await new Promise((resolve) => setTimeout(resolve, 5000));
     }
 
-    await saveArticle(article);
-    await markAsPosted(article.url);
-    updateLastPosted();
-
-    posted++;
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    logger.info(`✅ Posted: ${articlesPosted}`);
+  } catch (err) {
+    error = String(err);
+    logger.error(`❌ News pipeline error: ${err}`);
+  } finally {
+    db.insert(pipelineRuns)
+      .values({
+        type: 'news',
+        startedAt,
+        completedAt: new Date().toISOString(),
+        articlesFetched: 0, // scored before ranked — good enough approximation
+        articlesPosted,
+        flashRpdUsed: 100 - getRemainingRequests(), // remaining tracked globally
+        durationMs: Date.now() - startMs,
+        error: error ?? null,
+      })
+      .run();
   }
-
-  logger.info(`✅ Posted: ${posted}`);
 }
 
 // ─── Evening Digest ───────────────────────────────────────────────────────────
 
 export async function runEveningDigest(): Promise<void> {
   logger.info('🌙 Starting evening digest...');
+
+  const startedAt = new Date().toISOString();
+  const startMs = Date.now();
+  let error: string | undefined;
+
   try {
     const goodNightMsg = await generateGoodNight();
     const image = await generateNightImage(goodNightMsg);
@@ -169,8 +227,19 @@ export async function runEveningDigest(): Promise<void> {
     }
 
     await withCircuit(xCircuit, () => postTweet(goodNightMsg), logger);
-  } catch (error) {
-    logger.error(`❌ Evening digest error: ${error}`);
+  } catch (err) {
+    error = String(err);
+    logger.error(`❌ Evening digest error: ${err}`);
+  } finally {
+    db.insert(pipelineRuns)
+      .values({
+        type: 'evening',
+        startedAt,
+        completedAt: new Date().toISOString(),
+        durationMs: Date.now() - startMs,
+        error: error ?? null,
+      })
+      .run();
   }
 }
 
@@ -332,28 +401,49 @@ export async function scanForBreaking(): Promise<void> {
 export async function runBreakingNewsPipeline(article: FeedArticle): Promise<void> {
   logger.info(`🚨 Running breaking pipeline for: ${article.title}`);
 
-  await saveArticle(article);
-  await markAsPosted(article.url);
+  const startedAt = new Date().toISOString();
+  const startMs = Date.now();
+  let error: string | undefined;
 
-  const summary =
-    (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
+  try {
+    await saveArticle(article);
+    await markAsPosted(article.url);
 
-  if (summary) {
-    const tgPost = `🚨 ${formatPostTelegram(article, summary)}`;
-    await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
+    const summary =
+      (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
 
-    if (isXEnabled()) {
-      const xPost = formatPostX(article, summary);
-      await withCircuit(xCircuit, () => postTweet(`🚨 ${xPost}`), logger);
+    if (summary) {
+      const tgPost = `🚨 ${formatPostTelegram(article, summary)}`;
+      await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
+
+      if (isXEnabled()) {
+        const xPost = formatPostX(article, summary);
+        await withCircuit(xCircuit, () => postTweet(`🚨 ${xPost}`), logger);
+      }
+    } else {
+      const fallback = `🚨 *BREAKING*\n\n${article.title}\n\n🔗 ${article.url}`;
+      await withCircuit(telegramCircuit, () => sendToTelegram(fallback), logger);
+      if (isXEnabled()) {
+        await withCircuit(xCircuit, () => postTweet(`🚨 ${article.title}\n${article.url}`), logger);
+      }
     }
-  } else {
-    const fallback = `🚨 *BREAKING*\n\n${article.title}\n\n🔗 ${article.url}`;
-    await withCircuit(telegramCircuit, () => sendToTelegram(fallback), logger);
-    if (isXEnabled()) {
-      await withCircuit(xCircuit, () => postTweet(`🚨 ${article.title}\n${article.url}`), logger);
-    }
+
+    updateLastPosted();
+    logger.info(`🚨 Breaking pipeline complete: "${article.title}"`);
+  } catch (err) {
+    error = String(err);
+    logger.error(`❌ Breaking pipeline error: ${err}`);
+  } finally {
+    db.insert(pipelineRuns)
+      .values({
+        type: 'breaking',
+        startedAt,
+        completedAt: new Date().toISOString(),
+        articlesPosted: error ? 0 : 1,
+        flashRpdUsed: 100 - getRemainingRequests(),
+        durationMs: Date.now() - startMs,
+        error: error ?? null,
+      })
+      .run();
   }
-
-  updateLastPosted();
-  logger.info(`🚨 Breaking pipeline complete: "${article.title}"`);
 }
