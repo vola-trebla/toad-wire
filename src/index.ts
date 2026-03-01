@@ -5,7 +5,7 @@ import { fetchPrices, formatPricesPost } from './sources/prices.js';
 import { isDuplicate, saveArticle, markAsPosted } from './pipeline/dedup.js';
 import { generateGoodNight, summarizeArticle } from './pipeline/summarize.js';
 import { formatPostTelegram, formatPostX } from './pipeline/format.js';
-import { sendToTelegram } from './pipeline/post.js';
+import { sendToTelegram, sendToTelegramWithPhoto } from './pipeline/post.js';
 import { logger } from './utils/logger.js';
 import { db } from './db/client.js';
 import { sql } from 'drizzle-orm';
@@ -35,6 +35,11 @@ import { clusterByStory, applyClusterBoosts } from './pipeline/story-cluster.js'
 import { scoreArticles, SCORE_THRESHOLDS } from './pipeline/scorer.js';
 import { checkFeedHealth, reportFeedHealth } from './sources/feed-health.js';
 import { createCircuitState, withCircuit } from './utils/circuit-breaker.js';
+import {
+  generateNightImage,
+  generatePostImage,
+  type ImageSentiment,
+} from './images/generate-image.js';
 
 initSentry();
 
@@ -147,7 +152,17 @@ async function runNewsPipeline(limit = 5): Promise<void> {
 
     // Telegram post
     const tgPost = formatPostTelegram(article, summary);
-    await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
+    const image = await generatePostImage(
+      summary.summary,
+      summary.sentiment as ImageSentiment,
+      summary.category,
+    );
+
+    if (image) {
+      await withCircuit(telegramCircuit, () => sendToTelegramWithPhoto(image.data, tgPost), logger);
+    } else {
+      await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
+    }
 
     // X post (if enabled)
     if (isXEnabled()) {
@@ -171,8 +186,22 @@ async function runEveningDigest(): Promise<void> {
   logger.info('🌙 Starting evening digest...');
   try {
     const goodNightMsg = await generateGoodNight();
-    await sendToTelegram(goodNightMsg);
-    await postTweet(goodNightMsg);
+
+    // Generate night image
+    const image = await generateNightImage(goodNightMsg);
+
+    if (image) {
+      await withCircuit(
+        telegramCircuit,
+        () => sendToTelegramWithPhoto(image.data, goodNightMsg),
+        logger,
+      );
+    } else {
+      await withCircuit(telegramCircuit, () => sendToTelegram(goodNightMsg), logger);
+    }
+
+    // X — text only (no image on Twitter)
+    await withCircuit(xCircuit, () => postTweet(goodNightMsg), logger);
   } catch (error) {
     logger.error(`❌ Evening digest error: ${error}`);
   }
