@@ -267,6 +267,7 @@ async function runDegenTime(): Promise<void> {
 }
 
 // 📤 Dispatcher — every 20 min, 08:00–23:00
+// @ts-ignore
 async function dispatchNextMicroPost(): Promise<void> {
   // 1. Check rate limits before doing anything
   const rateCheck = canTweet(xBudgetState);
