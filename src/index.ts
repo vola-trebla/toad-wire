@@ -414,7 +414,7 @@ cron.schedule(
   },
   { timezone: TIMEZONE },
 );
-cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
+// cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
 cron.schedule('45 13 * * *', () => void runDegenTime(), { timezone: TIMEZONE });
 // Breaking news scanner — every 10 min, 07:00–23:00
 cron.schedule('*/10 7-23 * * *', () => void scanForBreaking(), { timezone: TIMEZONE });
