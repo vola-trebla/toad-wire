@@ -17,6 +17,14 @@ const SummarySchema = z.object({
   emoji: z.string(),
   category: z.enum(['regulacion', 'defi', 'trading', 'seguridad', 'tecnologia', 'latam']),
   tweet: z.string().describe('Versión compacta para X/Twitter, máx 260 caracteres'),
+  // NER — extracted in same LLM call, zero extra RPD
+  entities: z.object({
+    companies: z.array(z.string()).max(5),
+    people: z.array(z.string()).max(3),
+    assets: z.array(z.string()).max(5),
+    protocols: z.array(z.string()).max(3),
+    regulators: z.array(z.string()).max(3),
+  }),
 });
 
 export type Summary = z.infer<typeof SummarySchema>;
@@ -57,6 +65,7 @@ Generate a JSON object with these fields:
 - emoji: ONE single emoji that reflects the real tone of the news.
 - category: ONE category from enum: regulacion | defi | trading | seguridad | tecnologia | latam.
 - tweet: compact version for X/Twitter. MAX 260 characters. Emoji + key fact + Sapo tone. No URL (added separately).
+- entities: extract key entities mentioned. companies (e.g. "Binance", "BlackRock"), people (e.g. "CZ", "Gensler"), assets (e.g. "BTC", "ETH"), protocols (e.g. "Uniswap"), regulators (e.g. "SEC", "CFTC"). Use empty arrays if none found.
 
 Rules:
 - Output language: Latin American Spanish.

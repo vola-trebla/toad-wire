@@ -18,6 +18,7 @@ export const articles = sqliteTable('articles', {
   importanceScore: real('importance_score'), // calculated Impact Score
   tweet: text('tweet'), // X-ready version
   clusterId: text('cluster_id'), // story cluster reference
+  entities: text('entities'), // JSON: { companies, people, assets, protocols, regulators }
 });
 
 export const microPosts = sqliteTable('micro_posts', {
