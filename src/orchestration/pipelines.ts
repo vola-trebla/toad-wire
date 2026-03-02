@@ -307,24 +307,24 @@ export async function runAfternoonBatch(): Promise<void> {
   }
 }
 
-// export async function runDegenTime(): Promise<void> {
-//   logger.info('💊 Starting DegenTime...');
-//   try {
-//     const headlines = getUnusedHeadlines();
-//     if (headlines.length === 0) {
-//       logger.warn('⚠️ No unused headlines for DegenTime, skipping');
-//       return;
-//     }
-//     const snapshot = await collectMarketSnapshot(headlines);
-//     const posts = await generateBatch('degen_time', snapshot);
-//     if (posts.length > 0) {
-//       await enqueueMicroPosts(posts);
-//       logger.info(`💊 DegenTime enqueued: ${posts[0]!.text}`);
-//     }
-//   } catch (error) {
-//     logger.error(`❌ DegenTime error: ${error}`);
-//   }
-// }
+export async function runDegenTime(): Promise<void> {
+  logger.info('💊 Starting DegenTime...');
+  try {
+    const headlines = getUnusedHeadlines();
+    if (headlines.length === 0) {
+      logger.warn('⚠️ No unused headlines for DegenTime, skipping');
+      return;
+    }
+    const snapshot = await collectMarketSnapshot(headlines);
+    const posts = await generateBatch('degen_time', snapshot);
+    if (posts.length > 0) {
+      await enqueueMicroPosts(posts);
+      logger.info(`💊 DegenTime enqueued: ${posts[0]!.text}`);
+    }
+  } catch (error) {
+    logger.error(`❌ DegenTime error: ${error}`);
+  }
+}
 
 // ─── Micro-post Dispatcher ────────────────────────────────────────────────────
 // TODO :: dispatchNextMicroPost
@@ -366,60 +366,60 @@ export async function dispatchNextMicroPost(): Promise<void> {
 
 // ─── Breaking News ────────────────────────────────────────────────────────────
 
-// export async function scanForBreaking(): Promise<void> {
-//   try {
-//     const allArticles = await fetchFeeds();
-//     const filtered = allArticles.filter((a) => isRelevant(a.title));
+export async function scanForBreaking(): Promise<void> {
+  try {
+    const allArticles = await fetchFeeds();
+    const filtered = allArticles.filter((a) => isRelevant(a.title));
 
-//     const fresh: FeedArticle[] = [];
-//     for (const article of filtered) {
-//       if (await isDuplicate(article.url)) continue;
-//       fresh.push(article);
-//     }
+    const fresh: FeedArticle[] = [];
+    for (const article of filtered) {
+      if (await isDuplicate(article.url)) continue;
+      fresh.push(article);
+    }
 
-//     if (fresh.length === 0) return;
+    if (fresh.length === 0) return;
 
-//     const snapshot = await collectMarketSnapshot();
-//     const scored = scoreArticles(fresh, snapshot);
+    const snapshot = await collectMarketSnapshot();
+    const scored = scoreArticles(fresh, snapshot);
 
-//     const clusters = clusterByStory(fresh);
-//     applyClusterBoosts(scored, clusters);
+    const clusters = clusterByStory(fresh);
+    applyClusterBoosts(scored, clusters);
 
-//     const fastTrack = scored.find(
-//       (a) =>
-//         a.tier === 1 &&
-//         a.importanceScore > 1.05 &&
-//         FAST_TRACK_CATEGORIES.test(a.title) &&
-//         !breakingInProgress.has(a.url),
-//     );
+    const fastTrack = scored.find(
+      (a) =>
+        a.tier === 1 &&
+        a.importanceScore > 1.05 &&
+        FAST_TRACK_CATEGORIES.test(a.title) &&
+        !breakingInProgress.has(a.url),
+    );
 
-//     if (fastTrack) {
-//       logger.info(
-//         `⚡ Fast-track breaking: "${fastTrack.title}" (score: ${fastTrack.importanceScore.toFixed(2)})`,
-//       );
-//     }
+    if (fastTrack) {
+      logger.info(
+        `⚡ Fast-track breaking: "${fastTrack.title}" (score: ${fastTrack.importanceScore.toFixed(2)})`,
+      );
+    }
 
-//     const breaking = scored.filter((a) => a.importanceScore > SCORE_THRESHOLDS.BREAKING);
-//     const top = fastTrack ?? breaking[0];
-//     if (!top) return;
+    const breaking = scored.filter((a) => a.importanceScore > SCORE_THRESHOLDS.BREAKING);
+    const top = fastTrack ?? breaking[0];
+    if (!top) return;
 
-//     logger.info(`🚨 Breaking detected: "${top.title}" (score: ${top.importanceScore.toFixed(2)})`);
+    logger.info(`🚨 Breaking detected: "${top.title}" (score: ${top.importanceScore.toFixed(2)})`);
 
-//     if (breakingInProgress.has(top.url)) {
-//       logger.info('🚨 Breaking already in progress, skipping');
-//       return;
-//     }
+    if (breakingInProgress.has(top.url)) {
+      logger.info('🚨 Breaking already in progress, skipping');
+      return;
+    }
 
-//     breakingInProgress.add(top.url);
-//     try {
-//       await runBreakingNewsPipeline(top);
-//     } finally {
-//       breakingInProgress.delete(top.url);
-//     }
-//   } catch (error) {
-//     logger.error(`❌ Breaking news scan error: ${error}`);
-//   }
-// }
+    breakingInProgress.add(top.url);
+    try {
+      await runBreakingNewsPipeline(top);
+    } finally {
+      breakingInProgress.delete(top.url);
+    }
+  } catch (error) {
+    logger.error(`❌ Breaking news scan error: ${error}`);
+  }
+}
 
 export async function runBreakingNewsPipeline(article: FeedArticle): Promise<void> {
   logger.info(`🚨 Running breaking pipeline for: ${article.title}`);
