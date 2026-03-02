@@ -27,6 +27,7 @@ export function startScheduler(): void {
   }
 
   // ─── Maintenance ───────────────────────────────────────────────────────────
+
   cron.schedule('0 2 * * *', () => runBackup(), { timezone: TIMEZONE });
 
   cron.schedule(
@@ -39,47 +40,55 @@ export function startScheduler(): void {
     { timezone: TIMEZONE },
   );
 
-  // ─── Content Pipeline ──────────────────────────────────────────────────────
+  // ─── Feed Health ───────────────────────────────────────────────────────────
 
-  // Morning — 10:00 UTC-3
-  cron.schedule('30 9 * * *', () => void runMorningBatches(), { timezone: TIMEZONE });
-  cron.schedule('0 10 * * 2-7', () => void runMorningDigest(), { timezone: TIMEZONE });
+  cron.schedule('*/30 * * * *', () => void checkFeedHealth(), { timezone: TIMEZONE });
+  cron.schedule('0 8 * * 1', () => void reportFeedHealth(), { timezone: TIMEZONE }); // Monday 8:00 — before briefing
 
-  // Midday — 13:00 UTC-3 = 10:00 Mex — оба онлайн
+  // ─── Monday Briefing — 9:00 ────────────────────────────────────────────────
+
+  cron.schedule('0 9 * * 1', () => void runMondayBriefing(), { timezone: TIMEZONE });
+
+  // ─── Morning — 9:30 / 10:00 ────────────────────────────────────────────────
+
+  cron.schedule('30 9 * * *', () => void runMorningBatches(), { timezone: TIMEZONE }); // every day
+  cron.schedule('0 10 * * 2-7', () => void runMorningDigest(), { timezone: TIMEZONE }); // Tue–Sun (Mon has briefing)
+
+  // ─── Midday — 13:00 ────────────────────────────────────────────────────────
+
   cron.schedule('0 13 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
   cron.schedule('30 13 * * *', () => void runAfternoonBatch(), { timezone: TIMEZONE });
   // cron.schedule('45 13 * * *', () => void runDegenTime(), { timezone: TIMEZONE });
 
-  // Prime time будни — 18:00, 20:00, 22:00 UTC-3
+  // ─── Prime Time Weekdays — 18:00 / 20:00 / 22:00 ──────────────────────────
+
   cron.schedule('0 18 * * 1-5', () => void runNewsPipeline(1), { timezone: TIMEZONE });
   cron.schedule('0 20 * * 1-5', () => void runNewsPipeline(1), { timezone: TIMEZONE });
   cron.schedule('0 22 * * 1-5', () => void runNewsPipeline(1), { timezone: TIMEZONE });
 
-  // Prime time выходные — плотнее: 17:00, 19:00, 21:00, 23:00 UTC-3
+  // ─── Prime Time Weekend — 17:00 / 19:00 / 21:00 / 23:00 ───────────────────
+
   cron.schedule('0 17 * * 6,0', () => void runNewsPipeline(1), { timezone: TIMEZONE });
   cron.schedule('0 19 * * 6,0', () => void runNewsPipeline(1), { timezone: TIMEZONE });
-  cron.schedule('0 21 * * 6,0', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+  cron.schedule('0 21 * * 0', () => void runNewsPipeline(1), { timezone: TIMEZONE }); // Sunday only — Saturday has weekly summary
   cron.schedule('0 23 * * 6,0', () => void runNewsPipeline(1), { timezone: TIMEZONE });
 
-  // Evening digest — 22:30 будни, 23:30 выходные
-  cron.schedule('30 22 * * 1-5', () => void runEveningDigest(), { timezone: TIMEZONE });
-  cron.schedule('30 23 * * 6,0', () => void runEveningDigest(), { timezone: TIMEZONE });
+  // ─── Evening Digest — 22:30 / 23:30 ───────────────────────────────────────
 
-  // ─── Micro-post Dispatcher (currently paused — enable when X is stable) ───
-  // cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
+  cron.schedule('30 22 * * 1-5', () => void runEveningDigest(), { timezone: TIMEZONE }); // weekdays
+  cron.schedule('30 23 * * 6,0', () => void runEveningDigest(), { timezone: TIMEZONE }); // weekend
 
-  // ─── Breaking News ─────────────────────────────────────────────────────────
+  // ─── Weekly Summary — Saturday 21:00 ──────────────────────────────────────
+
+  cron.schedule('0 21 * * 6', () => void runWeeklySummary(), { timezone: TIMEZONE });
+
+  // ─── Breaking News — every 10 min, 7:00–23:00 ─────────────────────────────
+  // Threshold: 1.30 | Cooldown: 2h between posts
+
   cron.schedule('*/10 7-23 * * *', () => void scanForBreaking(), { timezone: TIMEZONE });
 
-  // ─── Feed Health ───────────────────────────────────────────────────────────
-  cron.schedule('*/30 * * * *', () => void checkFeedHealth(), { timezone: TIMEZONE });
-  cron.schedule('0 9 * * 1', () => void reportFeedHealth(), { timezone: TIMEZONE });
-
-  // Monday briefing — 9:00 ART/UYT
-  cron.schedule('0 9 * * 1', () => void runMondayBriefing(), { timezone: TIMEZONE });
-
-  // Weekly summary — Saturday 21:00 ART/UYT
-  cron.schedule('0 21 * * 6', () => void runWeeklySummary(), { timezone: TIMEZONE });
+  // ─── Micro-post Dispatcher (paused) ───────────────────────────────────────
+  // cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
 
   logger.info('📅 Scheduler started');
 }
