@@ -48,7 +48,7 @@ export function startScheduler(): void {
   // Midday — 13:00 UTC-3 = 10:00 Mex — оба онлайн
   cron.schedule('0 13 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
   cron.schedule('30 13 * * *', () => void runAfternoonBatch(), { timezone: TIMEZONE });
-  cron.schedule('45 13 * * *', () => void runDegenTime(), { timezone: TIMEZONE });
+  // cron.schedule('45 13 * * *', () => void runDegenTime(), { timezone: TIMEZONE });
 
   // Prime time будни — 18:00, 20:00, 22:00 UTC-3
   cron.schedule('0 18 * * 1-5', () => void runNewsPipeline(1), { timezone: TIMEZONE });
@@ -69,7 +69,7 @@ export function startScheduler(): void {
   // cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
 
   // ─── Breaking News ─────────────────────────────────────────────────────────
-  cron.schedule('*/10 7-23 * * *', () => void scanForBreaking(), { timezone: TIMEZONE });
+  // cron.schedule('*/10 7-23 * * *', () => void scanForBreaking(), { timezone: TIMEZONE });
 
   // ─── Feed Health ───────────────────────────────────────────────────────────
   cron.schedule('*/30 * * * *', () => void checkFeedHealth(), { timezone: TIMEZONE });
