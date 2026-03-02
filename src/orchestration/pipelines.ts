@@ -243,8 +243,10 @@ export async function runEveningDigest(): Promise<void> {
         () => sendToTelegramWithPhoto(image.data, goodNightMsg),
         logger,
       );
+      await withCircuit(xCircuit, () => postTweetWithMedia(goodNightMsg, image.data), logger);
     } else {
       await withCircuit(telegramCircuit, () => sendToTelegram(goodNightMsg), logger);
+      await withCircuit(xCircuit, () => postTweet(goodNightMsg), logger);
     }
 
     await withCircuit(xCircuit, () => postTweet(goodNightMsg), logger);
