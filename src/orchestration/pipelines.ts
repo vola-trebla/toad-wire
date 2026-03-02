@@ -519,6 +519,13 @@ export async function runMondayBriefing(): Promise<void> {
     const post = text.trim();
     logger.info(`📝 Monday briefing:\n${post}`);
 
+    // Помечаем статьи как использованные
+    const fresh = scored.slice(0, 5);
+    for (const article of fresh) {
+      await saveArticle(article);
+      await markAsPosted(article.url);
+    }
+
     await withCircuit(telegramCircuit, () => sendToTelegramPlain(post), logger);
     await withCircuit(xCircuit, () => postTweet(post), logger);
 
