@@ -7,11 +7,13 @@ import { restoreFeedHealthFromDB } from './ingestion/feed-health.js';
 import { db } from './db/client.js';
 import { sql } from 'drizzle-orm';
 import { logger } from './utils/logger.js';
+import { initBreakingCooldown } from './orchestration/state.js';
 
 async function main(): Promise<void> {
   initSentry();
   startHealthServer();
   await restoreFeedHealthFromDB();
+  await initBreakingCooldown();
   startScheduler();
   logger.info('🐸 El Sapo Cripto arrancó! Esperando el horario...');
 }

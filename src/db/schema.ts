@@ -63,3 +63,10 @@ export const pipelineRuns = sqliteTable('pipeline_runs', {
   durationMs: integer('duration_ms'),
   error: text('error'),
 });
+
+// v2.0 — Persistent bot state (survives Railway restarts)
+export const botState = sqliteTable('bot_state', {
+  key: text('key').primaryKey(),
+  value: text('value').notNull(),
+  updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`),
+});
