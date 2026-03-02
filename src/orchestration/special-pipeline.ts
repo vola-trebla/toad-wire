@@ -1,14 +1,11 @@
 // src/orchestration/special-pipeline.ts
-import { fetchFeeds } from '../ingestion/rss.js';
-import { fetchPrices, formatPricesPost } from '../market/prices.js';
 import { saveArticle, markAsPosted } from '../ingestion/dedup.js';
 import { sendToTelegramPlain } from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 import { fetchFearGreed } from '../market/feargreed.js';
+import { fetchPrices, formatPricesPost } from '../market/prices.js';
 import { updateLastPosted } from '../health/server.js';
-import { collectMarketSnapshot } from '../market/market-snapshot.js';
 import { postTweet } from '../delivery/twitter.js';
-import { scoreArticles } from '../intelligence/scorer.js';
 import { withCircuit } from '../utils/circuit-breaker.js';
 import { telegramCircuit, xCircuit } from './state.js';
 import { db } from '../db/client.js';
@@ -20,7 +17,7 @@ import {
   buildWeeklySummaryPrompt,
 } from '../prompts/summarize.prompt.js';
 import { desc, gte } from 'drizzle-orm';
-import { isRelevant, withPipelineMetrics } from './helpers.js';
+import { withPipelineMetrics, getFilteredScoredArticles } from './helpers.js';
 
 // ─── Monday Briefing ──────────────────────────────────────────────────────────
 
@@ -28,17 +25,17 @@ export async function runMondayBriefing(): Promise<void> {
   logger.info('🐸 Starting Monday briefing...');
 
   await withPipelineMetrics('monday', async () => {
-    const [prices, fearGreed, allArticles] = await Promise.all([
+    const [prices, fearGreed, { scored }] = await Promise.all([
       fetchPrices(),
       fetchFearGreed(),
-      fetchFeeds(),
+      getFilteredScoredArticles({
+        withSimilarityFilter: false,
+        withRecentTitles: false,
+        withDedup: false,
+      }),
     ]);
 
-    const filtered = allArticles.filter((a) => isRelevant(a.title));
-    const snapshot = await collectMarketSnapshot();
-    const scored = scoreArticles(filtered, snapshot);
     const topHeadlines = scored.slice(0, 5).map((a) => a.title);
-
     const pricesText = formatPricesPost(prices, fearGreed);
 
     const { text } = await generateText({
@@ -49,8 +46,8 @@ export async function runMondayBriefing(): Promise<void> {
     const post = text.trim();
     logger.info(`📝 Monday briefing:\n${post}`);
 
-    const fresh = scored.slice(0, 5);
-    for (const article of fresh) {
+    // Mark top articles as used
+    for (const article of scored.slice(0, 5)) {
       await saveArticle(article);
       await markAsPosted(article.url);
     }

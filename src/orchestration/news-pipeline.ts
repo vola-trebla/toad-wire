@@ -1,18 +1,15 @@
 // src/orchestration/news-pipeline.ts
-import { type FeedArticle, fetchFeeds } from '../ingestion/rss.js';
+import { type FeedArticle } from '../ingestion/rss.js';
 import { fetchPrices, formatPricesPost, formatPricesPostX } from '../market/prices.js';
-import { isDuplicate, saveArticle, markAsPosted } from '../ingestion/dedup.js';
+import { saveArticle, markAsPosted } from '../ingestion/dedup.js';
 import { summarizeArticle } from '../content/summarize.js';
 import { formatPostTelegram, formatPostX } from '../content/format.js';
 import { sendToTelegram, sendToTelegramWithPhoto } from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 import { rankArticles } from '../intelligence/ranker.js';
 import { fetchFearGreed } from '../market/feargreed.js';
-import { filterSimilar } from '../ingestion/similarity.js';
 import { updateLastPosted } from '../health/server.js';
-import { collectMarketSnapshot } from '../market/market-snapshot.js';
 import { isXEnabled, postTweet, postTweetWithMedia } from '../delivery/twitter.js';
-import { scoreArticles } from '../intelligence/scorer.js';
 import { withCircuit } from '../utils/circuit-breaker.js';
 import { generatePostImage, type ImageSentiment } from '../images/generate-image.js';
 import { MAX_RANKER_INPUT } from '../utils/constants.js';
@@ -24,7 +21,7 @@ import {
   setUnusedHeadlines,
 } from './state.js';
 import { getRemainingRequests } from '../utils/request-budget.js';
-import { isRelevant, withPipelineMetrics } from './helpers.js';
+import { withPipelineMetrics, getFilteredScoredArticles } from './helpers.js';
 
 // ─── Publish Article ──────────────────────────────────────────────────────────
 
@@ -80,25 +77,16 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
   logger.info('📰 Starting news pipeline...');
 
   await withPipelineMetrics('news', async (metrics) => {
-    const allArticles = await fetchFeeds();
-    metrics.articlesFetched = allArticles.length;
+    const { scored, fresh, fetchedCount, filteredCount } = await getFilteredScoredArticles({
+      withSimilarityFilter: true,
+      withRecentTitles: false,
+      withDedup: true,
+    });
 
-    const filtered = allArticles.filter((a) => isRelevant(a.title));
-    metrics.articlesFiltered = filtered.length;
+    metrics.articlesFetched = fetchedCount;
+    metrics.articlesFiltered = filteredCount;
 
-    logger.info(`🔍 After filter: ${filtered.length} of ${allArticles.length}`);
-
-    const nonDuplicates: FeedArticle[] = [];
-    for (const article of filtered) {
-      if (await isDuplicate(article.url)) continue;
-      nonDuplicates.push(article);
-    }
-
-    const fresh = await filterSimilar(nonDuplicates);
-
-    const snapshot = await collectMarketSnapshot();
-    const scored = scoreArticles(fresh, snapshot);
-
+    logger.info(`🔍 After filter: ${filteredCount} of ${fetchedCount}`);
     logger.info('📊 Score breakdown (top 5):');
     scored.slice(0, 5).forEach((a, i) => {
       logger.info(

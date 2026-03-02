@@ -1,15 +1,14 @@
 // src/orchestration/breaking-pipeline.ts
-import { type FeedArticle, fetchFeeds } from '../ingestion/rss.js';
-import { isDuplicate, saveArticle, markAsPosted } from '../ingestion/dedup.js';
+import { type FeedArticle } from '../ingestion/rss.js';
+import { saveArticle, markAsPosted } from '../ingestion/dedup.js';
 import { summarizeArticle } from '../content/summarize.js';
 import { formatPostTelegram } from '../content/format.js';
 import { sendToTelegram } from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 import { updateLastPosted } from '../health/server.js';
-import { collectMarketSnapshot } from '../market/market-snapshot.js';
 import { isXEnabled, postTweet } from '../delivery/twitter.js';
 import { clusterByStory, applyClusterBoosts } from '../intelligence/story-cluster.js';
-import { scoreArticles, SCORE_THRESHOLDS } from '../intelligence/scorer.js';
+import { SCORE_THRESHOLDS } from '../intelligence/scorer.js';
 import { withCircuit } from '../utils/circuit-breaker.js';
 import { FAST_TRACK_CATEGORIES } from '../utils/constants.js';
 import {
@@ -17,32 +16,24 @@ import {
   xCircuit,
   geminiCircuit,
   breakingInProgress,
-  getUnusedHeadlines,
   canPostBreaking,
   recordBreakingPost,
 } from './state.js';
 import { getRemainingRequests } from '../utils/request-budget.js';
-import { isRelevant, withPipelineMetrics } from './helpers.js';
+import { withPipelineMetrics, getFilteredScoredArticles } from './helpers.js';
 import { publishArticle } from './news-pipeline.js';
 
 // ─── Breaking News Scanner ────────────────────────────────────────────────────
 
 export async function scanForBreaking(): Promise<void> {
   try {
-    const allArticles = await fetchFeeds();
-    const filtered = allArticles.filter((a) => isRelevant(a.title));
-
-    const fresh: FeedArticle[] = [];
-    for (const article of filtered) {
-      if (await isDuplicate(article.url)) continue;
-      fresh.push(article);
-    }
+    const { scored, fresh } = await getFilteredScoredArticles({
+      withSimilarityFilter: false,
+      withRecentTitles: true,
+      withDedup: true,
+    });
 
     if (fresh.length === 0) return;
-
-    const snapshot = await collectMarketSnapshot();
-    const recentTitles = getUnusedHeadlines();
-    const scored = scoreArticles(fresh, snapshot, recentTitles);
 
     const clusters = clusterByStory(fresh);
     applyClusterBoosts(scored, clusters);
