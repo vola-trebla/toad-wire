@@ -14,94 +14,80 @@ export const VISUAL_STYLES: VisualStyle[] = [
       'Retro CRT monitor display, phosphor green glow, visible scanlines, rectangular UI panels, fixed-width typography layout, structured grid, 8-bit computer aesthetic.',
   },
   {
+    name: 'micro-matrix',
+    description:
+      'Complex isometric micro-chip architecture layout, visible conductive copper traces, geometric micro-processor blocks, complex layered circuit board topography, emerald and dark-water color palette, pixel-art textures.',
+  },
+  {
     name: 'circuit',
     description:
       'Printed circuit board layout, visible copper traces, microchip blocks, structured electronic pathways',
   },
   {
+    name: 'market-topography',
+    description:
+      'Low-poly 3D terrain map, contour elevation lines forming a structured surface, layered depth-buffer height bands, high-tech industrial aesthetic, dark background, precise perspective.',
+  },
+  {
+    name: 'depth-strata',
+    description:
+      'Stacked monochromatic strata layers, vertical cross-section of data blocks, complex density gradient, high-contrast trading terminal dashboard, sharp rectangular geometry, no blurred edges.',
+  },
+  {
+    name: 'liquidity-wall',
+    description:
+      'Massive vertical monolithic blocks, dense stacked pixelated rectangles, heavy market pressure visualization, industrial dark UI, flat vector aesthetic, no perspective distortion.',
+  },
+  {
     name: 'order-depth',
     description:
-      'Horizontal layered depth-buffer visualization, stacked monochromatic liquidity blocks, sharp shifting pressure zones, dark trading interface, high contrast, pixel-perfect rectangles',
-  },
-  {
-    name: 'signal-rain',
-    description:
-      'Vertical falling light columns, segmented digital streaks, controlled cascading data particles',
-  },
-  {
-    name: 'oscilloscope',
-    description:
-      'Oscilloscope display with sharp waveform lines, horizontal scan grid, precise signal amplitude patterns',
-  },
-  {
-    name: 'datastream',
-    description:
-      'Parallel vertical data streams, structured numeric blocks, motion blur limited to straight channels',
-  },
-  {
-    name: 'neon-grid',
-    description:
-      'Symmetrical glowing grid, rectangular cells, layered financial geometry, precise perspective alignment',
-  },
-  {
-    name: 'fracture',
-    description:
-      'Geometric vector shards splitting along jagged straight lines, controlled digital fragmentation, sharp angular contrast, dark background, glitch-art elements, broken glass effect',
-  },
-  {
-    name: 'signal-wireframe',
-    description:
-      '3D polygon wireframe mesh, glowing edges, structured triangular surfaces, clean spatial depth',
-  },
-  {
-    name: 'heatmap',
-    description:
-      'Clustered rectangular heat zones, smooth gradient blocks, density visualization across a grid plane',
+      'Horizontal layered depth-buffer visualization, stacked monochromatic liquidity blocks, sharp shifting pressure zones, dark trading interface, high contrast, pixel-perfect rectangles.',
   },
   {
     name: 'holo-chart',
     description:
-      'Floating translucent chart panels, vertical candlestick silhouettes, layered holographic UI frames',
+      'Isometric volumetric structures, floating translucent data panes, complex UI dashboard overlays, futuristic analytics tower, monochromatic blue phosphor tones.',
+  },
+  {
+    name: 'signal-wireframe',
+    description:
+      '3D polygon wireframe mesh, glowing edges, structured triangular surfaces, clean spatial depth, high-tech altitude map aesthetic.',
+  },
+  {
+    name: 'continent-grid',
+    description:
+      'Large-scale volumetric continental shelves on a dark wireframe sphere, precise symmetrical longitude and latitude lines, topographic elevation clusters, minimalist geometric data nodes, complex satellite view mapping.',
+  },
+
+  {
+    name: 'seismic-spike',
+    description:
+      'Aggressive jagged fault lines, geometric vector shards splitting vertically along a central axis, controlled fragmentation texture, dark background, glitch-art elements, broken data structure effect.',
+  },
+  {
+    name: 'fracture',
+    description:
+      'Geometric vector shards splitting along jagged straight lines, controlled digital fragmentation, sharp angular contrast, dark background, glitch-art elements, broken glass effect.',
+  },
+  {
+    name: 'oscilloscope',
+    description:
+      'Oscilloscope display with sharp waveform lines, horizontal scan grid, precise signal amplitude patterns, monochrome cyan signal glow.',
+  },
+  {
+    name: 'vector-terrain',
+    description:
+      'Directional vector arrow paths flow map across a textured 3D grid surface, structured liquidity channels, subtle movement visualization, industrial dark UI aesthetic, topographic flow lines.',
+  },
+  {
+    name: 'node-cluster',
+    description:
+      'Scattered glowing data nodes forming asymmetric clusters, thin connection lines, distributed network structure, no organic curves.',
   },
   {
     name: 'bio-circuit',
     description:
       'Hybrid organic microcircuitry, branching neon bioluminescent filaments, structured neural pathways, swamp-tech aesthetic, emerald and dark-water palette, pixel-art textures',
-  },
-  {
-    name: 'quantum-field',
-    description:
-      'Interference wave patterns, layered probability arcs, symmetrical luminous distortions across dark space',
-  },
-  {
-    name: 'static-noise',
-    description:
-      'Digital static field, controlled glitch fragments, rectangular corrupted blocks on dark background',
-  },
-  {
-    name: 'market-topography',
-    description:
-      'Contour elevation lines forming structured terrain map, layered height bands, smooth gradient slopes',
-  },
-  {
-    name: 'flow-map',
-    description:
-      'Directional vector arrows, curved liquidity paths, structured flow channels across dark grid',
-  },
-  {
-    name: 'pulse-grid',
-    description:
-      'Symmetrical grid with horizontal signal pulses, evenly spaced energy waves, rhythmic visual cadence',
-  },
-  {
-    name: 'liquidity-wall',
-    description:
-      'Massive vertical monolithic blocks, dense stacked pixelated rectangles, heavy market pressure visualization, industrial dark UI, flat vector aesthetic, no perspective distortion',
-  },
-  {
-    name: 'node-cluster',
-    description:
-      'Scattered glowing data nodes forming asymmetric clusters, thin connection lines, distributed network structure',
   },
 ];
 
@@ -112,23 +98,18 @@ export const VISUAL_STYLES_NIGHT: VisualStyle[] = [
       'Dim CRT interface with low phosphor brightness, sparse UI panels, single blinking cursor glow',
   },
   {
-    name: 'deep-swamp',
-    description:
-      'Dark reflective surface with scattered light particles, low fog layer, minimal glowing reflections',
-  },
-  {
-    name: 'signal-constellation',
-    description:
-      'Sparse glowing data nodes connected by thin lines, forming abstract constellation patterns over dark space',
-  },
-  {
     name: 'sleeping-circuit',
     description:
       'Circuit board in low-power mode, faint trace lines, single subtle pulse across microchip nodes',
   },
   {
-    name: 'night-oscilloscope',
-    description: 'Minimal oscilloscope waveform, low amplitude signal, dim grid background',
+    name: 'deep-circuit-dream',
+    description: 'Minimal circuit pathways with slow rhythmic pulse, low brightness microchip glow',
+  },
+
+  {
+    name: 'silent-topography',
+    description: 'Low-contrast contour terrain map, faint elevation lines, smooth dark gradients',
   },
   {
     name: 'nocturnal-grid',
@@ -136,27 +117,14 @@ export const VISUAL_STYLES_NIGHT: VisualStyle[] = [
       'Soft symmetrical grid fading into darkness, muted blue-green highlights, sparse signal activity',
   },
   {
-    name: 'swamp-lanterns',
+    name: 'night-oscilloscope',
+    description: 'Minimal oscilloscope waveform, low amplitude signal, dim grid background',
+  },
+
+  {
+    name: 'signal-constellation',
     description:
-      'Scattered glowing orbs over dark reflective plane, soft light halos, slow drifting particles',
-  },
-  {
-    name: 'neon-mist',
-    description:
-      'Thin fog layer with faint linear neon accents, soft drifting particles across dark void',
-  },
-  {
-    name: 'silent-topography',
-    description: 'Low-contrast contour terrain map, faint elevation lines, smooth dark gradients',
-  },
-  {
-    name: 'deep-circuit-dream',
-    description: 'Minimal circuit pathways with slow rhythmic pulse, low brightness microchip glow',
-  },
-  {
-    name: 'void-stream',
-    description:
-      'Thin luminous streams flowing across empty dark space, controlled particle motion',
+      'Sparse glowing data nodes connected by thin lines, forming abstract constellation patterns over dark space',
   },
   {
     name: 'night-fracture',
