@@ -35,7 +35,7 @@ export function startScheduler(): void {
     async () => {
       db.run(sql`DELETE FROM articles WHERE created_at < datetime('now', '-7 days')`);
       logger.info('🗑️ Old articles cleaned up');
-      await cleanOldMicroPosts(7);
+      await cleanOldMicroPosts(90);
     },
     { timezone: TIMEZONE },
   );

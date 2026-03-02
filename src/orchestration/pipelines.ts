@@ -108,6 +108,34 @@ export async function runMorningDigest(): Promise<void> {
 
 // ─── News Pipeline ─────────────────────────────────────────────────────────────
 
+async function publishArticle(
+  article: FeedArticle,
+  summary: NonNullable<Awaited<ReturnType<typeof summarizeArticle>>>,
+  tgPost: string,
+): Promise<void> {
+  const image = await generatePostImage(
+    summary.summary,
+    summary.sentiment as ImageSentiment,
+    summary.category,
+    article.title,
+  );
+
+  if (image) {
+    await withCircuit(telegramCircuit, () => sendToTelegramWithPhoto(image.data, tgPost), logger);
+  } else {
+    await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
+  }
+
+  if (isXEnabled()) {
+    const xPost = formatPostX(article, summary);
+    if (image) {
+      await withCircuit(xCircuit, () => postTweetWithMedia(xPost, image.data), logger);
+    } else {
+      await withCircuit(xCircuit, () => postTweet(xPost), logger);
+    }
+  }
+}
+
 export async function runNewsPipeline(limit = 5): Promise<void> {
   logger.info('📰 Starting news pipeline...');
 
@@ -172,32 +200,7 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
       if (!summary) continue;
 
       const tgPost = formatPostTelegram(article, summary);
-      const image = await generatePostImage(
-        summary.summary,
-        summary.sentiment as ImageSentiment,
-        summary.category,
-        article.title,
-      );
-
-      if (image) {
-        await withCircuit(
-          telegramCircuit,
-          () => sendToTelegramWithPhoto(image.data, tgPost),
-          logger,
-        );
-      } else {
-        await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
-      }
-
-      if (isXEnabled()) {
-        const xPost = formatPostX(article, summary);
-        if (image) {
-          await withCircuit(xCircuit, () => postTweetWithMedia(xPost, image.data), logger);
-        } else {
-          await withCircuit(xCircuit, () => postTweet(xPost), logger);
-        }
-      }
-
+      await publishArticle(article, summary, tgPost);
       await saveArticle(article, undefined, summary.entities);
       await markAsPosted(article.url);
       updateLastPosted();
@@ -445,38 +448,15 @@ export async function runBreakingNewsPipeline(article: FeedArticle): Promise<voi
     await markAsPosted(article.url);
 
     if (summary) {
-      const tgPost = `🚨 ${formatPostTelegram(article, summary)}`;
-      const image = await generatePostImage(
-        summary.summary,
-        summary.sentiment as ImageSentiment,
-        summary.category,
-        article.title,
-      );
-
-      if (image) {
-        await withCircuit(
-          telegramCircuit,
-          () => sendToTelegramWithPhoto(image.data, tgPost),
-          logger,
-        );
-      } else {
-        await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
-      }
-
-      if (isXEnabled()) {
-        const xPost = formatPostX(article, summary);
-        if (image) {
-          await withCircuit(xCircuit, () => postTweetWithMedia(xPost, image.data), logger);
-        } else {
-          await withCircuit(xCircuit, () => postTweet(xPost), logger);
-        }
-      }
+      await publishArticle(article, summary, `🚨 ${formatPostTelegram(article, summary)}`);
     } else {
-      const fallback = `🚨 *BREAKING*\n\n${article.title}\n\n🔗 ${article.url}`;
-      await withCircuit(telegramCircuit, () => sendToTelegram(fallback), logger);
-      if (isXEnabled()) {
-        await withCircuit(xCircuit, () => postTweet(`⚡ ${article.title}\n${article.url}`), logger);
-      }
+      // TODO: retry with Flash-Lite or skip — for now skip to avoid posting raw English title
+      // const fallback = `🚨 *BREAKING*\n\n${article.title}\n\n🔗 ${article.url}`;
+      // await withCircuit(telegramCircuit, () => sendToTelegram(fallback), logger);
+      // if (isXEnabled()) {
+      //   await withCircuit(xCircuit, () => postTweet(`⚡ ${article.title}\n${article.url}`), logger);
+      // }
+      logger.warn(`⚠️ Breaking summary failed for "${article.title}" — skipping post`);
     }
 
     updateLastPosted();
