@@ -1,13 +1,9 @@
 // src/orchestration/special-pipeline.ts
 import { saveArticle, markAsPosted } from '../ingestion/dedup.js';
-import { sendToTelegramPlain } from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 import { fetchFearGreed } from '../market/feargreed.js';
 import { fetchPrices, formatPricesPost } from '../market/prices.js';
 import { updateLastPosted } from '../health/server.js';
-import { postTweet } from '../delivery/twitter.js';
-import { withCircuit } from '../utils/circuit-breaker.js';
-import { telegramCircuit, xCircuit } from './state.js';
 import { db } from '../db/client.js';
 import { articles } from '../db/schema.js';
 import { generateText } from 'ai';
@@ -18,6 +14,7 @@ import {
 } from '../prompts/summarize.prompt.js';
 import { desc, gte } from 'drizzle-orm';
 import { withPipelineMetrics, getFilteredScoredArticles } from './helpers.js';
+import { publish, content } from '../delivery/publisher.js';
 
 // ─── Monday Briefing ──────────────────────────────────────────────────────────
 
@@ -46,14 +43,12 @@ export async function runMondayBriefing(): Promise<void> {
     const post = text.trim();
     logger.info(`📝 Monday briefing:\n${post}`);
 
-    // Mark top articles as used
     for (const article of scored.slice(0, 5)) {
       await saveArticle(article);
       await markAsPosted(article.url);
     }
 
-    await withCircuit(telegramCircuit, () => sendToTelegramPlain(post), logger);
-    await withCircuit(xCircuit, () => postTweet(post), logger);
+    await publish({ telegram: content(post), x: content(post) }, { telegramPlain: true });
 
     updateLastPosted();
     logger.info('✅ Monday briefing posted');
@@ -104,8 +99,7 @@ export async function runWeeklySummary(): Promise<void> {
     const post = text.trim();
     logger.info(`📝 Weekly summary:\n${post}`);
 
-    await withCircuit(telegramCircuit, () => sendToTelegramPlain(post), logger);
-    await withCircuit(xCircuit, () => postTweet(post), logger);
+    await publish({ telegram: content(post), x: content(post) }, { telegramPlain: true });
 
     updateLastPosted();
     logger.info('✅ Weekly summary posted');

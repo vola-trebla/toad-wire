@@ -3,25 +3,18 @@ import { type FeedArticle } from '../ingestion/rss.js';
 import { saveArticle, markAsPosted } from '../ingestion/dedup.js';
 import { summarizeArticle } from '../content/summarize.js';
 import { formatPostTelegram } from '../content/format.js';
-import { sendToTelegram } from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 import { updateLastPosted } from '../health/server.js';
-import { isXEnabled, postTweet } from '../delivery/twitter.js';
+import { isXEnabled } from '../delivery/twitter.js';
 import { clusterByStory, applyClusterBoosts } from '../intelligence/story-cluster.js';
 import { SCORE_THRESHOLDS } from '../intelligence/scorer.js';
 import { withCircuit } from '../utils/circuit-breaker.js';
 import { FAST_TRACK_CATEGORIES } from '../utils/constants.js';
-import {
-  telegramCircuit,
-  xCircuit,
-  geminiCircuit,
-  breakingInProgress,
-  canPostBreaking,
-  recordBreakingPost,
-} from './state.js';
+import { geminiCircuit, breakingInProgress, canPostBreaking, recordBreakingPost } from './state.js';
 import { getRemainingRequests } from '../utils/request-budget.js';
 import { withPipelineMetrics, getFilteredScoredArticles } from './helpers.js';
 import { publishArticle } from './news-pipeline.js';
+import { publish, content } from '../delivery/publisher.js';
 
 // ─── Breaking News Scanner ────────────────────────────────────────────────────
 
@@ -71,9 +64,7 @@ export async function scanForBreaking(): Promise<void> {
     breakingInProgress.add(top.url);
     try {
       const posted = await runBreakingNewsPipeline(top);
-      if (posted) {
-        recordBreakingPost();
-      }
+      if (posted) recordBreakingPost();
     } finally {
       breakingInProgress.delete(top.url);
     }
@@ -105,12 +96,12 @@ export async function runBreakingNewsPipeline(article: FeedArticle): Promise<boo
       posted = true;
       logger.info(`🚨 Breaking pipeline complete: "${article.title}"`);
     } else {
+      // Title-only fallback — post something rather than lose the breaking event
       logger.warn(`⚠️ Breaking summary failed — posting title fallback`);
-      const fallback = `🚨 BREAKING\n\n${article.title}\n\n🔗 ${article.url}`;
-      await withCircuit(telegramCircuit, () => sendToTelegram(fallback), logger);
-      if (isXEnabled()) {
-        await withCircuit(xCircuit, () => postTweet(`⚡ ${article.title}\n${article.url}`), logger);
-      }
+      await publish({
+        telegram: content(`🚨 BREAKING\n\n${article.title}\n\n🔗 ${article.url}`),
+        x: isXEnabled() ? content(`⚡ ${article.title}\n${article.url}`) : undefined,
+      });
       updateLastPosted();
       metrics.articlesPosted = 1;
       posted = true;

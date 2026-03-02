@@ -4,31 +4,26 @@ import { fetchPrices, formatPricesPost, formatPricesPostX } from '../market/pric
 import { saveArticle, markAsPosted } from '../ingestion/dedup.js';
 import { summarizeArticle } from '../content/summarize.js';
 import { formatPostTelegram, formatPostX } from '../content/format.js';
-import { sendToTelegram, sendToTelegramWithPhoto } from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 import { rankArticles } from '../intelligence/ranker.js';
 import { fetchFearGreed } from '../market/feargreed.js';
 import { updateLastPosted } from '../health/server.js';
-import { isXEnabled, postTweet, postTweetWithMedia } from '../delivery/twitter.js';
-import { withCircuit } from '../utils/circuit-breaker.js';
+import { postTweet } from '../delivery/twitter.js';
+import { sendToTelegram } from '../delivery/telegram.js';
 import { generatePostImage, type ImageSentiment } from '../images/generate-image.js';
 import { MAX_RANKER_INPUT } from '../utils/constants.js';
-import {
-  telegramCircuit,
-  xCircuit,
-  geminiCircuit,
-  getUnusedHeadlines,
-  setUnusedHeadlines,
-} from './state.js';
+import { geminiCircuit, getUnusedHeadlines, setUnusedHeadlines } from './state.js';
+import { withCircuit } from '../utils/circuit-breaker.js';
 import { getRemainingRequests } from '../utils/request-budget.js';
 import { withPipelineMetrics, getFilteredScoredArticles } from './helpers.js';
+import { publish, content } from '../delivery/publisher.js';
 
 // ─── Publish Article ──────────────────────────────────────────────────────────
 
 export async function publishArticle(
   article: FeedArticle,
   summary: NonNullable<Awaited<ReturnType<typeof summarizeArticle>>>,
-  tgPost: string,
+  tgText: string,
 ): Promise<void> {
   const image = await generatePostImage(
     summary.summary,
@@ -37,20 +32,10 @@ export async function publishArticle(
     article.title,
   );
 
-  if (image) {
-    await withCircuit(telegramCircuit, () => sendToTelegramWithPhoto(image.data, tgPost), logger);
-  } else {
-    await withCircuit(telegramCircuit, () => sendToTelegram(tgPost), logger);
-  }
-
-  if (isXEnabled()) {
-    const xPost = formatPostX(article, summary);
-    if (image) {
-      await withCircuit(xCircuit, () => postTweetWithMedia(xPost, image.data), logger);
-    } else {
-      await withCircuit(xCircuit, () => postTweet(xPost), logger);
-    }
-  }
+  await publish({
+    telegram: content(tgText, image?.data),
+    x: content(formatPostX(article, summary), image?.data),
+  });
 }
 
 // ─── Morning Digest ───────────────────────────────────────────────────────────
@@ -121,8 +106,7 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
 
       if (!summary) continue;
 
-      const tgPost = formatPostTelegram(article, summary);
-      await publishArticle(article, summary, tgPost);
+      await publishArticle(article, summary, formatPostTelegram(article, summary));
       await saveArticle(article, undefined, summary.entities);
       await markAsPosted(article.url);
       updateLastPosted();

@@ -1,6 +1,5 @@
 // src/orchestration/digest-pipeline.ts
 import { generateGoodNight } from '../content/summarize.js';
-import { sendToTelegram, sendToTelegramWithPhoto } from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 import { collectMarketSnapshot } from '../market/market-snapshot.js';
 import { generateBatch } from '../content/batch-generator.js';
@@ -10,12 +9,12 @@ import {
   markMicroPostAsPosted,
   getPendingCount,
 } from '../queue/micro-posts.js';
-import { isXEnabled, postTweet, postTweetWithMedia } from '../delivery/twitter.js';
+import { isXEnabled, postTweet } from '../delivery/twitter.js';
 import { canTweet, recordTweet, formatBudgetStatus } from '../delivery/x-rate-limiter.js';
-import { withCircuit } from '../utils/circuit-breaker.js';
 import { generateNightImage } from '../images/generate-image.js';
-import { telegramCircuit, xCircuit, xBudgetState, getUnusedHeadlines } from './state.js';
+import { xBudgetState, getUnusedHeadlines } from './state.js';
 import { withPipelineMetrics } from './helpers.js';
+import { publish, content } from '../delivery/publisher.js';
 
 // ─── Morning Batches ──────────────────────────────────────────────────────────
 
@@ -128,16 +127,9 @@ export async function runEveningDigest(): Promise<void> {
     const goodNightMsg = await generateGoodNight();
     const image = await generateNightImage(goodNightMsg);
 
-    if (image) {
-      await withCircuit(
-        telegramCircuit,
-        () => sendToTelegramWithPhoto(image.data, goodNightMsg),
-        logger,
-      );
-      await withCircuit(xCircuit, () => postTweetWithMedia(goodNightMsg, image.data), logger);
-    } else {
-      await withCircuit(telegramCircuit, () => sendToTelegram(goodNightMsg), logger);
-      await withCircuit(xCircuit, () => postTweet(goodNightMsg), logger);
-    }
+    await publish({
+      telegram: content(goodNightMsg, image?.data),
+      x: content(goodNightMsg, image?.data),
+    });
   });
 }
