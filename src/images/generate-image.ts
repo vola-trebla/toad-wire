@@ -33,7 +33,43 @@ export type { ImageSentiment };
 const client = new GoogleGenAI({ apiKey: config.GOOGLE_GENERATIVE_AI_API_KEY });
 const IMAGE_MODEL = 'gemini-2.5-flash-image';
 
-function pickStyle(): VisualStyle {
+const CATEGORY_VISUAL_OVERRIDES: Record<string, string> = {
+  // seguridad
+  hack: 'fracture',
+  exploit: 'seismic-spike',
+  breach: 'fracture',
+  stolen: 'seismic-spike',
+  // regulacion
+  sec: 'depth-strata',
+  ban: 'liquidity-wall',
+  regulation: 'depth-strata',
+  lawsuit: 'liquidity-wall',
+  // defi
+  defi: 'vector-terrain',
+  liquidity: 'order-depth',
+  protocol: 'bio-circuit',
+  // tecnologia
+  upgrade: 'bio-circuit',
+  fork: 'node-cluster',
+  mainnet: 'node-cluster',
+  // institucional
+  etf: 'holo-chart',
+  institutional: 'continent-grid',
+  blackrock: 'holo-chart',
+  // crisis
+  crash: 'seismic-spike',
+  collapse: 'fracture',
+  liquidat: 'liquidity-wall',
+};
+
+function pickStyleForTitle(title: string): VisualStyle {
+  const lower = title.toLowerCase();
+  for (const [keyword, styleName] of Object.entries(CATEGORY_VISUAL_OVERRIDES)) {
+    if (lower.includes(keyword)) {
+      const found = VISUAL_STYLES.find((s) => s.name === styleName);
+      if (found) return found;
+    }
+  }
   return VISUAL_STYLES[Math.floor(Math.random() * VISUAL_STYLES.length)]!;
 }
 
@@ -67,9 +103,10 @@ export async function generatePostImage(
   summary: string,
   sentiment: ImageSentiment,
   category: string,
+  title?: string,
 ): Promise<GeneratedImage | null> {
   try {
-    const style = pickStyle();
+    const style = pickStyleForTitle(title ?? summary);
     logger.info(`🎨 Image style: ${style.name} | sentiment: ${sentiment}`);
 
     const descriptor = await buildVisualDescriptor(summary, category);

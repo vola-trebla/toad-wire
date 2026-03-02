@@ -176,6 +176,7 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
         summary.summary,
         summary.sentiment as ImageSentiment,
         summary.category,
+        article.title,
       );
 
       if (image) {
@@ -449,6 +450,7 @@ export async function runBreakingNewsPipeline(article: FeedArticle): Promise<voi
         summary.summary,
         summary.sentiment as ImageSentiment,
         summary.category,
+        article.title,
       );
 
       if (image) {
