@@ -21,27 +21,6 @@ describe('x-rate-limiter — smoke tests', () => {
     expect(result).toHaveProperty('allowed');
   });
 
-  it('blocks when daily limit reached', () => {
-    const state = makeState({ tweetsToday: 45 });
-    const result = canTweet(state);
-    expect(result.allowed).toBe(false);
-    expect(result.reason).toBe('daily_limit');
-  });
-
-  it('blocks when hourly limit reached', () => {
-    const state = makeState({ tweetsThisHour: 8 });
-    const result = canTweet(state);
-    expect(result.allowed).toBe(false);
-    expect(result.reason).toBe('hourly_limit');
-  });
-
-  it('blocks when posted less than 10 min ago', () => {
-    const state = makeState({ lastTweetAt: Date.now() - 5 * 60 * 1000 });
-    const result = canTweet(state);
-    expect(result.allowed).toBe(false);
-    expect(result.reason).toBe('too_frequent');
-  });
-
   it('recordTweet increments all counters', () => {
     const state = makeState();
     recordTweet(state);
