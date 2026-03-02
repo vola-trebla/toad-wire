@@ -43,7 +43,7 @@ export function startScheduler(): void {
 
   // Morning — 10:00 UTC-3
   cron.schedule('30 9 * * *', () => void runMorningBatches(), { timezone: TIMEZONE });
-  cron.schedule('0 10 * * *', () => void runMorningDigest(), { timezone: TIMEZONE });
+  cron.schedule('0 10 * * 2-7', () => void runMorningDigest(), { timezone: TIMEZONE });
 
   // Midday — 13:00 UTC-3 = 10:00 Mex — оба онлайн
   cron.schedule('0 13 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });

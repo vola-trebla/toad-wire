@@ -5,6 +5,17 @@ import { logger } from '../utils/logger.js';
 
 const bot = new Bot(config.TELEGRAM_BOT_TOKEN);
 
+export async function sendToTelegramPlain(text: string): Promise<void> {
+  try {
+    await bot.api.sendMessage(config.TELEGRAM_CHANNEL_ID, text, {
+      disable_web_page_preview: true,
+    } as any);
+    logger.info('📨 Posted to Telegram (plain)');
+  } catch (error) {
+    logger.error(`❌ Failed to post to Telegram: ${error}`);
+  }
+}
+
 export async function sendToTelegram(text: string): Promise<void> {
   try {
     await bot.api.sendMessage(config.TELEGRAM_CHANNEL_ID, text, {

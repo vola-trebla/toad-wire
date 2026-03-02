@@ -126,6 +126,7 @@ Write the Monday market briefing. This is the most important post of the week �
 Format (use exactly this structure):
 
 📡 EL PANTANO ABRE LA SEMANA
+El sapo analizó el mercado y los titulares. Esto es lo que importa esta semana.
 
 [3-4 sentences. Analyze the current macro context: where is the market coming from, what happened last week, what is the mood. Connect Fear & Greed with price action. Be specific, not generic. Sapo's voice: calm, analytical, one touch of irony.]
 

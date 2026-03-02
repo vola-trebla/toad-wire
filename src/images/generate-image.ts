@@ -26,8 +26,6 @@ import {
   VISUAL_STYLES_NIGHT,
   type ImageSentiment,
   type VisualStyle,
-  buildWeeklyImagePrompt,
-  buildMondayImagePrompt,
 } from '../prompts/image.prompt.js';
 
 export type { ImageSentiment };
@@ -130,68 +128,6 @@ export async function generateNightImage(nightMessage: string): Promise<Generate
     return null;
   } catch (error) {
     logger.error(`❌ Night image generation failed: ${error}`);
-    return null;
-  }
-}
-
-export async function generateMondayImage(): Promise<GeneratedImage | null> {
-  try {
-    const prompt = buildMondayImagePrompt();
-    logger.info('🌅 Generating Monday image...');
-
-    const response = await client.models.generateContent({
-      model: IMAGE_MODEL,
-      contents: prompt,
-      config: { responseModalities: ['TEXT', 'IMAGE'] },
-    });
-
-    const parts = response.candidates?.[0]?.content?.parts ?? [];
-    for (const part of parts) {
-      if (part.inlineData?.data && part.inlineData.mimeType) {
-        const buffer = Buffer.from(part.inlineData.data, 'base64');
-        logger.info(`✅ Monday image generated — size: ${(buffer.length / 1024).toFixed(1)} KB`);
-        return {
-          data: buffer,
-          mimeType: part.inlineData.mimeType,
-          style: 'monday',
-          descriptor: 'Monday briefing',
-        };
-      }
-    }
-    return null;
-  } catch (error) {
-    logger.error(`❌ Monday image generation failed: ${error}`);
-    return null;
-  }
-}
-
-export async function generateWeeklyImage(): Promise<GeneratedImage | null> {
-  try {
-    const prompt = buildWeeklyImagePrompt();
-    logger.info('📊 Generating weekly summary image...');
-
-    const response = await client.models.generateContent({
-      model: IMAGE_MODEL,
-      contents: prompt,
-      config: { responseModalities: ['TEXT', 'IMAGE'] },
-    });
-
-    const parts = response.candidates?.[0]?.content?.parts ?? [];
-    for (const part of parts) {
-      if (part.inlineData?.data && part.inlineData.mimeType) {
-        const buffer = Buffer.from(part.inlineData.data, 'base64');
-        logger.info(`✅ Weekly image generated — size: ${(buffer.length / 1024).toFixed(1)} KB`);
-        return {
-          data: buffer,
-          mimeType: part.inlineData.mimeType,
-          style: 'weekly',
-          descriptor: 'Weekly summary',
-        };
-      }
-    }
-    return null;
-  } catch (error) {
-    logger.error(`❌ Weekly image generation failed: ${error}`);
     return null;
   }
 }

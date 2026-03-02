@@ -4,7 +4,11 @@ import { fetchPrices, formatPricesPost, formatPricesPostX } from '../market/pric
 import { isDuplicate, saveArticle, markAsPosted } from '../ingestion/dedup.js';
 import { generateGoodNight, summarizeArticle } from '../content/summarize.js';
 import { formatPostTelegram, formatPostX } from '../content/format.js';
-import { sendToTelegram, sendToTelegramWithPhoto } from '../delivery/telegram.js';
+import {
+  sendToTelegram,
+  sendToTelegramPlain,
+  sendToTelegramWithPhoto,
+} from '../delivery/telegram.js';
 import { logger } from '../utils/logger.js';
 import { rankArticles } from '../intelligence/ranker.js';
 import { fetchFearGreed } from '../market/feargreed.js';
@@ -24,10 +28,8 @@ import { clusterByStory, applyClusterBoosts } from '../intelligence/story-cluste
 import { scoreArticles, SCORE_THRESHOLDS } from '../intelligence/scorer.js';
 import { withCircuit } from '../utils/circuit-breaker.js';
 import {
-  generateMondayImage,
   generateNightImage,
   generatePostImage,
-  generateWeeklyImage,
   type ImageSentiment,
 } from '../images/generate-image.js';
 import { BLACKLIST, MAX_RANKER_INPUT, FAST_TRACK_CATEGORIES } from '../utils/constants.js';
@@ -517,16 +519,8 @@ export async function runMondayBriefing(): Promise<void> {
     const post = text.trim();
     logger.info(`📝 Monday briefing:\n${post}`);
 
-    // Generate image
-    const image = await generateMondayImage();
-
-    if (image) {
-      await withCircuit(telegramCircuit, () => sendToTelegramWithPhoto(image.data, post), logger);
-      await withCircuit(xCircuit, () => postTweetWithMedia(post, image.data), logger);
-    } else {
-      await withCircuit(telegramCircuit, () => sendToTelegram(post), logger);
-      await withCircuit(xCircuit, () => postTweet(post), logger);
-    }
+    await withCircuit(telegramCircuit, () => sendToTelegramPlain(post), logger);
+    await withCircuit(xCircuit, () => postTweet(post), logger);
 
     updateLastPosted();
     logger.info('✅ Monday briefing posted');
@@ -596,16 +590,8 @@ export async function runWeeklySummary(): Promise<void> {
     const post = text.trim();
     logger.info(`📝 Weekly summary:\n${post}`);
 
-    // Generate image — neutral para resumen
-    const image = await generateWeeklyImage();
-
-    if (image) {
-      await withCircuit(telegramCircuit, () => sendToTelegramWithPhoto(image.data, post), logger);
-      await withCircuit(xCircuit, () => postTweetWithMedia(post, image.data), logger);
-    } else {
-      await withCircuit(telegramCircuit, () => sendToTelegram(post), logger);
-      await withCircuit(xCircuit, () => postTweet(post), logger);
-    }
+    await withCircuit(telegramCircuit, () => sendToTelegramPlain(post), logger);
+    await withCircuit(xCircuit, () => postTweet(post), logger);
 
     updateLastPosted();
     logger.info('✅ Weekly summary posted');
