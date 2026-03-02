@@ -24,8 +24,10 @@ import { clusterByStory, applyClusterBoosts } from '../intelligence/story-cluste
 import { scoreArticles, SCORE_THRESHOLDS } from '../intelligence/scorer.js';
 import { withCircuit } from '../utils/circuit-breaker.js';
 import {
+  generateMondayImage,
   generateNightImage,
   generatePostImage,
+  generateWeeklyImage,
   type ImageSentiment,
 } from '../images/generate-image.js';
 import { BLACKLIST, MAX_RANKER_INPUT, FAST_TRACK_CATEGORIES } from '../utils/constants.js';
@@ -39,8 +41,15 @@ import {
   setUnusedHeadlines,
 } from './state.js';
 import { db } from '../db/client.js';
-import { pipelineRuns } from '../db/schema.js';
+import { articles, pipelineRuns } from '../db/schema.js';
 import { getRemainingRequests } from '../utils/request-budget.js';
+import { generateText } from 'ai';
+import { getModel } from '../llm/router.js';
+import {
+  buildMondayBriefingPrompt,
+  buildWeeklySummaryPrompt,
+} from '../prompts/summarize.prompt.js';
+import { desc, gte } from 'drizzle-orm';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -469,6 +478,146 @@ export async function runBreakingNewsPipeline(article: FeedArticle): Promise<voi
         completedAt: new Date().toISOString(),
         articlesPosted: error ? 0 : 1,
         flashRpdUsed: 100 - getRemainingRequests(),
+        durationMs: Date.now() - startMs,
+        error: error ?? null,
+      })
+      .run();
+  }
+}
+
+// ─── Monday Briefing ──────────────────────────────────────────────────────────
+
+export async function runMondayBriefing(): Promise<void> {
+  logger.info('🐸 Starting Monday briefing...');
+
+  const startedAt = new Date().toISOString();
+  const startMs = Date.now();
+  let error: string | undefined;
+
+  try {
+    const [prices, fearGreed, allArticles] = await Promise.all([
+      fetchPrices(),
+      fetchFearGreed(),
+      fetchFeeds(),
+    ]);
+
+    // Top 5 fresh headlines для контекста
+    const filtered = allArticles.filter((a) => isRelevant(a.title));
+    const snapshot = await collectMarketSnapshot();
+    const scored = scoreArticles(filtered, snapshot);
+    const topHeadlines = scored.slice(0, 5).map((a) => a.title);
+
+    const pricesText = formatPricesPost(prices, fearGreed);
+
+    const { text } = await generateText({
+      model: getModel('weekly'),
+      prompt: buildMondayBriefingPrompt(pricesText, String(fearGreed?.value ?? '—'), topHeadlines),
+    });
+
+    const post = text.trim();
+    logger.info(`📝 Monday briefing:\n${post}`);
+
+    // Generate image
+    const image = await generateMondayImage();
+
+    if (image) {
+      await withCircuit(telegramCircuit, () => sendToTelegramWithPhoto(image.data, post), logger);
+      await withCircuit(xCircuit, () => postTweetWithMedia(post, image.data), logger);
+    } else {
+      await withCircuit(telegramCircuit, () => sendToTelegram(post), logger);
+      await withCircuit(xCircuit, () => postTweet(post), logger);
+    }
+
+    updateLastPosted();
+    logger.info('✅ Monday briefing posted');
+  } catch (err) {
+    error = String(err);
+    logger.error(`❌ Monday briefing error: ${err}`);
+  } finally {
+    db.insert(pipelineRuns)
+      .values({
+        type: 'monday',
+        startedAt,
+        completedAt: new Date().toISOString(),
+        durationMs: Date.now() - startMs,
+        error: error ?? null,
+      })
+      .run();
+  }
+}
+
+// ─── Weekly Summary ───────────────────────────────────────────────────────────
+
+export async function runWeeklySummary(): Promise<void> {
+  logger.info('🐸 Starting weekly summary...');
+
+  const startedAt = new Date().toISOString();
+  const startMs = Date.now();
+  let error: string | undefined;
+
+  try {
+    const fearGreed = await fetchFearGreed();
+
+    // Топ статьи за последние 7 дней
+    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const weekArticles = await db
+      .select({
+        title: articles.title,
+        category: articles.category,
+        sentiment: articles.sentiment,
+        importanceScore: articles.importanceScore,
+      })
+      .from(articles)
+      .where(gte(articles.createdAt, since))
+      .orderBy(desc(articles.importanceScore))
+      .limit(10);
+
+    if (weekArticles.length === 0) {
+      logger.warn('⚠️ No articles found for weekly summary');
+      return;
+    }
+
+    // Номер недели
+    const weekNumber = Math.ceil(
+      (Date.now() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000),
+    );
+
+    const topArticles = weekArticles.map((a) => ({
+      title: a.title,
+      category: a.category ?? 'trading',
+      sentiment: a.sentiment ?? 'neutral',
+    }));
+
+    const { text } = await generateText({
+      model: getModel('weekly'),
+      prompt: buildWeeklySummaryPrompt(topArticles, String(fearGreed?.value ?? '—'), weekNumber),
+    });
+
+    const post = text.trim();
+    logger.info(`📝 Weekly summary:\n${post}`);
+
+    // Generate image — neutral para resumen
+    const image = await generateWeeklyImage();
+
+    if (image) {
+      await withCircuit(telegramCircuit, () => sendToTelegramWithPhoto(image.data, post), logger);
+      await withCircuit(xCircuit, () => postTweetWithMedia(post, image.data), logger);
+    } else {
+      await withCircuit(telegramCircuit, () => sendToTelegram(post), logger);
+      await withCircuit(xCircuit, () => postTweet(post), logger);
+    }
+
+    updateLastPosted();
+    logger.info('✅ Weekly summary posted');
+  } catch (err) {
+    error = String(err);
+    logger.error(`❌ Weekly summary error: ${err}`);
+  } finally {
+    db.insert(pipelineRuns)
+      .values({
+        type: 'weekly',
+        startedAt,
+        completedAt: new Date().toISOString(),
         durationMs: Date.now() - startMs,
         error: error ?? null,
       })

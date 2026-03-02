@@ -15,6 +15,8 @@ import {
   runDegenTime,
   runEveningDigest,
   scanForBreaking,
+  runMondayBriefing,
+  runWeeklySummary,
   // dispatchNextMicroPost,
 } from './pipelines.js';
 
@@ -72,6 +74,12 @@ export function startScheduler(): void {
   // ─── Feed Health ───────────────────────────────────────────────────────────
   cron.schedule('*/30 * * * *', () => void checkFeedHealth(), { timezone: TIMEZONE });
   cron.schedule('0 9 * * 1', () => void reportFeedHealth(), { timezone: TIMEZONE });
+
+  // Monday briefing — 9:00 ART/UYT
+  cron.schedule('0 9 * * 1', () => void runMondayBriefing(), { timezone: TIMEZONE });
+
+  // Weekly summary — Saturday 21:00 ART/UYT
+  cron.schedule('0 21 * * 6', () => void runWeeklySummary(), { timezone: TIMEZONE });
 
   logger.info('📅 Scheduler started');
 }

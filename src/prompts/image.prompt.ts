@@ -179,6 +179,7 @@ Rules:
 - Output ONLY the descriptor, no explanation
 - NEVER reference animals, people or objects literally (use metaphors only)
 - Pixel frog must be TINY, low-contrast, placed ONLY in bottom-right corner
+- CRITICAL: The final image must contain ZERO text, letters, words or numbers of any kind
 
 Category: ${category === 'night' ? 'peaceful night, end of day, calm closing' : category}
 Summary: ${summary}`.trim();
@@ -205,10 +206,54 @@ STRICT RULES:
 - No smooth gradients, use limited color banding
 - High contrast between foreground and background
 - Clean geometric composition, strong silhouettes
-- Abstract UI elements only, no readable characters
-- No logos, no real-world branding, no faces
+- ABSOLUTELY NO TEXT, LETTERS, WORDS, NUMBERS OR CHARACTERS OF ANY KIND — not even partial, stylized, pixelated or decorative. Zero text. None.
+- ABSOLUTELY NO LOGOS, BRAND NAMES, TITLES OR LABELS — including "SAPO", "CRIPTO", or any other name
+- No real-world branding, no faces, no people, ABSOLUTELY NO HUMAN FIGURES, PEOPLE, CHARACTERS OR SILHOUETTES
+- Abstract geometric and electronic patterns only
 - Tiny low-contrast pixel frog silhouette in bottom-right corner, subtle and secondary
 - No photorealism, no volumetric lighting
+- Aspect ratio: 16:9
+`.trim();
+}
+
+export function buildMondayImagePrompt(): string {
+  return `
+Pixel art illustration for a crypto news terminal called "Sapo Cripto".
+Theme: Monday morning market opening. A new week begins in the swamp.
+
+STYLE: Terminal dashboard awakening — screens lighting up, data streams initializing, signal pulses starting
+COLOR PALETTE: Deep green (#00ff41) on black, with amber (#ffb300) accent highlights suggesting morning energy
+MOOD: Calm anticipation. The swamp wakes up. Another week of watching the market.
+
+STRICT RULES:
+- Dark background base (#0a0a0a)
+- Strict 8-bit pixel grid, visible square pixel blocks
+- No anti-aliasing, no soft brush strokes
+- ABSOLUTELY NO TEXT, LETTERS, WORDS OR NUMBERS OF ANY KIND
+- ABSOLUTELY NO HUMAN FIGURES, PEOPLE OR CHARACTERS
+- No logos, no real-world branding
+- Tiny pixel frog silhouette in bottom-right corner, subtle
+- Aspect ratio: 16:9
+`.trim();
+}
+
+export function buildWeeklyImagePrompt(): string {
+  return `
+Pixel art illustration for a crypto news terminal called "Sapo Cripto".
+Theme: End of week recap. The swamp closes another chapter.
+
+STYLE: Radar sweep completing a full circle — week reviewed, signals catalogued, archives written
+COLOR PALETTE: Muted green (#1a8c3a) fading to deep teal, suggesting reflection and closure
+MOOD: Calm wisdom. Another week survived. The frog has seen it all before.
+
+STRICT RULES:
+- Dark background base (#0a0a0a)
+- Strict 8-bit pixel grid, visible square pixel blocks
+- No anti-aliasing, no soft brush strokes
+- ABSOLUTELY NO TEXT, LETTERS, WORDS OR NUMBERS OF ANY KIND
+- ABSOLUTELY NO HUMAN FIGURES, PEOPLE OR CHARACTERS
+- No logos, no real-world branding
+- Tiny pixel frog silhouette in bottom-right corner, subtle
 - Aspect ratio: 16:9
 `.trim();
 }
