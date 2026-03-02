@@ -62,51 +62,49 @@ function isRelevant(title: string): boolean {
   return !BLACKLIST.some((term) => lower.includes(term));
 }
 
-// ─── Morning Digest ───────────────────────────────────────────────────────────
+// ─── Pipeline Metrics Wrapper ─────────────────────────────────────────────────
 
-export async function runMorningDigest(): Promise<void> {
-  logger.info('🌅 Starting morning digest...');
+type PipelineMetrics = {
+  articlesFetched?: number;
+  articlesFiltered?: number;
+  articlesPosted?: number;
+  microPostsGenerated?: number;
+  flashRpdUsed?: number;
+};
 
+async function withPipelineMetrics(
+  type: string,
+  fn: (metrics: PipelineMetrics) => Promise<void>,
+): Promise<void> {
   const startedAt = new Date().toISOString();
   const startMs = Date.now();
+  const metrics: PipelineMetrics = {};
+  let error: string | undefined;
 
   try {
-    const [prices, fearGreed] = await Promise.all([fetchPrices(), fetchFearGreed()]);
-
-    const tgPost = formatPricesPost(prices, fearGreed);
-    const xPost = await formatPricesPostX(prices, fearGreed);
-
-    await sendToTelegram(tgPost);
-    await postTweet(xPost);
-
-    await runNewsPipeline(1);
-  } catch (error) {
-    logger.error(`❌ Morning digest error: ${error}`);
-
+    await fn(metrics);
+  } catch (err) {
+    error = String(err);
+    logger.error(`❌ ${type} pipeline error: ${err}`);
+  } finally {
     db.insert(pipelineRuns)
       .values({
-        type: 'morning',
+        type,
         startedAt,
         completedAt: new Date().toISOString(),
         durationMs: Date.now() - startMs,
-        error: String(error),
+        articlesFetched: metrics.articlesFetched ?? 0,
+        articlesFiltered: metrics.articlesFiltered ?? 0,
+        articlesPosted: metrics.articlesPosted ?? 0,
+        microPostsGenerated: metrics.microPostsGenerated ?? 0,
+        flashRpdUsed: metrics.flashRpdUsed ?? 0,
+        error: error ?? null,
       })
       .run();
-
-    return;
   }
-
-  db.insert(pipelineRuns)
-    .values({
-      type: 'morning',
-      startedAt,
-      completedAt: new Date().toISOString(),
-      durationMs: Date.now() - startMs,
-    })
-    .run();
 }
 
-// ─── News Pipeline ─────────────────────────────────────────────────────────────
+// ─── Publish Article ──────────────────────────────────────────────────────────
 
 async function publishArticle(
   article: FeedArticle,
@@ -136,22 +134,35 @@ async function publishArticle(
   }
 }
 
+// ─── Morning Digest ───────────────────────────────────────────────────────────
+
+export async function runMorningDigest(): Promise<void> {
+  logger.info('🌅 Starting morning digest...');
+
+  await withPipelineMetrics('morning', async () => {
+    const [prices, fearGreed] = await Promise.all([fetchPrices(), fetchFearGreed()]);
+
+    const tgPost = formatPricesPost(prices, fearGreed);
+    const xPost = await formatPricesPostX(prices, fearGreed);
+
+    await sendToTelegram(tgPost);
+    await postTweet(xPost);
+
+    await runNewsPipeline(1);
+  });
+}
+
+// ─── News Pipeline ────────────────────────────────────────────────────────────
+
 export async function runNewsPipeline(limit = 5): Promise<void> {
   logger.info('📰 Starting news pipeline...');
 
-  const startedAt = new Date().toISOString();
-  const startMs = Date.now();
-  let articlesPosted = 0;
-  let articlesFetched = 0;
-  let articlesFiltered = 0;
-  let error: string | undefined;
-
-  try {
+  await withPipelineMetrics('news', async (metrics) => {
     const allArticles = await fetchFeeds();
-    articlesFetched = allArticles.length;
+    metrics.articlesFetched = allArticles.length;
 
     const filtered = allArticles.filter((a) => isRelevant(a.title));
-    articlesFiltered = filtered.length;
+    metrics.articlesFiltered = filtered.length;
 
     logger.info(`🔍 After filter: ${filtered.length} of ${allArticles.length}`);
 
@@ -191,8 +202,9 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
     setUnusedHeadlines(fresh.filter((a) => !rankedUrls.has(a.url)).map((a) => a.title));
     logger.info(`📦 Unused headlines saved: ${getUnusedHeadlines().length}`);
 
+    metrics.articlesPosted = 0;
     for (const article of ranked) {
-      if (articlesPosted >= limit) break;
+      if (metrics.articlesPosted >= limit) break;
 
       const summary =
         (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
@@ -205,29 +217,13 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
       await markAsPosted(article.url);
       updateLastPosted();
 
-      articlesPosted++;
+      metrics.articlesPosted++;
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
 
-    logger.info(`✅ Posted: ${articlesPosted}`);
-  } catch (err) {
-    error = String(err);
-    logger.error(`❌ News pipeline error: ${err}`);
-  } finally {
-    db.insert(pipelineRuns)
-      .values({
-        type: 'news',
-        startedAt,
-        completedAt: new Date().toISOString(),
-        articlesFetched,
-        articlesFiltered,
-        articlesPosted,
-        flashRpdUsed: 100 - getRemainingRequests(), // remaining tracked globally
-        durationMs: Date.now() - startMs,
-        error: error ?? null,
-      })
-      .run();
-  }
+    metrics.flashRpdUsed = 100 - getRemainingRequests();
+    logger.info(`✅ Posted: ${metrics.articlesPosted}`);
+  });
 }
 
 // ─── Evening Digest ───────────────────────────────────────────────────────────
@@ -235,11 +231,7 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
 export async function runEveningDigest(): Promise<void> {
   logger.info('🌙 Starting evening digest...');
 
-  const startedAt = new Date().toISOString();
-  const startMs = Date.now();
-  let error: string | undefined;
-
-  try {
+  await withPipelineMetrics('evening', async () => {
     const goodNightMsg = await generateGoodNight();
     const image = await generateNightImage(goodNightMsg);
 
@@ -254,20 +246,7 @@ export async function runEveningDigest(): Promise<void> {
       await withCircuit(telegramCircuit, () => sendToTelegram(goodNightMsg), logger);
       await withCircuit(xCircuit, () => postTweet(goodNightMsg), logger);
     }
-  } catch (err) {
-    error = String(err);
-    logger.error(`❌ Evening digest error: ${err}`);
-  } finally {
-    db.insert(pipelineRuns)
-      .values({
-        type: 'evening',
-        startedAt,
-        completedAt: new Date().toISOString(),
-        durationMs: Date.now() - startMs,
-        error: error ?? null,
-      })
-      .run();
-  }
+  });
 }
 
 // ─── Batch Pipelines ──────────────────────────────────────────────────────────
@@ -434,14 +413,12 @@ export async function scanForBreaking(): Promise<void> {
   }
 }
 
-export async function runBreakingNewsPipeline(article: FeedArticle) {
+export async function runBreakingNewsPipeline(article: FeedArticle): Promise<boolean> {
   logger.info(`🚨 Running breaking pipeline for: ${article.title}`);
 
-  const startedAt = new Date().toISOString();
-  const startMs = Date.now();
-  let error: string | undefined;
+  let posted = false;
 
-  try {
+  await withPipelineMetrics('breaking', async (metrics) => {
     await markAsPosted(article.url);
     await saveArticle(article);
 
@@ -452,8 +429,10 @@ export async function runBreakingNewsPipeline(article: FeedArticle) {
       await saveArticle(article, undefined, summary.entities);
       await publishArticle(article, summary, `🚨 ${formatPostTelegram(article, summary)}`);
       updateLastPosted();
+      metrics.articlesPosted = 1;
+      metrics.flashRpdUsed = 100 - getRemainingRequests();
+      posted = true;
       logger.info(`🚨 Breaking pipeline complete: "${article.title}"`);
-      return true;
     } else {
       logger.warn(`⚠️ Breaking summary failed — posting title fallback`);
       const fallback = `🚨 BREAKING\n\n${article.title}\n\n🔗 ${article.url}`;
@@ -462,25 +441,12 @@ export async function runBreakingNewsPipeline(article: FeedArticle) {
         await withCircuit(xCircuit, () => postTweet(`⚡ ${article.title}\n${article.url}`), logger);
       }
       updateLastPosted();
-      return true;
+      metrics.articlesPosted = 1;
+      posted = true;
     }
-  } catch (err) {
-    error = String(err);
-    logger.error(`❌ Breaking pipeline error: ${err}`);
-    return false;
-  } finally {
-    db.insert(pipelineRuns)
-      .values({
-        type: 'breaking',
-        startedAt,
-        completedAt: new Date().toISOString(),
-        articlesPosted: error ? 0 : 1,
-        flashRpdUsed: 100 - getRemainingRequests(),
-        durationMs: Date.now() - startMs,
-        error: error ?? null,
-      })
-      .run();
-  }
+  });
+
+  return posted;
 }
 
 // ─── Monday Briefing ──────────────────────────────────────────────────────────
@@ -488,18 +454,13 @@ export async function runBreakingNewsPipeline(article: FeedArticle) {
 export async function runMondayBriefing(): Promise<void> {
   logger.info('🐸 Starting Monday briefing...');
 
-  const startedAt = new Date().toISOString();
-  const startMs = Date.now();
-  let error: string | undefined;
-
-  try {
+  await withPipelineMetrics('monday', async () => {
     const [prices, fearGreed, allArticles] = await Promise.all([
       fetchPrices(),
       fetchFearGreed(),
       fetchFeeds(),
     ]);
 
-    // Top 5 fresh headlines для контекста
     const filtered = allArticles.filter((a) => isRelevant(a.title));
     const snapshot = await collectMarketSnapshot();
     const scored = scoreArticles(filtered, snapshot);
@@ -515,7 +476,6 @@ export async function runMondayBriefing(): Promise<void> {
     const post = text.trim();
     logger.info(`📝 Monday briefing:\n${post}`);
 
-    // Помечаем статьи как использованные
     const fresh = scored.slice(0, 5);
     for (const article of fresh) {
       await saveArticle(article);
@@ -527,20 +487,7 @@ export async function runMondayBriefing(): Promise<void> {
 
     updateLastPosted();
     logger.info('✅ Monday briefing posted');
-  } catch (err) {
-    error = String(err);
-    logger.error(`❌ Monday briefing error: ${err}`);
-  } finally {
-    db.insert(pipelineRuns)
-      .values({
-        type: 'monday',
-        startedAt,
-        completedAt: new Date().toISOString(),
-        durationMs: Date.now() - startMs,
-        error: error ?? null,
-      })
-      .run();
-  }
+  });
 }
 
 // ─── Weekly Summary ───────────────────────────────────────────────────────────
@@ -548,14 +495,9 @@ export async function runMondayBriefing(): Promise<void> {
 export async function runWeeklySummary(): Promise<void> {
   logger.info('🐸 Starting weekly summary...');
 
-  const startedAt = new Date().toISOString();
-  const startMs = Date.now();
-  let error: string | undefined;
-
-  try {
+  await withPipelineMetrics('weekly', async () => {
     const fearGreed = await fetchFearGreed();
 
-    // Топ статьи за последние 7 дней
     const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const weekArticles = await db
       .select({
@@ -574,7 +516,6 @@ export async function runWeeklySummary(): Promise<void> {
       return;
     }
 
-    // Номер недели
     const weekNumber = Math.ceil(
       (Date.now() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000),
     );
@@ -598,18 +539,5 @@ export async function runWeeklySummary(): Promise<void> {
 
     updateLastPosted();
     logger.info('✅ Weekly summary posted');
-  } catch (err) {
-    error = String(err);
-    logger.error(`❌ Weekly summary error: ${err}`);
-  } finally {
-    db.insert(pipelineRuns)
-      .values({
-        type: 'weekly',
-        startedAt,
-        completedAt: new Date().toISOString(),
-        durationMs: Date.now() - startMs,
-        error: error ?? null,
-      })
-      .run();
-  }
+  });
 }
