@@ -11,7 +11,7 @@ export const VISUAL_STYLES: VisualStyle[] = [
   {
     name: 'terminal',
     description:
-      'Old CRT terminal interface, subtle phosphor glow, scanlines, rectangular UI panels, structured grid layout',
+      'Retro CRT monitor display, phosphor green glow, visible scanlines, rectangular UI panels, fixed-width typography layout, structured grid, 8-bit computer aesthetic.',
   },
   {
     name: 'circuit',
@@ -19,9 +19,9 @@ export const VISUAL_STYLES: VisualStyle[] = [
       'Printed circuit board layout, visible copper traces, microchip blocks, structured electronic pathways',
   },
   {
-    name: 'radar',
+    name: 'order-depth',
     description:
-      'Circular radar interface, sweeping beam arc, concentric rings, minimal blip signals on dark screen',
+      'Horizontal layered depth-buffer visualization, stacked monochromatic liquidity blocks, sharp shifting pressure zones, dark trading interface, high contrast, pixel-perfect rectangles',
   },
   {
     name: 'signal-rain',
@@ -46,7 +46,7 @@ export const VISUAL_STYLES: VisualStyle[] = [
   {
     name: 'fracture',
     description:
-      'Geometric shards splitting along straight vector lines, controlled fragmentation, sharp angular contrast',
+      'Geometric vector shards splitting along jagged straight lines, controlled digital fragmentation, sharp angular contrast, dark background, glitch-art elements, broken glass effect',
   },
   {
     name: 'signal-wireframe',
@@ -66,7 +66,7 @@ export const VISUAL_STYLES: VisualStyle[] = [
   {
     name: 'bio-circuit',
     description:
-      'Hybrid organic circuitry, branching neon filaments, structured yet natural signal pathways',
+      'Hybrid organic microcircuitry, branching neon bioluminescent filaments, structured neural pathways, swamp-tech aesthetic, emerald and dark-water palette, pixel-art textures',
   },
   {
     name: 'quantum-field',
@@ -93,6 +93,16 @@ export const VISUAL_STYLES: VisualStyle[] = [
     description:
       'Symmetrical grid with horizontal signal pulses, evenly spaced energy waves, rhythmic visual cadence',
   },
+  {
+    name: 'liquidity-wall',
+    description:
+      'Massive vertical monolithic blocks, dense stacked pixelated rectangles, heavy market pressure visualization, industrial dark UI, flat vector aesthetic, no perspective distortion',
+  },
+  {
+    name: 'node-cluster',
+    description:
+      'Scattered glowing data nodes forming asymmetric clusters, thin connection lines, distributed network structure',
+  },
 ];
 
 export const VISUAL_STYLES_NIGHT: VisualStyle[] = [
@@ -107,9 +117,9 @@ export const VISUAL_STYLES_NIGHT: VisualStyle[] = [
       'Dark reflective surface with scattered light particles, low fog layer, minimal glowing reflections',
   },
   {
-    name: 'starfield-radar',
+    name: 'signal-constellation',
     description:
-      'Dark circular radar grid with faint star-like points, slow sweeping beam arc, minimal motion',
+      'Sparse glowing data nodes connected by thin lines, forming abstract constellation patterns over dark space',
   },
   {
     name: 'sleeping-circuit',
@@ -216,44 +226,43 @@ STRICT RULES:
 `.trim();
 }
 
-export function buildMondayImagePrompt(): string {
-  return `
-Pixel art illustration for a crypto news terminal called "Sapo Cripto".
-Theme: Monday morning market opening. A new week begins in the swamp.
-
-STYLE: Terminal dashboard awakening — screens lighting up, data streams initializing, signal pulses starting
-COLOR PALETTE: Deep green (#00ff41) on black, with amber (#ffb300) accent highlights suggesting morning energy
-MOOD: Calm anticipation. The swamp wakes up. Another week of watching the market.
-
-STRICT RULES:
-- Dark background base (#0a0a0a)
-- Strict 8-bit pixel grid, visible square pixel blocks
-- No anti-aliasing, no soft brush strokes
-- ABSOLUTELY NO TEXT, LETTERS, WORDS OR NUMBERS OF ANY KIND
-- ABSOLUTELY NO HUMAN FIGURES, PEOPLE OR CHARACTERS
-- No logos, no real-world branding
-- Tiny pixel frog silhouette in bottom-right corner, subtle
-- Aspect ratio: 16:9
-`.trim();
-}
-
-export function buildWeeklyImagePrompt(): string {
-  return `
-Pixel art illustration for a crypto news terminal called "Sapo Cripto".
-Theme: End of week recap. The swamp closes another chapter.
-
-STYLE: Radar sweep completing a full circle — week reviewed, signals catalogued, archives written
-COLOR PALETTE: Muted green (#1a8c3a) fading to deep teal, suggesting reflection and closure
-MOOD: Calm wisdom. Another week survived. The frog has seen it all before.
-
-STRICT RULES:
-- Dark background base (#0a0a0a)
-- Strict 8-bit pixel grid, visible square pixel blocks
-- No anti-aliasing, no soft brush strokes
-- ABSOLUTELY NO TEXT, LETTERS, WORDS OR NUMBERS OF ANY KIND
-- ABSOLUTELY NO HUMAN FIGURES, PEOPLE OR CHARACTERS
-- No logos, no real-world branding
-- Tiny pixel frog silhouette in bottom-right corner, subtle
-- Aspect ratio: 16:9
-`.trim();
-}
+// export function buildMondayImagePrompt(): string {
+//   return `
+// Pixel art illustration for a crypto news terminal called "Sapo Cripto".
+// Theme: Monday morning market opening. A new week begins in the swamp.
+//
+// STYLE: Terminal dashboard awakening — screens lighting up, data streams initializing, signal pulses starting
+// COLOR PALETTE: Deep green (#00ff41) on black, with amber (#ffb300) accent highlights suggesting morning energy
+// MOOD: Calm anticipation. The swamp wakes up. Another week of watching the market.
+//
+// STRICT RULES:
+// - Dark background base (#0a0a0a)
+// - Strict 8-bit pixel grid, visible square pixel blocks
+// - ABSOLUTELY NO TEXT, LETTERS, WORDS OR NUMBERS OF ANY KIND
+// - ABSOLUTELY NO HUMAN FIGURES, PEOPLE OR CHARACTERS
+// - No logos, no real-world branding
+// - Tiny pixel frog silhouette in bottom-right corner, subtle
+// - Aspect ratio: 16:9
+// `.trim();
+// }
+//
+// export function buildWeeklyImagePrompt(): string {
+//   return `
+// Pixel art illustration for a crypto news terminal called "Sapo Cripto".
+// Theme: End of week recap. The swamp closes another chapter.
+//
+// STYLE: Radar sweep completing a full circle — week reviewed, signals catalogued, archives written
+// COLOR PALETTE: Muted green (#1a8c3a) fading to deep teal, suggesting reflection and closure
+// MOOD: Calm wisdom. Another week survived. The frog has seen it all before.
+//
+// STRICT RULES:
+// - Dark background base (#0a0a0a)
+// - Strict 8-bit pixel grid, visible square pixel blocks
+// - No antialiasing, no soft brush strokes
+// - ABSOLUTELY NO TEXT, LETTERS, WORDS OR NUMBERS OF ANY KIND
+// - ABSOLUTELY NO HUMAN FIGURES, PEOPLE OR CHARACTERS
+// - No logos, no real-world branding
+// - Tiny pixel frog silhouette in bottom-right corner, subtle
+// - Aspect ratio: 16:9
+// `.trim();
+// }
