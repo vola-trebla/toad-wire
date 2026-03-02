@@ -14,7 +14,7 @@ import {
   runAfternoonBatch,
   // runDegenTime,
   runEveningDigest,
-  // scanForBreaking,
+  scanForBreaking,
   runMondayBriefing,
   runWeeklySummary,
   // dispatchNextMicroPost,
@@ -69,7 +69,7 @@ export function startScheduler(): void {
   // cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
 
   // ─── Breaking News ─────────────────────────────────────────────────────────
-  // cron.schedule('*/10 7-23 * * *', () => void scanForBreaking(), { timezone: TIMEZONE });
+  cron.schedule('*/10 7-23 * * *', () => void scanForBreaking(), { timezone: TIMEZONE });
 
   // ─── Feed Health ───────────────────────────────────────────────────────────
   cron.schedule('*/30 * * * *', () => void checkFeedHealth(), { timezone: TIMEZONE });

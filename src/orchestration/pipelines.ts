@@ -41,6 +41,8 @@ import {
   breakingInProgress,
   getUnusedHeadlines,
   setUnusedHeadlines,
+  canPostBreaking,
+  recordBreakingPost,
 } from './state.js';
 import { db } from '../db/client.js';
 import { articles, pipelineRuns } from '../db/schema.js';
@@ -410,9 +412,15 @@ export async function scanForBreaking(): Promise<void> {
       return;
     }
 
+    if (!canPostBreaking()) {
+      logger.info('⏸️ Breaking cooldown active — skipping');
+      return;
+    }
+
     breakingInProgress.add(top.url);
     try {
       await runBreakingNewsPipeline(top);
+      recordBreakingPost();
     } finally {
       breakingInProgress.delete(top.url);
     }
