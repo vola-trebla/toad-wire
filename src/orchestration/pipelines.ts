@@ -390,7 +390,7 @@ export async function scanForBreaking(): Promise<void> {
     const fastTrack = scored.find(
       (a) =>
         a.tier === 1 &&
-        a.importanceScore > 1.05 &&
+        a.importanceScore > 1.3 &&
         FAST_TRACK_CATEGORIES.test(a.title) &&
         !breakingInProgress.has(a.url),
     );
