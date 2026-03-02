@@ -49,16 +49,28 @@ export function startScheduler(): void {
 
   cron.schedule('0 9 * * 1', () => void runMondayBriefing(), { timezone: TIMEZONE });
 
-  // ─── Morning — 9:30 / 10:00 ────────────────────────────────────────────────
+  // ─── Morning — 9:30 (Tue–Sun) / 9:45 (Mon) / 10:00 ───────────────────────
+  // Mon batches delayed to 9:45 to avoid overlap with Monday Briefing (9:00, uses Gemini Pro)
 
-  cron.schedule('30 9 * * *', () => void runMorningBatches(), { timezone: TIMEZONE }); // every day
+  cron.schedule('30 9 * * 2-7', () => void runMorningBatches(), { timezone: TIMEZONE }); // Tue–Sun 9:30
+  cron.schedule('45 9 * * 1', () => void runMorningBatches(), { timezone: TIMEZONE }); // Mon 9:45
   cron.schedule('0 10 * * 2-7', () => void runMorningDigest(), { timezone: TIMEZONE }); // Tue–Sun (Mon has briefing)
+
+  // ─── Late Morning — 11:00 Tue–Sun ─────────────────────────────────────────
+  // Closes 3h gap between morning digest (10:00) and midday news (13:00)
+
+  cron.schedule('0 11 * * 2-7', () => void runNewsPipeline(1), { timezone: TIMEZONE });
 
   // ─── Midday — 13:00 ────────────────────────────────────────────────────────
 
   cron.schedule('0 13 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
   cron.schedule('30 13 * * *', () => void runAfternoonBatch(), { timezone: TIMEZONE });
   // cron.schedule('45 13 * * *', () => void runDegenTime(), { timezone: TIMEZONE });
+
+  // ─── Weekend Afternoon — 15:00 Sat–Sun ────────────────────────────────────
+  // Closes 3.5h gap between afternoon batch (13:30) and prime time (17:00)
+
+  cron.schedule('0 15 * * 6,0', () => void runNewsPipeline(1), { timezone: TIMEZONE });
 
   // ─── Prime Time Weekdays — 18:00 / 20:00 / 22:00 ──────────────────────────
 
