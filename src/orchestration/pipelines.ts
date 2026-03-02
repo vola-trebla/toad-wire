@@ -254,8 +254,6 @@ export async function runEveningDigest(): Promise<void> {
       await withCircuit(telegramCircuit, () => sendToTelegram(goodNightMsg), logger);
       await withCircuit(xCircuit, () => postTweet(goodNightMsg), logger);
     }
-
-    await withCircuit(xCircuit, () => postTweet(goodNightMsg), logger);
   } catch (err) {
     error = String(err);
     logger.error(`❌ Evening digest error: ${err}`);
@@ -386,7 +384,8 @@ export async function scanForBreaking(): Promise<void> {
     if (fresh.length === 0) return;
 
     const snapshot = await collectMarketSnapshot();
-    const scored = scoreArticles(fresh, snapshot);
+    const recentTitles = getUnusedHeadlines();
+    const scored = scoreArticles(fresh, snapshot, recentTitles);
 
     const clusters = clusterByStory(fresh);
     applyClusterBoosts(scored, clusters);
@@ -423,8 +422,10 @@ export async function scanForBreaking(): Promise<void> {
 
     breakingInProgress.add(top.url);
     try {
-      await runBreakingNewsPipeline(top);
-      recordBreakingPost();
+      const posted = await runBreakingNewsPipeline(top);
+      if (posted) {
+        recordBreakingPost();
+      }
     } finally {
       breakingInProgress.delete(top.url);
     }
@@ -433,7 +434,7 @@ export async function scanForBreaking(): Promise<void> {
   }
 }
 
-export async function runBreakingNewsPipeline(article: FeedArticle): Promise<void> {
+export async function runBreakingNewsPipeline(article: FeedArticle) {
   logger.info(`🚨 Running breaking pipeline for: ${article.title}`);
 
   const startedAt = new Date().toISOString();
@@ -441,29 +442,32 @@ export async function runBreakingNewsPipeline(article: FeedArticle): Promise<voi
   let error: string | undefined;
 
   try {
+    await markAsPosted(article.url);
+    await saveArticle(article);
+
     const summary =
       (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
 
-    await saveArticle(article, undefined, summary?.entities);
-    await markAsPosted(article.url);
-
     if (summary) {
+      await saveArticle(article, undefined, summary.entities);
       await publishArticle(article, summary, `🚨 ${formatPostTelegram(article, summary)}`);
+      updateLastPosted();
+      logger.info(`🚨 Breaking pipeline complete: "${article.title}"`);
+      return true;
     } else {
-      // TODO: retry with Flash-Lite or skip — for now skip to avoid posting raw English title
-      // const fallback = `🚨 *BREAKING*\n\n${article.title}\n\n🔗 ${article.url}`;
-      // await withCircuit(telegramCircuit, () => sendToTelegram(fallback), logger);
-      // if (isXEnabled()) {
-      //   await withCircuit(xCircuit, () => postTweet(`⚡ ${article.title}\n${article.url}`), logger);
-      // }
-      logger.warn(`⚠️ Breaking summary failed for "${article.title}" — skipping post`);
+      logger.warn(`⚠️ Breaking summary failed — posting title fallback`);
+      const fallback = `🚨 BREAKING\n\n${article.title}\n\n🔗 ${article.url}`;
+      await withCircuit(telegramCircuit, () => sendToTelegram(fallback), logger);
+      if (isXEnabled()) {
+        await withCircuit(xCircuit, () => postTweet(`⚡ ${article.title}\n${article.url}`), logger);
+      }
+      updateLastPosted();
+      return true;
     }
-
-    updateLastPosted();
-    logger.info(`🚨 Breaking pipeline complete: "${article.title}"`);
   } catch (err) {
     error = String(err);
     logger.error(`❌ Breaking pipeline error: ${err}`);
+    return false;
   } finally {
     db.insert(pipelineRuns)
       .values({
