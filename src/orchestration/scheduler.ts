@@ -7,18 +7,14 @@ import { checkFeedHealth, reportFeedHealth } from '../ingestion/feed-health.js';
 import { cleanOldMicroPosts } from '../queue/micro-posts.js';
 import { logger } from '../utils/logger.js';
 import { TIMEZONE } from '../utils/constants.js';
+import { runMorningDigest, runNewsPipeline } from './news-pipeline.js';
 import {
-  runMorningDigest,
-  runNewsPipeline,
   runMorningBatches,
   runAfternoonBatch,
-  // runDegenTime,
-  runEveningDigest,
-  scanForBreaking,
-  runMondayBriefing,
-  runWeeklySummary,
-  // dispatchNextMicroPost,
-} from './pipelines.js';
+  runEveningDigest /* runDegenTime, dispatchNextMicroPost */,
+} from './digest-pipeline.js';
+import { scanForBreaking } from './breaking-pipeline.js';
+import { runMondayBriefing, runWeeklySummary } from './special-pipeline.js';
 
 export function startScheduler(): void {
   if (process.env.NODE_ENV === 'development') {

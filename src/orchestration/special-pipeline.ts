@@ -1,0 +1,116 @@
+// src/orchestration/special-pipeline.ts
+import { fetchFeeds } from '../ingestion/rss.js';
+import { fetchPrices, formatPricesPost } from '../market/prices.js';
+import { saveArticle, markAsPosted } from '../ingestion/dedup.js';
+import { sendToTelegramPlain } from '../delivery/telegram.js';
+import { logger } from '../utils/logger.js';
+import { fetchFearGreed } from '../market/feargreed.js';
+import { updateLastPosted } from '../health/server.js';
+import { collectMarketSnapshot } from '../market/market-snapshot.js';
+import { postTweet } from '../delivery/twitter.js';
+import { scoreArticles } from '../intelligence/scorer.js';
+import { withCircuit } from '../utils/circuit-breaker.js';
+import { telegramCircuit, xCircuit } from './state.js';
+import { db } from '../db/client.js';
+import { articles } from '../db/schema.js';
+import { generateText } from 'ai';
+import { getModel } from '../llm/router.js';
+import {
+  buildMondayBriefingPrompt,
+  buildWeeklySummaryPrompt,
+} from '../prompts/summarize.prompt.js';
+import { desc, gte } from 'drizzle-orm';
+import { isRelevant, withPipelineMetrics } from './helpers.js';
+
+// ─── Monday Briefing ──────────────────────────────────────────────────────────
+
+export async function runMondayBriefing(): Promise<void> {
+  logger.info('🐸 Starting Monday briefing...');
+
+  await withPipelineMetrics('monday', async () => {
+    const [prices, fearGreed, allArticles] = await Promise.all([
+      fetchPrices(),
+      fetchFearGreed(),
+      fetchFeeds(),
+    ]);
+
+    const filtered = allArticles.filter((a) => isRelevant(a.title));
+    const snapshot = await collectMarketSnapshot();
+    const scored = scoreArticles(filtered, snapshot);
+    const topHeadlines = scored.slice(0, 5).map((a) => a.title);
+
+    const pricesText = formatPricesPost(prices, fearGreed);
+
+    const { text } = await generateText({
+      model: getModel('weekly'),
+      prompt: buildMondayBriefingPrompt(pricesText, String(fearGreed?.value ?? '—'), topHeadlines),
+    });
+
+    const post = text.trim();
+    logger.info(`📝 Monday briefing:\n${post}`);
+
+    const fresh = scored.slice(0, 5);
+    for (const article of fresh) {
+      await saveArticle(article);
+      await markAsPosted(article.url);
+    }
+
+    await withCircuit(telegramCircuit, () => sendToTelegramPlain(post), logger);
+    await withCircuit(xCircuit, () => postTweet(post), logger);
+
+    updateLastPosted();
+    logger.info('✅ Monday briefing posted');
+  });
+}
+
+// ─── Weekly Summary ───────────────────────────────────────────────────────────
+
+export async function runWeeklySummary(): Promise<void> {
+  logger.info('🐸 Starting weekly summary...');
+
+  await withPipelineMetrics('weekly', async () => {
+    const fearGreed = await fetchFearGreed();
+
+    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const weekArticles = await db
+      .select({
+        title: articles.title,
+        category: articles.category,
+        sentiment: articles.sentiment,
+        importanceScore: articles.importanceScore,
+      })
+      .from(articles)
+      .where(gte(articles.createdAt, since))
+      .orderBy(desc(articles.importanceScore))
+      .limit(10);
+
+    if (weekArticles.length === 0) {
+      logger.warn('⚠️ No articles found for weekly summary');
+      return;
+    }
+
+    const weekNumber = Math.ceil(
+      (Date.now() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000),
+    );
+
+    const topArticles = weekArticles.map((a) => ({
+      title: a.title,
+      category: a.category ?? 'trading',
+      sentiment: a.sentiment ?? 'neutral',
+    }));
+
+    const { text } = await generateText({
+      model: getModel('weekly'),
+      prompt: buildWeeklySummaryPrompt(topArticles, String(fearGreed?.value ?? '—'), weekNumber),
+    });
+
+    const post = text.trim();
+    logger.info(`📝 Weekly summary:\n${post}`);
+
+    await withCircuit(telegramCircuit, () => sendToTelegramPlain(post), logger);
+    await withCircuit(xCircuit, () => postTweet(post), logger);
+
+    updateLastPosted();
+    logger.info('✅ Weekly summary posted');
+  });
+}
