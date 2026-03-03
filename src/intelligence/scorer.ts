@@ -216,7 +216,7 @@ export function scoreArticles(
 // ─── Score tier helpers ───────────────────────────────────────────────────────
 
 export const SCORE_THRESHOLDS = {
-  BREAKING: 1.3,
+  BREAKING: 1.25,
   TOP: 0.8,
   NORMAL: 0.5,
   SECONDARY: 0.3,
