@@ -158,7 +158,7 @@ export async function searchCryptoLatam(): Promise<void> {
   if (!client) return;
 
   try {
-    const response = await client.v2.search('crypto lang:es -is:retweet -is:reply min_faves:10', {
+    const response = await client.v2.search('crypto lang:es -is:retweet -is:reply', {
       max_results: 10,
       'tweet.fields': ['public_metrics', 'created_at', 'author_id'],
       'user.fields': ['username'],
