@@ -8,12 +8,14 @@ import { db } from './db/client.js';
 import { sql } from 'drizzle-orm';
 import { logger } from './utils/logger.js';
 import { initBreakingCooldown } from './orchestration/state.js';
+import { initSocialState } from './orchestration/social-state.js';
 
 async function main(): Promise<void> {
   initSentry();
   startHealthServer();
   await restoreFeedHealthFromDB();
   await initBreakingCooldown();
+  await initSocialState();
   startScheduler();
   logger.info('🐸 El Sapo Cripto arrancó! Esperando el horario...');
 }

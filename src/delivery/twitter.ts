@@ -4,7 +4,7 @@ import { logger } from '../utils/logger.js';
 
 let client: TwitterApi | null = null;
 
-function getClient(): TwitterApi | null {
+export function getClient(): TwitterApi | null {
   if (
     !config.X_CONSUMER_KEY ||
     !config.X_CONSUMER_SECRET ||
@@ -24,6 +24,19 @@ function getClient(): TwitterApi | null {
   }
 
   return client;
+}
+
+// Read-only client — Bearer Token for X API v2 read endpoints
+let readClient: TwitterApi | null = null;
+
+export function getReadClient(): TwitterApi | null {
+  if (!config.X_BEARER_TOKEN) return null;
+
+  if (!readClient) {
+    readClient = new TwitterApi(config.X_BEARER_TOKEN);
+  }
+
+  return readClient;
 }
 
 export function isXEnabled(): boolean {

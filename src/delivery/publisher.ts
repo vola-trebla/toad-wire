@@ -7,8 +7,8 @@
 import { logger } from '../utils/logger.js';
 import { withCircuit } from '../utils/circuit-breaker.js';
 import { sendToTelegram, sendToTelegramPlain, sendToTelegramWithPhoto } from './telegram.js';
-import { isXEnabled, postTweet, postTweetWithMedia } from './twitter.js';
 import { telegramCircuit, xCircuit } from '../orchestration/state.js';
+import { isXEnabled, postTweet, postTweetWithMedia, getClient } from './twitter.js';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -58,5 +58,21 @@ export async function publish(
     await withCircuit(xCircuit, () => postTweetWithMedia(xText, xImage), logger);
   } else {
     await withCircuit(xCircuit, () => postTweet(xText), logger);
+  }
+}
+
+// ─── Reply to Tweet ───────────────────────────────────────────────────────────
+
+export async function replyToTweet(tweetId: string, text: string): Promise<boolean> {
+  const client = getClient();
+  if (!client || !isXEnabled()) return false;
+
+  try {
+    await withCircuit(xCircuit, () => client.v2.reply(text, tweetId), logger);
+    logger.info(`↩️ Replied to tweet ${tweetId}`);
+    return true;
+  } catch (error) {
+    logger.warn(`⚠️ replyToTweet error: ${error}`);
+    return false;
   }
 }

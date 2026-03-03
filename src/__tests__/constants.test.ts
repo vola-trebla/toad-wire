@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { TIMEZONE, BLACKLIST, MAX_RANKER_INPUT, FAST_TRACK_CATEGORIES } from '../utils/constants.js';
+import {
+  TIMEZONE,
+  BLACKLIST,
+  MAX_RANKER_INPUT,
+  FAST_TRACK_CATEGORIES,
+} from '../utils/constants.js';
 
 describe('constants — smoke tests', () => {
   it('exports expected constants', () => {

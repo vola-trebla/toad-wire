@@ -14,6 +14,8 @@ const envSchema = z.object({
   X_CONSUMER_SECRET: z.string().optional(),
   X_ACCESS_TOKEN: z.string().optional(),
   X_ACCESS_TOKEN_SECRET: z.string().optional(),
+  X_BEARER_TOKEN: z.string().optional(),
+  X_BOT_USER_ID: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

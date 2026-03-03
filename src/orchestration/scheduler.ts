@@ -15,6 +15,8 @@ import {
 } from './digest-pipeline.js';
 import { scanForBreaking } from './breaking-pipeline.js';
 import { runMondayBriefing, runWeeklySummary } from './special-pipeline.js';
+import { pollMentions, pollMonitoredTimelines, searchCryptoLatam } from '../social/x-monitor.js';
+import { runMentionReplyPipeline } from '../social/mention-pipeline.js';
 
 export function startScheduler(): void {
   if (process.env.NODE_ENV === 'development') {
@@ -97,6 +99,14 @@ export function startScheduler(): void {
 
   // ─── Micro-post Dispatcher (paused) ───────────────────────────────────────
   // cron.schedule('*/20 8-23 * * *', () => void dispatchNextMicroPost(), { timezone: TIMEZONE });
+
+  // ─── X Monitor — polling 8:00–23:00 ───────────────────────────────────────
+  // Rate limits: mentions 15req/15min, timelines 15req/15min, search 60req/15min
+
+  cron.schedule('*/3 8-23 * * *', () => void pollMentions(), { timezone: TIMEZONE });
+  cron.schedule('*/1 8-23 * * *', () => void pollMonitoredTimelines(), { timezone: TIMEZONE });
+  cron.schedule('*/5 8-23 * * *', () => void searchCryptoLatam(), { timezone: TIMEZONE });
+  cron.schedule('*/3 8-23 * * *', () => void runMentionReplyPipeline(), { timezone: TIMEZONE });
 
   logger.info('📅 Scheduler started');
 }

@@ -70,3 +70,40 @@ export const botState = sqliteTable('bot_state', {
   value: text('value').notNull(),
   updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`),
 });
+
+// CORE II — X interaction log
+export const xInteractions = sqliteTable('x_interactions', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  tweetId: text('tweet_id').notNull().unique(),
+  authorId: text('author_id').notNull(),
+  authorHandle: text('author_handle').notNull(),
+  content: text('content').notNull(),
+  type: text('type').notNull(), // 'mention' | 'monitored' | 'search'
+  classification: text('classification'), // 'news' | 'meme' | 'alert' | 'question' | 'shitpost' | 'shill'
+  engagementScore: real('engagement_score'),
+  replyId: text('reply_id'),
+  replyText: text('reply_text'),
+  repliedAt: text('replied_at'),
+  personaMode: text('persona_mode'), // 'normal' | 'catalina'
+  skipped: integer('skipped', { mode: 'boolean' }).default(false),
+  skipReason: text('skip_reason'), // 'rate_limit' | 'low_engagement' | 'low_confidence' | 'safety'
+  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+});
+
+// CORE II — accounts to monitor proactively
+export const xMonitoredAccounts = sqliteTable('x_monitored_accounts', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  handle: text('handle').notNull().unique(),
+  userId: text('user_id'), // cached X API user ID
+  category: text('category').notNull(), // 'whale' | 'founder' | 'media' | 'regulator' | 'degen'
+  priority: integer('priority').default(1), // 1-5
+  lastCheckedAt: text('last_checked_at'),
+  enabled: integer('enabled', { mode: 'boolean' }).default(true),
+});
+
+// CORE II — persona FSM persistent state
+export const personaState = sqliteTable('persona_state', {
+  key: text('key').primaryKey(),
+  value: text('value').notNull(),
+  updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`),
+});
