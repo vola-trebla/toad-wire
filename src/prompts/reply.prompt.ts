@@ -61,5 +61,6 @@ ${recentCtx}
 
 Generate ONE reply. Follow all rules from your persona.
 Return JSON: { "text": "...", "tone": "ironic|analytical|sarcastic|hype|zen", "confidence": 0.0-1.0 }
+Tone MUST be exactly one of: ironic, analytical, sarcastic, hype, zen.
 `.trim();
 }

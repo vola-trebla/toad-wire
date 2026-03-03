@@ -13,7 +13,7 @@ import { desc, eq, isNotNull } from 'drizzle-orm';
 
 const ReplySchema = z.object({
   text: z.string().max(280),
-  tone: z.enum(['ironic', 'analytical', 'sarcastic', 'hype', 'zen']),
+  tone: z.string(),
   confidence: z.number().min(0).max(1),
 });
 
