@@ -129,7 +129,7 @@ export async function runEveningDigest(): Promise<void> {
 
     await publish({
       telegram: content(goodNightMsg, image?.data),
-      // x: content(goodNightMsg, image?.data),
+      x: undefined,
     });
   });
 }
