@@ -87,6 +87,14 @@ export async function runMentionReplyPipeline(): Promise<void> {
 
       if (dryRun) {
         logger.info(`📝 [DRY RUN] Would reply to @${mention.authorHandle}: "${reply.text}"`);
+        await db
+          .update(xInteractions)
+          .set({
+            replyText: reply.text,
+            personaMode: 'dry_run',
+            repliedAt: new Date().toISOString(),
+          })
+          .where(eq(xInteractions.tweetId, mention.tweetId));
         continue;
       }
 
