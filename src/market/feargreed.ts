@@ -24,11 +24,11 @@ export async function fetchFearGreed(): Promise<FearGreedData | null> {
 }
 
 export function formatFearGreed(value: number): string {
-  if (value <= 10) return `😱 Sapo en Miedo Extremo (${value})`;
-  if (value <= 25) return `😨 Sapo Asustado (${value})`;
-  if (value <= 45) return `🌫️ Sapo Cauteloso (${value})`;
-  if (value <= 54) return `😐 Sapo Neutral (${value})`;
-  if (value <= 74) return `🔥 Sapo Codicioso (${value})`;
+  if (value <= 10) return `Pánico en el Sistema (${value}) 🚨`;
+  if (value <= 25) return `Alerta de Miedo (${value}) 😨`;
+  if (value <= 45) return `️ Incertidumbre en Red (${value}) 🌫`;
+  if (value <= 54) return `Neutro / Calibrando (${value}) ⚖️`;
+  if (value <= 74) return `Codicia Detectada (${value}) ⚡`;
 
-  return `🤩🔥 *Sapo en Codicia Extrema* (${value})`;
+  return `🔥 Euforia Crítica (${value})`;
 }

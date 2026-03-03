@@ -89,11 +89,11 @@ export async function formatPricesPostX(
   prices: CoinPrice[],
   fearGreed?: FearGreedData | null,
 ): Promise<string> {
-  const coins = prices.filter((c) => ['BTC', 'ETH'].includes(c.symbol));
+  const coins = prices.filter((c) => ['BTC', 'ETH', 'SOL', 'BNB'].includes(c.symbol));
 
   const lines = coins.map((coin) => {
     const price = `$${coin.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
-    return `${getCoinEmoji(coin.symbol)} ${coin.symbol}  ${price}  ${formatChange(coin.change24h)}`;
+    return `${getCoinEmoji(coin.symbol)} #${coin.symbol}  ${price} | ${formatChange(coin.change24h)}`;
   });
 
   const fg = fearGreed ? formatFearGreed(fearGreed.value) : '';
@@ -123,34 +123,34 @@ ${lines.join('\n')}
 
 ${hook ? `${hook} 👀\n` : ''}${fg}
 
-#Bitcoin #Ethereum #Cripto`;
+#Mercado #Latam #Cripto`;
 }
 
 function formatChange(change: number): string {
   const abs = Math.abs(change);
-
   let emoji: string;
 
-  if (abs < 0.05) {
-    emoji = '🌫️';
+  if (abs < 0.1) {
+    emoji = '⚖️';
   } else if (change > 0) {
-    if (change >= 2) emoji = '🔥🔥';
-    else emoji = '🔥';
+    if (change >= 5) emoji = '🚀';
+    else emoji = '📈';
   } else {
-    if (change <= -3) emoji = '🌪️';
-    else emoji = '💧';
+    if (change <= -5) emoji = '💀';
+    else emoji = '📉';
   }
 
   const sign = change > 0 ? '+' : '';
-  return `${emoji} ${sign}${change.toFixed(2)}%`;
+  return `${sign}${change.toFixed(2)}% ${emoji}`;
 }
 
 function getCoinEmoji(symbol: string): string {
   const map: Record<string, string> = {
-    BTC: '₿',
-    ETH: '💎',
-    SOL: '☀️',
-    DOGE: '🐶',
+    BTC: '🟠', // Bitcoin
+    ETH: '🔹', // Ethereum
+    SOL: '🟣', // Solana
+    BNB: '🟡', // Binance Coin
+    DOGE: '🐕',
   };
-  return map[symbol] ?? '🪙';
+  return map[symbol] ?? '🌑';
 }

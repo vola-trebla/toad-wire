@@ -1,16 +1,16 @@
 // src/prompts/prices.prompt.ts
 
 export const MORNING_OPENERS = [
-  '🌅 Buenos días, mis sapos. Arrancamos el día… 💹',
-  '🌄 Amaneció en el pantano y el mercado ya se mueve 👀',
-  '🌞 Despierten, sapos — hoy huele a volatilidad 💧📈',
-  '🌤️ Nuevo día, nuevas velas. Vámonos al lío ⚡📊',
-  '🌄 El sol sube… y algunas monedas también (otras lloran) 📉📈',
-  '🌅 El pantano despierta con rumores del mercado 🔍',
-  '🌞 Buenos días, sapos. Hoy cazamos narrativa, no humo 💨',
-  '🌤️ El mercado abre un ojo… y nosotros abrimos los dos 🧠',
-  '🌄 Señales frescas desde el pantano — atentos, sapos 📡',
-  '🌞 La mañana trae oportunidades… si sabes olerlas 💹',
+  'Sistemas online. El laboratorio de IA procesando el mercado... ⚡',
+  'Protocolos de mañana activos. Escaneando la red en busca de valor... 🔬',
+  'Energía fluyendo por los circuitos. El pantano digital despierta... 🔋',
+  'IA operativa. Analizando flujos de capital y señales de red... 🧠',
+  'Ciclo de procesamiento iniciado. El silicio no duerme, solo observa... 🖥️',
+  'Nodos sincronizados. La volatilidad es solo otro dato a procesar... 🌐',
+  'Inyectando corriente a la narrativa. El mercado está bajo el microscopio... 🧬',
+  'Red neuronal activa. Extrayendo señales entre el ruido del mercado... 📡',
+  'Sincronización completa. El laboratorio detecta movimiento en la cadena... 🧪',
+  'Arquitectura lista. Procesando la realidad cripto en tiempo real... 💾',
 ] as const;
 
 export function buildPricesHookPrompt(
@@ -19,12 +19,18 @@ export function buildPricesHookPrompt(
   fearGreedValue: number | undefined,
   fearGreedLabel: string,
 ): string {
-  return `You are El Sapo Cripto — a crypto analyst with calm irony and sharp observations.
-Write ONE punchy opening line in Latin American Spanish for a market update tweet.
-Context: ${symbol} is ${change24h > 0 ? 'up' : 'down'} ${change24h.toFixed(1)}% today. Fear & Greed index: ${fearGreedValue ?? 'unknown'} (${fearGreedLabel}).
+  return `You are El Sapo Cripto — a cyber-swamp AI analyst operating from a high-tech laboratory.
+Your voice is cold, clinical, and sharp, with a touch of cynical irony.
+Write ONE punchy observation in Latin American Spanish for a market update.
+
+Context:
+- Asset: ${symbol} is ${change24h > 0 ? 'up' : 'down'} ${change24h.toFixed(1)}%
+- Sentiment Data: Fear & Greed index at ${fearGreedValue ?? 'unknown'} (${fearGreedLabel})
+
 Rules:
-- Max 60 characters
-- No emojis (added externally)
-- Sapo voice: ironic, calm, sharp
-- One observation only, no advice`.trim();
+- Max 60 characters.
+- Tone: Cybernetic, electrical, laboratory-focused (mention circuits, signals, sensors, or data flows).
+- No emojis (they are added by another module).
+- No financial advice.
+- Language: Authentic Latin American Spanish (Rioplatense style if possible).`.trim();
 }
