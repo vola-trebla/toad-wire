@@ -32,6 +32,22 @@ async function recordReply(tweetId: string, replyId: string, replyText: string):
 // ─── Mention Reply Pipeline ───────────────────────────────────────────────────
 
 export async function runMentionReplyPipeline(): Promise<void> {
+  // Max 5 dry-run replies per day
+  const todayReplies = await db
+    .select({ id: xInteractions.id })
+    .from(xInteractions)
+    .where(
+      and(
+        eq(xInteractions.personaMode, 'dry_run'),
+        sql`date(${xInteractions.createdAt}) = date('now')`,
+      ),
+    );
+
+  if (todayReplies.length >= 5) {
+    logger.debug('⏸️ Daily dry-run limit reached (5), skipping');
+    return;
+  }
+
   const dryRun = process.env.X_REPLY_DRY_RUN === 'true';
 
   try {
@@ -43,7 +59,7 @@ export async function runMentionReplyPipeline(): Promise<void> {
       .from(xInteractions)
       .where(
         and(
-          eq(xInteractions.type, 'mention'),
+          sql`${xInteractions.type} IN ('mention', 'search')`,
           eq(xInteractions.skipped, false),
           sql`${xInteractions.replyId} IS NULL`,
         ),
@@ -79,11 +95,6 @@ export async function runMentionReplyPipeline(): Promise<void> {
         await markSkipped(mention.tweetId, 'low_confidence');
         continue;
       }
-
-      // Random jitter 1-5 min
-      const jitter = 60_000 + Math.random() * 240_000;
-      logger.debug(`⏳ Jitter ${Math.round(jitter / 1000)}s before reply`);
-      await new Promise((resolve) => setTimeout(resolve, jitter));
 
       if (dryRun) {
         logger.info(`📝 [DRY RUN] Would reply to @${mention.authorHandle}: "${reply.text}"`);

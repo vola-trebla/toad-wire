@@ -106,7 +106,8 @@ export function startScheduler(): void {
   cron.schedule('*/3 8-23 * * *', () => void pollMentions(), { timezone: TIMEZONE });
   cron.schedule('*/1 8-23 * * *', () => void pollMonitoredTimelines(), { timezone: TIMEZONE });
   cron.schedule('*/5 8-23 * * *', () => void searchCryptoLatam(), { timezone: TIMEZONE });
-  cron.schedule('*/3 8-23 * * *', () => void runMentionReplyPipeline(), { timezone: TIMEZONE });
+  // cron.schedule('*/3 8-23 * * *', () => void runMentionReplyPipeline(), { timezone: TIMEZONE });
+  cron.schedule('0 */4 8-23 * * *', () => void runMentionReplyPipeline(), { timezone: TIMEZONE });
 
   logger.info('📅 Scheduler started');
 }
