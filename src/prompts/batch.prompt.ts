@@ -32,7 +32,7 @@ Time of day: ${snapshot.timeOfDay}
 
 Generate 12 unique micro-posts for X/Twitter.
 Rules:
-- Max 280 characters per post
+- Max 300 characters per post
 - Each post must reference at least ONE concrete data point from the snapshot (price, %, F&G or specific asset)
 - 1-3 hashtags in separate field, emoji in mood field
 - Output language: Latin American Spanish
