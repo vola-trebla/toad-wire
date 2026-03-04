@@ -58,7 +58,7 @@ export async function summarizeArticle(article: FeedArticle): Promise<Summary | 
       ...result,
       tags: result.tags.map((t) => (t.startsWith('#') ? t : `#${t}`)),
       title: truncateToWord(result.title, 80),
-      summary: truncateToWord(result.summary, 420),
+      summary: truncateToWord(result.summary, 700),
       thought: truncateToWord(result.thought, 100),
       tweet: truncateToWord(result.tweet, 260),
       emoji: result.emoji.slice(0, 6),
