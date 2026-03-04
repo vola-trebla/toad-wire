@@ -29,7 +29,7 @@ export interface MarketSnapshot {
 
 let cachedSnapshot: MarketSnapshot | null = null;
 let cacheTime = 0;
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 min
+const CACHE_TTL_MS = 100 * 60 * 1000; // 100 min
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
