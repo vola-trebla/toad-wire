@@ -82,7 +82,6 @@ export async function runBreakingNewsPipeline(article: FeedArticle): Promise<boo
 
   await withPipelineMetrics('breaking', async (metrics) => {
     await markAsPosted(article.url);
-    await saveArticle(article);
 
     const summary =
       (await withCircuit(geminiCircuit, () => summarizeArticle(article), logger)) ?? null;
