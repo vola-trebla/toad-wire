@@ -10,8 +10,8 @@ import { TIMEZONE } from '../utils/constants.js';
 import { runMorningDigest, runNewsPipeline } from './news-pipeline.js';
 import { runMondayBriefing, runWeeklySummary } from './special-pipeline.js';
 import { invalidateSnapshotCache } from '../market/market-snapshot.js';
-import { pollMentions, pollMonitoredTimelines, searchCryptoLatam } from '../social/x-monitor.js';
-import { runMentionReplyPipeline } from '../social/mention-pipeline.js';
+// import { pollMentions, pollMonitoredTimelines, searchCryptoLatam } from '../social/x-monitor.js';
+// import { runMentionReplyPipeline } from '../social/mention-pipeline.js';
 
 export function startScheduler(): void {
   if (process.env.NODE_ENV === 'development') {
