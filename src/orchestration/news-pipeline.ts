@@ -14,7 +14,7 @@ import { generatePostImage, type ImageSentiment } from '../images/generate-image
 import { MAX_RANKER_INPUT } from '../utils/constants.js';
 import { geminiCircuit, getUnusedHeadlines, setUnusedHeadlines } from './state.js';
 import { withCircuit } from '../utils/circuit-breaker.js';
-import { getRemainingRequests } from '../utils/request-budget.js';
+import { canMakeRequest, getRemainingRequests } from '../utils/request-budget.js';
 import { withPipelineMetrics, getFilteredScoredArticles } from './helpers.js';
 import { publish, content } from '../delivery/publisher.js';
 
@@ -58,7 +58,7 @@ export async function runMorningDigest(): Promise<void> {
 
 // ─── News Pipeline ────────────────────────────────────────────────────────────
 
-export async function runNewsPipeline(limit = 5): Promise<void> {
+export async function runNewsPipeline(limit = 1): Promise<void> {
   logger.info('📰 Starting news pipeline...');
 
   await withPipelineMetrics('news', async (metrics) => {
@@ -89,7 +89,7 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
     const ranked =
       (await withCircuit(
         geminiCircuit,
-        () => rankArticles(scored.slice(0, MAX_RANKER_INPUT), limit * 3),
+        () => rankArticles(scored.slice(0, MAX_RANKER_INPUT), limit),
         logger,
       )) ?? [];
 
@@ -98,6 +98,10 @@ export async function runNewsPipeline(limit = 5): Promise<void> {
     logger.info(`📦 Unused headlines saved: ${getUnusedHeadlines().length}`);
 
     metrics.articlesPosted = 0;
+    if (!canMakeRequest()) {
+      logger.warn('⚠️ Budget exhausted, skipping news pipeline');
+      return;
+    }
     for (const article of ranked) {
       if (metrics.articlesPosted >= limit) break;
 
