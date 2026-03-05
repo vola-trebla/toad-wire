@@ -91,10 +91,10 @@ export function startScheduler(): void {
 
   // ─── X Monitor — polling 9:00–23:00 ───────────────────────────────────────
 
-  cron.schedule('*/3 9-23 * * *', () => void pollMentions(), { timezone: TIMEZONE });
-  cron.schedule('0 */2 9-23 * * *', () => void pollMonitoredTimelines(), { timezone: TIMEZONE });
-  cron.schedule('0 */2 9-23 * * *', () => void searchCryptoLatam(), { timezone: TIMEZONE });
-  cron.schedule('0 */4 9-23 * * *', () => void runMentionReplyPipeline(), { timezone: TIMEZONE });
+  // cron.schedule('*/3 9-23 * * *', () => void pollMentions(), { timezone: TIMEZONE });
+  // cron.schedule('0 */2 9-23 * * *', () => void pollMonitoredTimelines(), { timezone: TIMEZONE });
+  // cron.schedule('0 */2 9-23 * * *', () => void searchCryptoLatam(), { timezone: TIMEZONE });
+  // cron.schedule('0 */4 9-23 * * *', () => void runMentionReplyPipeline(), { timezone: TIMEZONE });
 
   logger.info('📅 Scheduler started');
 }
