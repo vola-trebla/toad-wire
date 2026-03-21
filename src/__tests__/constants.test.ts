@@ -17,11 +17,11 @@ describe('constants — smoke tests', () => {
 
   it('BLACKLIST includes known terms', () => {
     expect(BLACKLIST).toContain('sponsored');
-    expect(BLACKLIST).toContain('nft game');
+    expect(BLACKLIST).toContain('ai girlfriend');
   });
 
   it('FAST_TRACK_CATEGORIES matches breaking keywords', () => {
-    expect('hack exchange'.match(FAST_TRACK_CATEGORIES)).toBeTruthy();
-    expect('SEC lawsuit'.match(FAST_TRACK_CATEGORIES)).toBeTruthy();
+    expect('data breach detected'.match(FAST_TRACK_CATEGORIES)).toBeTruthy();
+    expect('government ban on AI'.match(FAST_TRACK_CATEGORIES)).toBeTruthy();
   });
 });
