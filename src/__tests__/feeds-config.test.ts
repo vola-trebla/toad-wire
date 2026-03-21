@@ -43,4 +43,26 @@ describe('feeds.config — smoke tests', () => {
     expect(found).toBeDefined();
     expect(found?.source).toBe(first.source);
   });
+
+  it('all feed URLs are valid', () => {
+    for (const feed of FEEDS) {
+      expect(() => new URL(feed.url)).not.toThrow();
+    }
+  });
+
+  it('no duplicate feed URLs', () => {
+    const urls = FEEDS.map((f) => f.url);
+    expect(new Set(urls).size).toBe(urls.length);
+  });
+
+  it('no duplicate source names', () => {
+    const sources = FEEDS.map((f) => f.source);
+    expect(new Set(sources).size).toBe(sources.length);
+  });
+
+  it('all feeds use English language', () => {
+    for (const feed of FEEDS) {
+      expect(feed.language).toBe('en');
+    }
+  });
 });
