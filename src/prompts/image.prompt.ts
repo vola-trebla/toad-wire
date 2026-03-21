@@ -36,12 +36,12 @@ export const VISUAL_STYLES: VisualStyle[] = [
   {
     name: 'liquidity-wall',
     description:
-      'Massive vertical monolithic blocks, dense stacked pixelated rectangles, heavy market pressure visualization, industrial dark UI, flat vector aesthetic, no perspective distortion.',
+      'Massive vertical monolithic blocks, dense stacked pixelated rectangles, heavy pressure visualization, industrial dark UI, flat vector aesthetic, no perspective distortion.',
   },
   {
     name: 'order-depth',
     description:
-      'Horizontal layered depth-buffer visualization, stacked monochromatic liquidity blocks, sharp shifting pressure zones, dark trading interface, high contrast, pixel-perfect rectangles.',
+      'Horizontal layered depth-buffer visualization, stacked monochromatic blocks, sharp shifting pressure zones, dark interface, high contrast, pixel-perfect rectangles.',
   },
   {
     name: 'holo-chart',
@@ -77,7 +77,7 @@ export const VISUAL_STYLES: VisualStyle[] = [
   {
     name: 'vector-terrain',
     description:
-      'Directional vector arrow paths flow map across a textured 3D grid surface, structured liquidity channels, subtle movement visualization, industrial dark UI aesthetic, topographic flow lines.',
+      'Directional vector arrow paths flow map across a textured 3D grid surface, structured channels, subtle movement visualization, industrial dark UI aesthetic, topographic flow lines.',
   },
   {
     name: 'node-cluster',
@@ -145,9 +145,9 @@ export type ImageSentiment = keyof typeof SENTIMENT_PALETTE;
 // ─── Prompt builders ──────────────────────────────────────────────────────────
 
 export function buildDescriptorPrompt(summary: string, category: string): string {
-  return `You are a visual art director for a crypto news terminal called "Sapo Cripto".
+  return `You are a visual art director for an AI news terminal called "Toad Wire".
 
-Convert this Spanish crypto news summary into a SHORT visual scene descriptor in English.
+Convert this AI news summary into a SHORT visual scene descriptor in English.
 Rules:
 - Max 2 sentences
 - Symbolic and abstract, NOT literal illustration of news
@@ -171,7 +171,7 @@ export function buildImagePrompt(
   const palette = SENTIMENT_PALETTE[sentiment];
 
   return `
-Pixel art illustration for a crypto news terminal called "Sapo Cripto".
+Pixel art illustration for an AI news terminal called "Toad Wire".
 
 STYLE: ${style.description}
 COLOR PALETTE: ${palette}
@@ -185,7 +185,7 @@ STRICT RULES:
 - High contrast between foreground and background
 - Clean geometric composition, strong silhouettes
 - ABSOLUTELY NO TEXT, LETTERS, WORDS, NUMBERS OR CHARACTERS OF ANY KIND — not even partial, stylized, pixelated or decorative. Zero text. None.
-- ABSOLUTELY NO LOGOS, BRAND NAMES, TITLES OR LABELS — including "SAPO", "CRIPTO", or any other name
+- ABSOLUTELY NO LOGOS, BRAND NAMES, TITLES OR LABELS — including "TOAD", "WIRE", or any other name
 - No real-world branding, no faces, no people, ABSOLUTELY NO HUMAN FIGURES, PEOPLE, CHARACTERS OR SILHOUETTES
 - Abstract geometric and electronic patterns only
 - Tiny low-contrast pixel frog silhouette in bottom-right corner, subtle and secondary
@@ -193,44 +193,3 @@ STRICT RULES:
 - Aspect ratio: 16:9
 `.trim();
 }
-
-// export function buildMondayImagePrompt(): string {
-//   return `
-// Pixel art illustration for a crypto news terminal called "Sapo Cripto".
-// Theme: Monday morning market opening. A new week begins in the swamp.
-//
-// STYLE: Terminal dashboard awakening — screens lighting up, data streams initializing, signal pulses starting
-// COLOR PALETTE: Deep green (#00ff41) on black, with amber (#ffb300) accent highlights suggesting morning energy
-// MOOD: Calm anticipation. The swamp wakes up. Another week of watching the market.
-//
-// STRICT RULES:
-// - Dark background base (#0a0a0a)
-// - Strict 8-bit pixel grid, visible square pixel blocks
-// - ABSOLUTELY NO TEXT, LETTERS, WORDS OR NUMBERS OF ANY KIND
-// - ABSOLUTELY NO HUMAN FIGURES, PEOPLE OR CHARACTERS
-// - No logos, no real-world branding
-// - Tiny pixel frog silhouette in bottom-right corner, subtle
-// - Aspect ratio: 16:9
-// `.trim();
-// }
-//
-// export function buildWeeklyImagePrompt(): string {
-//   return `
-// Pixel art illustration for a crypto news terminal called "Sapo Cripto".
-// Theme: End of week recap. The swamp closes another chapter.
-//
-// STYLE: Radar sweep completing a full circle — week reviewed, signals catalogued, archives written
-// COLOR PALETTE: Muted green (#1a8c3a) fading to deep teal, suggesting reflection and closure
-// MOOD: Calm wisdom. Another week survived. The frog has seen it all before.
-//
-// STRICT RULES:
-// - Dark background base (#0a0a0a)
-// - Strict 8-bit pixel grid, visible square pixel blocks
-// - No antialiasing, no soft brush strokes
-// - ABSOLUTELY NO TEXT, LETTERS, WORDS OR NUMBERS OF ANY KIND
-// - ABSOLUTELY NO HUMAN FIGURES, PEOPLE OR CHARACTERS
-// - No logos, no real-world branding
-// - Tiny pixel frog silhouette in bottom-right corner, subtle
-// - Aspect ratio: 16:9
-// `.trim();
-// }

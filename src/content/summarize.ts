@@ -18,12 +18,12 @@ import {
 const SummarySchema = z.object({
   title: z.string(),
   summary: z.string(),
-  thought: z.string().describe('Comentario breve y con personalidad del Sapo, máx 100 caracteres'),
+  thought: z.string().describe('Short sharp comment with Toad personality, max 100 characters'),
   tags: z.array(z.string()).min(3).max(3),
   sentiment: z.enum(['bullish', 'bearish', 'neutral']),
   emoji: z.string(),
-  category: z.enum(['regulacion', 'defi', 'trading', 'seguridad', 'tecnologia', 'latam']),
-  tweet: z.string().describe('Versión compacta para X/Twitter, máx 260 caracteres'),
+  category: z.enum(['research', 'industry', 'product', 'policy', 'safety', 'open_source']),
+  tweet: z.string().describe('Compact version for X/Twitter, max 260 characters'),
   entities: z.object({
     companies: z.array(z.string()).max(5),
     people: z.array(z.string()).max(3),
@@ -80,7 +80,7 @@ function randomOpener(): string {
 
 export async function generateGoodNight(): Promise<string> {
   if (!canMakeRequest()) {
-    return `🌙 Buenas noches mis sapos 🌚\n\nA descansar, que mañana el mercado sigue ahí. (O no) 😄`;
+    return `🌙 Good night, toads 🌚\n\nRest up — the feed will still be here tomorrow. (Probably) 😄`;
   }
 
   try {
@@ -94,6 +94,6 @@ export async function generateGoodNight(): Promise<string> {
 
     return `${randomOpener()}\n\n${text}`;
   } catch {
-    return `${randomOpener()}\n\nA descansar, que mañana el mercado sigue ahí. (O no) 😄`;
+    return `${randomOpener()}\n\nRest up — the feed will still be here tomorrow. (Probably) 😄`;
   }
 }

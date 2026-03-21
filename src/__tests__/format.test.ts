@@ -5,28 +5,28 @@ import type { FeedArticle } from '../ingestion/rss.js';
 
 function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
   return {
-    title: 'Bitcoin ETF approved',
+    title: 'OpenAI releases GPT-5',
     url: 'https://example.com/1',
-    source: 'CoinDesk',
+    source: 'The Verge AI',
     publishedAt: new Date().toISOString(),
     tier: 1,
     authority: 0.9,
     language: 'en',
-    specialization: ['macro'],
+    specialization: ['product'],
     ...overrides,
   };
 }
 
 function makeSummary(overrides: Partial<Summary> = {}): Summary {
   return {
-    title: 'SEC approves spot Bitcoin ETF',
-    summary: 'Regulators greenlight first spot BTC ETF.',
-    thought: 'Histórico.',
-    tags: ['#BTC', '#ETF', '#crypto'],
+    title: 'OpenAI ships GPT-5 with native reasoning',
+    summary: 'OpenAI released GPT-5 with multimodal reasoning capabilities.',
+    thought: 'The frontier keeps moving.',
+    tags: ['#GPT5', '#OpenAI', '#AI'],
     sentiment: 'bullish',
-    emoji: '🟢',
-    category: 'regulacion',
-    tweet: 'SEC approves spot Bitcoin ETF',
+    emoji: '🧪',
+    category: 'product',
+    tweet: 'OpenAI ships GPT-5 with native reasoning',
     entities: { companies: [], people: [], assets: [], protocols: [], regulators: [] },
     ...overrides,
   };
@@ -37,8 +37,8 @@ describe('format — smoke tests', () => {
     const article = makeArticle();
     const summary = makeSummary();
     const result = formatPostTelegram(article, summary);
-    expect(result).toContain('Bullish');
-    expect(result).toContain('Regulación');
+    expect(result).toContain('Optimistic');
+    expect(result).toContain('Product');
     expect(result).toContain(summary.title);
     expect(result).toContain(article.source);
     expect(result).toContain(article.url);
@@ -49,7 +49,7 @@ describe('format — smoke tests', () => {
     const article = makeArticle();
     const summary = makeSummary();
     const result = formatPostX(article, summary);
-    expect(result).toContain('Bullish');
+    expect(result).toContain('Optimistic');
     expect(result).toContain(summary.title);
     expect(result).toContain(article.source);
     expect(result).toContain(summary.summary);
