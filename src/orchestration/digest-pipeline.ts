@@ -1,8 +1,8 @@
 // src/orchestration/digest-pipeline.ts
 import { generateGoodNight } from '../content/summarize.js';
 import { logger } from '../utils/logger.js';
-import { collectMarketSnapshot } from '../market/market-snapshot.js';
 import { generateBatch } from '../content/batch-generator.js';
+import type { MarketSnapshot } from '../market/market-snapshot.js';
 import {
   enqueueMicroPosts,
   getNextUnposted,
@@ -16,20 +16,25 @@ import { xBudgetState, getUnusedHeadlines } from './state.js';
 import { withPipelineMetrics } from './helpers.js';
 import { publish, content } from '../delivery/publisher.js';
 
+function emptySnapshot(unusedHeadlines: string[] = []): MarketSnapshot {
+  return {
+    prices: [],
+    fearGreed: null,
+    unusedHeadlines,
+    marketMood: 'neutral',
+    timeOfDay: 'morning',
+    volatilityAlerts: [],
+  };
+}
+
 // ─── Morning Batches ──────────────────────────────────────────────────────────
 
 export async function runMorningBatches(): Promise<void> {
   logger.info('🎲 Starting morning batch generation...');
   try {
-    const snapshot = await collectMarketSnapshot();
-    const [vibePosts, philosophyPosts] = await Promise.all([
-      generateBatch('market_vibe', snapshot),
-      generateBatch('philosophy', snapshot),
-    ]);
-    logger.info(
-      `🎲 Morning batches ready — vibe: ${vibePosts.length}, philosophy: ${philosophyPosts.length}`,
-    );
-    await enqueueMicroPosts(vibePosts);
+    const stub = emptySnapshot();
+    const philosophyPosts = await generateBatch('philosophy', stub);
+    logger.info(`🎲 Morning batch ready — philosophy: ${philosophyPosts.length}`);
     await enqueueMicroPosts(philosophyPosts);
     const pending = await getPendingCount();
     logger.info(`📊 Queue size after morning batches: ${pending}`);
@@ -48,8 +53,8 @@ export async function runAfternoonBatch(): Promise<void> {
       logger.warn('⚠️ No unused headlines available, skipping raw_headlines batch');
       return;
     }
-    const snapshot = await collectMarketSnapshot(headlines);
-    const posts = await generateBatch('raw_headlines', snapshot);
+    const stub = emptySnapshot(headlines);
+    const posts = await generateBatch('raw_headlines', stub);
     logger.info(`🎲 Afternoon batch ready — raw_headlines: ${posts.length}`);
     await enqueueMicroPosts(posts);
     const pending = await getPendingCount();
@@ -69,8 +74,8 @@ export async function runDegenTime(): Promise<void> {
       logger.warn('⚠️ No unused headlines for DegenTime, skipping');
       return;
     }
-    const snapshot = await collectMarketSnapshot(headlines);
-    const posts = await generateBatch('degen_time', snapshot);
+    const stub = emptySnapshot(headlines);
+    const posts = await generateBatch('degen_time', stub);
     if (posts.length > 0) {
       await enqueueMicroPosts(posts);
       logger.info(`💊 DegenTime enqueued: ${posts[0]!.text}`);

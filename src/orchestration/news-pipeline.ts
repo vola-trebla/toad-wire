@@ -1,15 +1,11 @@
 // src/orchestration/news-pipeline.ts
 import { type FeedArticle } from '../ingestion/rss.js';
-import { fetchPrices, formatPricesPost, formatPricesPostX } from '../market/prices.js';
 import { saveArticle, markAsPosted } from '../ingestion/dedup.js';
 import { summarizeArticle } from '../content/summarize.js';
 import { formatPostTelegram, formatPostX } from '../content/format.js';
 import { logger } from '../utils/logger.js';
 import { rankArticles } from '../intelligence/ranker.js';
-import { fetchFearGreed } from '../market/feargreed.js';
 import { updateLastPosted } from '../health/server.js';
-import { postTweet } from '../delivery/twitter.js';
-import { sendToTelegram } from '../delivery/telegram.js';
 import { generatePostImage, type ImageSentiment } from '../images/generate-image.js';
 import { MAX_RANKER_INPUT } from '../utils/constants.js';
 import { geminiCircuit, getUnusedHeadlines, setUnusedHeadlines } from './state.js';
@@ -44,14 +40,6 @@ export async function runMorningDigest(): Promise<void> {
   logger.info('🌅 Starting morning digest...');
 
   await withPipelineMetrics('morning', async () => {
-    const [prices, fearGreed] = await Promise.all([fetchPrices(), fetchFearGreed()]);
-
-    const tgPost = formatPricesPost(prices, fearGreed);
-    const xPost = await formatPricesPostX(prices, fearGreed);
-
-    await sendToTelegram(tgPost);
-    await postTweet(xPost);
-
     await runNewsPipeline(1);
   });
 }
