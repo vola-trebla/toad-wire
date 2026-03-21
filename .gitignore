@@ -4,3 +4,5 @@ dist/
 *.db
 .claude
 .idea
+infra/
+trigger-one.ts
