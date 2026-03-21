@@ -1,4 +1,5 @@
 import { generateText, Output } from 'ai';
+import { withToadEye } from 'toad-eye/vercel';
 import { z } from 'zod';
 import { getModel } from '../llm/router.js';
 import { trackRequest } from '../utils/request-budget.js';
@@ -64,6 +65,7 @@ export async function generateBatch(
         output: Output.object({
           schema: DegenPostSchema,
         }),
+        experimental_telemetry: withToadEye({ functionId: 'batch-degen-time' }),
       });
 
       const post: MicroPost = {
@@ -103,6 +105,7 @@ export async function generateBatch(
     output: Output.object({
       schema: MicroPostSchema,
     }),
+    experimental_telemetry: withToadEye({ functionId: `batch-${type}` }),
   });
 
   const posts: MicroPost[] = output.posts.map((p) => ({

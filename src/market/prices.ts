@@ -2,6 +2,7 @@ import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
 import { type FearGreedData, formatFearGreed } from './feargreed.js';
 import { generateText } from 'ai';
+import { withToadEye } from 'toad-eye/vercel';
 import { getModel } from '../llm/router.js';
 import { MORNING_OPENERS, buildPricesHookPrompt } from '../prompts/prices.prompt.js';
 
@@ -110,6 +111,7 @@ export async function formatPricesPostX(
           fearGreed?.value,
           fearGreed ? formatFearGreed(fearGreed.value) : '',
         ),
+        experimental_telemetry: withToadEye({ functionId: 'format-prices' }),
       });
       hook = text.trim().slice(0, 80);
     }

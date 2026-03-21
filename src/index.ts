@@ -1,5 +1,15 @@
 // src/index.ts
 import 'dotenv/config';
+import { initObservability } from 'toad-eye';
+
+initObservability({
+  serviceName: 'el-sapo-cripto',
+  instrument: ['ai'],
+  attributes: {
+    environment: process.env.NODE_ENV ?? 'development',
+  },
+});
+
 import { initSentry } from './utils/sentry.js';
 import { startHealthServer } from './health/server.js';
 import { startScheduler } from './orchestration/scheduler.js';
