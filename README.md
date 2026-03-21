@@ -1,8 +1,8 @@
-# 🐸 El Sapo Cripto
+# 📡 Toad Wire
 
-**Autonomous AI-powered crypto news engine for the Latin American market.**
+**Autonomous AI-powered news engine.**
 
-El Sapo Cripto is a fully autonomous system that monitors 25+ RSS sources, scores and ranks articles using multi-factor analysis, generates Spanish-language summaries and original pixel-art visuals via Google Gemini, and publishes optimized digests to Telegram and X — with zero manual intervention, 24/7.
+Toad Wire is a fully autonomous system that monitors 25+ RSS sources, scores and ranks articles using multi-factor analysis, generates summaries and original pixel-art visuals via Google Gemini, and publishes optimized digests to Telegram and X — with zero manual intervention, 24/7.
 
 > 🔗 **Live:** [elsapocripto.com](https://elsapocripto.com)
 
@@ -12,7 +12,7 @@ El Sapo Cripto is a fully autonomous system that monitors 25+ RSS sources, score
 
 ## System Overview
 
-El Sapo Cripto is a TypeScript monolith running on Railway (single node, Docker, SQLite with WAL mode). The system is decomposed into four major subsystems, each representing a self-contained engineering challenge:
+Toad Wire is a TypeScript monolith running on Railway (single node, Docker, SQLite with WAL mode). The system is decomposed into four major subsystems, each representing a self-contained engineering challenge:
 
 | # | Subsystem | What it does |
 |---|-----------|-------------|

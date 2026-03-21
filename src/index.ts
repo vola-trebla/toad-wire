@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { initObservability } from 'toad-eye';
 
 initObservability({
-  serviceName: 'el-sapo-cripto',
+  serviceName: 'toad-wire',
   instrument: ['ai'],
   attributes: {
     environment: process.env.NODE_ENV ?? 'development',
@@ -27,7 +27,7 @@ async function main(): Promise<void> {
   await initBreakingCooldown();
   await initSocialState();
   startScheduler();
-  logger.info('🐸 El Sapo Cripto arrancó! Esperando el horario...');
+  logger.info('🐸 Toad Wire started! Waiting for schedule...');
 }
 
 main().catch((err) => {
