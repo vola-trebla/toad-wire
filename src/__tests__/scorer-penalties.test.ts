@@ -31,8 +31,8 @@ describe('scorer — spam penalties', () => {
     expect(result.scoreBreakdown.spamPenalty).toBe(0.5);
   });
 
-  it('penalises price predictions', () => {
-    const result = scoreOne(makeArticle({ title: 'Bitcoin price prediction: will reach $200K' }));
+  it('penalises AI spam content', () => {
+    const result = scoreOne(makeArticle({ title: 'Make money with AI: passive income guide' }));
     expect(result.scoreBreakdown.spamPenalty).toBeGreaterThan(0.1);
   });
 

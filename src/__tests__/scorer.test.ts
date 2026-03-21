@@ -49,14 +49,12 @@ describe('scorer — smoke tests', () => {
 
   it('adds keyword and context boosts when patterns match', () => {
     const article = makeArticle({
-      title: 'BTC crash triggers panic after hack news',
+      title: 'OpenAI announces breakthrough model launch today',
     });
     const snapshot = makeSnapshot({
-      marketMood: 'extreme_fear',
+      marketMood: 'neutral',
       timeOfDay: 'morning',
-      volatilityAlerts: [
-        { symbol: 'BTC', type: 'dump', change1h: -6, change24h: -9, severity: 'high' },
-      ],
+      volatilityAlerts: [],
     });
 
     const scored = scoreArticles([article], snapshot);
