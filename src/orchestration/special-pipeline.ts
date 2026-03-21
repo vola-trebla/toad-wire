@@ -7,6 +7,7 @@ import { updateLastPosted } from '../health/server.js';
 import { db } from '../db/client.js';
 import { articles } from '../db/schema.js';
 import { generateText } from 'ai';
+import { withToadEye } from 'toad-eye/vercel';
 import { getModel } from '../llm/router.js';
 import {
   buildMondayBriefingPrompt,
@@ -38,6 +39,7 @@ export async function runMondayBriefing(): Promise<void> {
     const { text } = await generateText({
       model: getModel('weekly'),
       prompt: buildMondayBriefingPrompt(pricesText, String(fearGreed?.value ?? '—'), topHeadlines),
+      experimental_telemetry: withToadEye({ functionId: 'monday-briefing' }),
     });
 
     const post = text.trim();
@@ -94,6 +96,7 @@ export async function runWeeklySummary(): Promise<void> {
     const { text } = await generateText({
       model: getModel('weekly'),
       prompt: buildWeeklySummaryPrompt(topArticles, String(fearGreed?.value ?? '—'), weekNumber),
+      experimental_telemetry: withToadEye({ functionId: 'weekly-summary' }),
     });
 
     const post = text.trim();

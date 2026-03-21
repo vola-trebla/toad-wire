@@ -1,5 +1,6 @@
 // src/social/x-responder.ts
 import { generateText } from 'ai';
+import { withToadEye } from 'toad-eye/vercel';
 import { z } from 'zod';
 import { db } from '../db/client.js';
 import { xInteractions, botState } from '../db/schema.js';
@@ -89,6 +90,7 @@ export async function generateReply(tweet: {
       model: getModel('reply'),
       system: SAPO_REPLY_SYSTEM_PROMPT,
       prompt,
+      experimental_telemetry: withToadEye({ functionId: 'x-reply' }),
     });
 
     const clean = raw.replace(/```json|```/g, '').trim();

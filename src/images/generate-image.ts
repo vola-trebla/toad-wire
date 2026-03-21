@@ -16,6 +16,7 @@
 
 import { GoogleGenAI } from '@google/genai';
 import { generateText } from 'ai';
+import { withToadEye } from 'toad-eye/vercel';
 import { getModel } from '../llm/router.js';
 import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
@@ -89,6 +90,7 @@ async function buildVisualDescriptor(summary: string, category: string): Promise
     const { text } = await generateText({
       model: getModel('batch'),
       prompt: buildDescriptorPrompt(summary, category),
+      experimental_telemetry: withToadEye({ functionId: 'generate-image-prompt' }),
     });
 
     logger.info(`🎨 Visual descriptor: ${text.trim()}`);

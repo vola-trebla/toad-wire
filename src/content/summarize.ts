@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { generateText, Output } from 'ai';
+import { withToadEye } from 'toad-eye/vercel';
 import { z } from 'zod';
 import { type FeedArticle } from '../ingestion/rss.js';
 import { scrapeArticle } from '../ingestion/scraper.js';
@@ -52,6 +53,7 @@ export async function summarizeArticle(article: FeedArticle): Promise<Summary | 
       system: SUMMARIZE_SYSTEM_PROMPT,
       prompt: buildSummarizeUserPrompt(safeTitle, article.source, content),
       output: Output.object({ schema: SummarySchema }),
+      experimental_telemetry: withToadEye({ functionId: 'summarize-article' }),
     });
 
     const normalized: Summary = {
@@ -87,6 +89,7 @@ export async function generateGoodNight(): Promise<string> {
     const { text } = await generateText({
       model: getModel('goodnight'),
       prompt: buildGoodnightPrompt(),
+      experimental_telemetry: withToadEye({ functionId: 'goodnight' }),
     });
 
     return `${randomOpener()}\n\n${text}`;

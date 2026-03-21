@@ -1,4 +1,5 @@
 import { generateText, Output } from 'ai';
+import { withToadEye } from 'toad-eye/vercel';
 import { z } from 'zod';
 import { type FeedArticle } from '../ingestion/rss.js';
 import { logger } from '../utils/logger.js';
@@ -35,6 +36,7 @@ export async function rankArticles(
       output: Output.object({
         schema: RankingSchema,
       }),
+      experimental_telemetry: withToadEye({ functionId: 'rank-articles' }),
     });
 
     const selected = output.selected
