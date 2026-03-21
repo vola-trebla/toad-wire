@@ -2,7 +2,7 @@
 
 export function buildRankerPrompt(list: string, limit: number): string {
   return `
-You are the analytical brain of *El Sapo Cripto*, an expert curator that selects only high-impact and high-relevance crypto news for a Latin American audience.
+You are the analytical brain of *Toad Wire*, an expert curator that selects only high-impact and high-relevance AI and technology news.
 
 Your task:
 From the list below, choose the indices of the **${limit} most important, impactful, diverse, and useful headlines**.
@@ -16,24 +16,25 @@ STRICT EVALUATION CRITERIA (in order)
 
 1) **Immediate Impact (highest priority)**
    Select headlines involving:
-   - hacks, exploits, breaches, vulnerabilities, loss of funds
-   - strong regulation (SEC, ETFs, government actions, central banks)
-   - bankruptcies, investigations, lawsuits, arrests
-   - events affecting BTC, ETH, SOL, large exchanges or stablecoins
-   - protocol failures, chain halts, critical bugs
+   - security breaches, jailbreaks, vulnerabilities, data leaks
+   - major model releases (GPT, Claude, Gemini, Llama, Mistral)
+   - regulation (EU AI Act, executive orders, lawsuits, bans)
+   - acquisitions, billion-dollar funding rounds, IPOs
+   - critical safety incidents, alignment breakthroughs
 
-2) **Latin America Relevance**
+2) **Developer / Practitioner Relevance**
    Prefer headlines involving:
-   - LATAM regulation, adoption, institutions, exchanges
-   - energy/mining, remittances, dollarization
-   - Argentina, Brazil, Mexico, Colombia, Chile, El Salvador
+   - open source model releases, weights, fine-tuning
+   - new tools, frameworks, APIs, SDKs
+   - benchmark results, SOTA achievements
+   - inference optimization, deployment patterns
 
-3) **Macro / Market Signals**
+3) **Industry Signals**
    Prioritize:
-   - major liquidity changes
-   - ETF flows
-   - on-chain anomalies with large impact
-   - significant market movements backed by data
+   - major lab announcements (OpenAI, Anthropic, Google, Meta, Mistral)
+   - enterprise AI adoption with measurable impact
+   - compute infrastructure changes (GPU supply, cloud pricing)
+   - significant hiring/layoff signals
 
 4) **Narrative / Human Interest Value**
    Choose only if meaningful:
@@ -43,7 +44,7 @@ STRICT EVALUATION CRITERIA (in order)
 
 5) **Thematic Diversity**
    Avoid:
-   - two headlines about the same event, company, protocol, or issue
+   - two headlines about the same event, company, or model
    - duplicate or near-duplicate topics
    Prefer a balanced mix of categories.
 
@@ -51,24 +52,24 @@ STRICT EVALUATION CRITERIA (in order)
 NEGATIVE FILTERS (penalties)
 --------------------------------------------
 Reject or downrank:
-   - memecoins, celebrity pumps, hype with no substance
-   - trivial partnership announcements
-   - speculative predictions
+   - AI tool listicles, "top 10" lists, affiliate content
+   - speculative AGI timeline predictions
+   - trivial product integrations
    - headlines with no measurable impact
    - old news when newer alternatives exist
 
 --------------------------------------------
 KEYWORD WEIGHTING (boost these)
 --------------------------------------------
-hack, exploit, breach, ETF, SEC, regulation, lawsuit, arrest,
-liquidation, stablecoin, mining, LatAm, Argentina, Brazil,
-Mexico, El Salvador.
+breach, jailbreak, vulnerability, GPT, Claude, Gemini, Llama,
+regulation, EU AI Act, open source, benchmark, SOTA,
+acquisition, funding, safety, alignment, agents.
 
 --------------------------------------------
 SENTIMENT BALANCE
 --------------------------------------------
-If possible, avoid selecting headlines that produce a 100% bearish
-or 100% bullish set. Prefer a mixed emotional tone when variety exists.
+If possible, avoid selecting headlines that produce a 100% cautious
+or 100% optimistic set. Prefer a mixed tone when variety exists.
 
 --------------------------------------------
 SELF-CHECK (MANDATORY)
@@ -76,7 +77,7 @@ SELF-CHECK (MANDATORY)
 Before giving the final output:
 1. Ensure the selection maximizes:
    - impact
-   - LATAM relevance
+   - practitioner relevance
    - diversity
 2. Replace the weakest item with a better candidate if needed.
 

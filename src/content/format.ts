@@ -2,18 +2,18 @@ import { type Summary } from './summarize.js';
 import { type FeedArticle } from '../ingestion/rss.js';
 
 const sentimentMap = {
-  bullish: '🟢 Bullish',
-  bearish: '🔴 Bearish',
+  bullish: '🟢 Optimistic',
+  bearish: '🔴 Cautious',
   neutral: '⚪️ Neutral',
 };
 
 const categoryMap = {
-  regulacion: '⚖️ Regulación',
-  defi: '🏦 DeFi',
-  trading: '📈 Trading',
-  seguridad: '🔐 Seguridad',
-  tecnologia: '⚙️ Tecnología',
-  latam: '🌎 LATAM',
+  research: '🔬 Research',
+  industry: '🏢 Industry',
+  product: '🚀 Product',
+  policy: '⚖️ Policy',
+  safety: '🛡️ Safety',
+  open_source: '📦 Open Source',
 };
 
 const THOUGHT_EMOJIS = [
@@ -53,7 +53,7 @@ export function formatPostTelegram(article: FeedArticle, summary: Summary): stri
   return `${sentimentMap[summary.sentiment]} · ${categoryMap[summary.category]}
 
 ${summary.emoji} *${summary.title}*
-🔗 [Fuente: ${article.source}](${article.url})
+🔗 [Source: ${article.source}](${article.url})
 
 ${summary.summary}
 
@@ -68,7 +68,7 @@ export function formatPostX(article: FeedArticle, summary: Summary): string {
   return `${sentimentMap[summary.sentiment]} · ${categoryMap[summary.category]}
 
 ${summary.emoji} ${summary.title}
-🔗 Fuente: ${article.source}
+🔗 Source: ${article.source}
 
 ${summary.summary}
 
