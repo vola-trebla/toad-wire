@@ -1,8 +1,6 @@
 // src/orchestration/special-pipeline.ts
 import { saveArticle, markAsPosted } from '../ingestion/dedup.js';
 import { logger } from '../utils/logger.js';
-import { fetchFearGreed } from '../market/feargreed.js';
-import { fetchPrices, formatPricesPost } from '../market/prices.js';
 import { updateLastPosted } from '../health/server.js';
 import { db } from '../db/client.js';
 import { articles } from '../db/schema.js';
@@ -23,22 +21,17 @@ export async function runMondayBriefing(): Promise<void> {
   logger.info('🐸 Starting Monday briefing...');
 
   await withPipelineMetrics('monday', async () => {
-    const [prices, fearGreed, { scored }] = await Promise.all([
-      fetchPrices(),
-      fetchFearGreed(),
-      getFilteredScoredArticles({
-        withSimilarityFilter: false,
-        withRecentTitles: false,
-        withDedup: false,
-      }),
-    ]);
+    const { scored } = await getFilteredScoredArticles({
+      withSimilarityFilter: false,
+      withRecentTitles: false,
+      withDedup: false,
+    });
 
     const topHeadlines = scored.slice(0, 5).map((a) => a.title);
-    const pricesText = formatPricesPost(prices, fearGreed);
 
     const { text } = await generateText({
       model: getModel('weekly'),
-      prompt: buildMondayBriefingPrompt(pricesText, String(fearGreed?.value ?? '—'), topHeadlines),
+      prompt: buildMondayBriefingPrompt('', '', topHeadlines),
       experimental_telemetry: withToadEye({ functionId: 'monday-briefing' }),
     });
 
@@ -63,8 +56,6 @@ export async function runWeeklySummary(): Promise<void> {
   logger.info('🐸 Starting weekly summary...');
 
   await withPipelineMetrics('weekly', async () => {
-    const fearGreed = await fetchFearGreed();
-
     const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const weekArticles = await db
       .select({
@@ -89,13 +80,13 @@ export async function runWeeklySummary(): Promise<void> {
 
     const topArticles = weekArticles.map((a) => ({
       title: a.title,
-      category: a.category ?? 'trading',
+      category: a.category ?? 'industry',
       sentiment: a.sentiment ?? 'neutral',
     }));
 
     const { text } = await generateText({
       model: getModel('weekly'),
-      prompt: buildWeeklySummaryPrompt(topArticles, String(fearGreed?.value ?? '—'), weekNumber),
+      prompt: buildWeeklySummaryPrompt(topArticles, '', weekNumber),
       experimental_telemetry: withToadEye({ functionId: 'weekly-summary' }),
     });
 

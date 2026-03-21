@@ -9,7 +9,6 @@ import { logger } from '../utils/logger.js';
 import { TIMEZONE } from '../utils/constants.js';
 import { runMorningDigest, runNewsPipeline } from './news-pipeline.js';
 import { runMondayBriefing, runWeeklySummary } from './special-pipeline.js';
-import { invalidateSnapshotCache } from '../market/market-snapshot.js';
 // import { pollMentions, pollMonitoredTimelines, searchCryptoLatam } from '../social/x-monitor.js';
 // import { runMentionReplyPipeline } from '../social/mention-pipeline.js';
 
@@ -45,44 +44,14 @@ export function startScheduler(): void {
   // ─── Morning Digest — 08:00 daily ─────────────────────────────────────────
   // Fresh snapshot before posting, then digest + top article
 
-  cron.schedule(
-    '0 8 * * *',
-    async () => {
-      invalidateSnapshotCache();
-      await runMorningDigest();
-    },
-    { timezone: TIMEZONE },
-  );
+  cron.schedule('0 8 * * *', () => void runMorningDigest(), { timezone: TIMEZONE });
 
   // ─── Evening News — 19:00 / 20:00 / 21:00 daily ───────────────────────────
   // Fresh snapshot before each slot
 
-  cron.schedule(
-    '0 19 * * *',
-    async () => {
-      invalidateSnapshotCache();
-      await runNewsPipeline(1);
-    },
-    { timezone: TIMEZONE },
-  );
-
-  cron.schedule(
-    '0 20 * * *',
-    async () => {
-      invalidateSnapshotCache();
-      await runNewsPipeline(1);
-    },
-    { timezone: TIMEZONE },
-  );
-
-  cron.schedule(
-    '0 21 * * *',
-    async () => {
-      invalidateSnapshotCache();
-      await runNewsPipeline(1);
-    },
-    { timezone: TIMEZONE },
-  );
+  cron.schedule('0 19 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+  cron.schedule('0 20 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
+  cron.schedule('0 21 * * *', () => void runNewsPipeline(1), { timezone: TIMEZONE });
 
   // ─── Weekly Summary — Saturday 21:00 ──────────────────────────────────────
   // Note: overrides evening news slot on Saturday — pipeline runs after summary

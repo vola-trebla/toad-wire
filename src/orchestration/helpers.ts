@@ -6,7 +6,6 @@ import { BLACKLIST } from '../utils/constants.js';
 import { type FeedArticle, fetchFeeds } from '../ingestion/rss.js';
 import { isDuplicate } from '../ingestion/dedup.js';
 import { filterSimilar } from '../ingestion/similarity.js';
-import { collectMarketSnapshot } from '../market/market-snapshot.js';
 import { scoreArticles, type ScoredArticle } from '../intelligence/scorer.js';
 import { getUnusedHeadlines } from './state.js';
 
@@ -96,9 +95,8 @@ export async function getFilteredScoredArticles(
 
   const fresh = withSimilarityFilter ? await filterSimilar(deduplicated) : deduplicated;
 
-  const snapshot = await collectMarketSnapshot();
   const recentTitles = withRecentTitles ? getUnusedHeadlines() : undefined;
-  const scored = scoreArticles(fresh, snapshot, recentTitles);
+  const scored = scoreArticles(fresh, undefined, recentTitles);
 
   return { scored, fresh, fetchedCount, filteredCount };
 }
