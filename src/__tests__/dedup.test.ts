@@ -39,7 +39,7 @@ import { isDuplicate, saveArticle, markAsPosted } from '../ingestion/dedup.js';
 
 function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
   return {
-    title: 'Bitcoin market update',
+    title: 'OpenAI releases new model update',
     url: 'https://example.com/1',
     source: 'TestSource',
     publishedAt: new Date().toISOString(),

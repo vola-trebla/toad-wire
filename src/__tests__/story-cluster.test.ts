@@ -10,14 +10,14 @@ import type { ScoredArticle } from '../intelligence/scorer.js';
 
 function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
   return {
-    title: 'Bitcoin ETF approval sparks rally',
+    title: 'EU passes comprehensive AI regulation framework',
     url: `https://example.com/${Math.random()}`,
     source: 'TestSource',
     publishedAt: new Date().toISOString(),
     tier: 2,
     authority: 0.7,
     language: 'en',
-    specialization: ['regulation'],
+    specialization: ['policy'],
     ...overrides,
   };
 }
@@ -25,9 +25,21 @@ function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
 describe('story-cluster — smoke tests', () => {
   it('clusters similar titles and flags breaking by source count', () => {
     const articles = [
-      makeArticle({ source: 'A', title: 'Bitcoin ETF approval sparks rally', tier: 2 }),
-      makeArticle({ source: 'B', title: 'ETF approval sparks Bitcoin rally', tier: 2 }),
-      makeArticle({ source: 'C', title: 'Bitcoin rally after ETF approval', tier: 2 }),
+      makeArticle({
+        source: 'A',
+        title: 'EU passes comprehensive AI regulation framework today',
+        tier: 2,
+      }),
+      makeArticle({
+        source: 'B',
+        title: 'EU comprehensive AI regulation framework passes today',
+        tier: 2,
+      }),
+      makeArticle({
+        source: 'C',
+        title: 'Comprehensive AI regulation framework passes in EU',
+        tier: 2,
+      }),
     ];
 
     const clusters = clusterByStory(articles);
@@ -38,8 +50,12 @@ describe('story-cluster — smoke tests', () => {
 
   it('flags breaking when two Tier-1 sources match', () => {
     const articles = [
-      makeArticle({ source: 'Tier1-A', title: 'SEC lawsuit against exchange', tier: 1 }),
-      makeArticle({ source: 'Tier1-B', title: 'Exchange faces SEC lawsuit', tier: 1 }),
+      makeArticle({ source: 'Tier1-A', title: 'OpenAI faces major safety lawsuit', tier: 1 }),
+      makeArticle({
+        source: 'Tier1-B',
+        title: 'Major safety lawsuit filed against OpenAI',
+        tier: 1,
+      }),
     ];
 
     const clusters = clusterByStory(articles);
