@@ -4,14 +4,14 @@ import type { FeedArticle } from '../ingestion/rss.js';
 
 function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
   return {
-    title: 'Generic crypto news',
+    title: 'Generic AI industry news',
     url: 'https://example.com/news',
-    source: 'CoinDesk',
+    source: 'TechCrunch',
     publishedAt: new Date().toISOString(),
     tier: 1,
     authority: 0.95,
     language: 'en',
-    specialization: ['institutional'],
+    specialization: ['industry'],
     ...overrides,
   };
 }
@@ -22,12 +22,14 @@ function scoreOne(article: FeedArticle, recentTitles: string[] = []) {
 
 describe('scorer — spam penalties', () => {
   it('applies no penalty to clean title', () => {
-    const result = scoreOne(makeArticle({ title: 'Bitcoin ETF approved by SEC' }));
+    const result = scoreOne(
+      makeArticle({ title: 'OpenAI releases GPT-5 with reasoning upgrades' }),
+    );
     expect(result.scoreBreakdown.spamPenalty).toBe(0);
   });
 
   it('penalises sponsored content heavily', () => {
-    const result = scoreOne(makeArticle({ title: 'Sponsored: Buy this token now' }));
+    const result = scoreOne(makeArticle({ title: 'Sponsored: Try this AI tool now' }));
     expect(result.scoreBreakdown.spamPenalty).toBe(0.5);
   });
 
@@ -37,13 +39,15 @@ describe('scorer — spam penalties', () => {
   });
 
   it('penalises listicles', () => {
-    const result = scoreOne(makeArticle({ title: 'Top 10 reasons to buy crypto now' }));
+    const result = scoreOne(
+      makeArticle({ title: 'Top 10 AI tools to boost your productivity now' }),
+    );
     expect(result.scoreBreakdown.spamPenalty).toBeGreaterThan(0);
   });
 
   it('caps spam penalty at 0.5', () => {
     const result = scoreOne(
-      makeArticle({ title: 'Sponsored: Top 10 price predictions — will reach moon?' }),
+      makeArticle({ title: 'Sponsored: Top 10 AI predictions — could AGI arrive soon?' }),
     );
     expect(result.scoreBreakdown.spamPenalty).toBe(0.5);
   });
@@ -51,33 +55,40 @@ describe('scorer — spam penalties', () => {
 
 describe('scorer — duplicate penalties', () => {
   it('applies no penalty when no recent titles', () => {
-    const result = scoreOne(makeArticle({ title: 'Bitcoin ETF approved by SEC' }), []);
+    const result = scoreOne(
+      makeArticle({ title: 'Anthropic publishes new safety research paper' }),
+      [],
+    );
     expect(result.scoreBreakdown.duplicatePenalty).toBe(0);
   });
 
   it('applies -0.15 for one similar recent title', () => {
-    const result = scoreOne(makeArticle({ title: 'Bitcoin ETF approved by SEC regulators' }), [
-      'Bitcoin ETF approved by SEC today',
-    ]);
+    const result = scoreOne(
+      makeArticle({ title: 'Anthropic publishes new safety research paper today' }),
+      ['Anthropic publishes new safety research paper'],
+    );
     expect(result.scoreBreakdown.duplicatePenalty).toBe(0.15);
   });
 
   it('applies -0.30 for two or more similar recent titles', () => {
     const result = scoreOne(
-      makeArticle({ title: 'Bitcoin ETF approved by SEC regulators today' }),
+      makeArticle({ title: 'Anthropic publishes new safety research paper today' }),
       [
-        'Bitcoin ETF approved by SEC regulators yesterday',
-        'Bitcoin ETF approved by SEC regulators this week',
+        'Anthropic publishes new safety research paper yesterday',
+        'Anthropic publishes new safety research paper this week',
       ],
     );
     expect(result.scoreBreakdown.duplicatePenalty).toBe(0.3);
   });
 
   it('applies no penalty for unrelated recent titles', () => {
-    const result = scoreOne(makeArticle({ title: 'Bitcoin ETF approved by SEC' }), [
-      'Solana network upgrade deployed successfully',
-      'Ethereum gas fees drop to yearly low',
-    ]);
+    const result = scoreOne(
+      makeArticle({ title: 'Anthropic publishes new safety research paper' }),
+      [
+        'Google DeepMind announces protein folding breakthrough',
+        'EU passes comprehensive AI regulation framework',
+      ],
+    );
     expect(result.scoreBreakdown.duplicatePenalty).toBe(0);
   });
 });

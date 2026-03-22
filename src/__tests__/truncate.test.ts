@@ -8,17 +8,17 @@ describe('truncate — smoke tests', () => {
   });
 
   it('truncates at word boundary with ellipsis', () => {
-    const text = 'Bitcoin price hits new all time high today';
+    const text = 'Anthropic launches new safety research today';
     const result = truncateToWord(text, 20);
     expect(result.endsWith('...')).toBe(true);
     expect(result.length).toBeLessThanOrEqual(23);
-    expect(result).toContain('Bitcoin');
+    expect(result).toContain('Anthropic');
   });
 
   it('handles single long word', () => {
-    const text = 'BitcoinEthereumSolana';
+    const text = 'AnthropicOpenAIGoogle';
     const result = truncateToWord(text, 10);
     expect(result.endsWith('...')).toBe(true);
-    expect(result).toContain('Bitcoin');
+    expect(result).toContain('Anthrop');
   });
 });

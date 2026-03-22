@@ -5,7 +5,7 @@ import type { NewsContext } from '../context/news-context.js';
 
 function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
   return {
-    title: 'Bitcoin market update',
+    title: 'OpenAI releases new model update',
     url: `https://example.com/${Math.random()}`,
     source: 'TestSource',
     publishedAt: new Date().toISOString(),
@@ -59,9 +59,9 @@ describe('scorer — smoke tests', () => {
 
   it('applies duplicate and spam penalties when applicable', () => {
     const article = makeArticle({
-      title: 'Top 5 Bitcoin price prediction? Could BTC reach $1M?',
+      title: 'Top 5 AI productivity tools? Could they replace your job?',
     });
-    const recentTitles = ['Top 5 Bitcoin price prediction could BTC reach $1M'];
+    const recentTitles = ['Top 5 AI productivity tools could they replace your job'];
 
     const scored = scoreArticles([article], undefined, recentTitles);
     expect(scored.length).toBe(1);

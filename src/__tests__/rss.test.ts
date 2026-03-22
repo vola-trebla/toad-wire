@@ -45,15 +45,15 @@ describe('rss — smoke tests', () => {
 
     parseURLMock.mockResolvedValue({
       items: [
-        { title: 'Bitcoin hits ATH', link: 'https://a.com/1', pubDate: now.toISOString() },
-        { title: 'bitcoin hits ath', link: 'https://a.com/2', pubDate: now.toISOString() },
+        { title: 'OpenAI ships GPT-5', link: 'https://a.com/1', pubDate: now.toISOString() },
+        { title: 'openai ships gpt-5', link: 'https://a.com/2', pubDate: now.toISOString() },
         { title: 'Old news', link: 'https://a.com/3', pubDate: old.toISOString() },
       ],
     });
 
     const results = await fetchFeeds();
     expect(results.length).toBe(1);
-    expect(results[0]!.title).toBe('Bitcoin hits ATH');
+    expect(results[0]!.title).toBe('OpenAI ships GPT-5');
     expect(mockFeeds[0]!.healthStatus).toBe('healthy');
     expect(mockFeeds[0]!.consecutiveFailures).toBe(0);
   });
