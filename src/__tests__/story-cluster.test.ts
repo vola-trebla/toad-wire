@@ -87,6 +87,7 @@ describe('story-cluster — smoke tests', () => {
           freshness: 1,
           keywordBoost: 0,
           contextBoost: 0,
+          velocityBoost: 0,
           duplicatePenalty: 0,
           spamPenalty: 0,
         },

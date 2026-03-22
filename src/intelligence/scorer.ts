@@ -1,9 +1,13 @@
 /**
- * Impact Score v2.0 — Multi-factor article scoring
+ * Impact Score v3.0 — Multi-factor article scoring with velocity detection
  *
  * Formula:
  *   ImpactScore = (authority × freshness) + keywordBoost + contextBoost
- *                 − duplicatePenalty − spamPenalty
+ *                 + velocityBoost − duplicatePenalty − spamPenalty
+ *
+ * Velocity: detects news storms — when multiple feeds publish in a short
+ * window, something big is happening. Zero external APIs, derived from
+ * the article timestamps already in memory.
  *
  * Thresholds:
  *   > 1.40  → 🚨 BREAKING  — immediate pipeline
@@ -64,6 +68,7 @@ export interface ScoreBreakdown {
   freshness: number;
   keywordBoost: number;
   contextBoost: number;
+  velocityBoost: number;
   duplicatePenalty: number;
   spamPenalty: number;
 }
@@ -105,6 +110,26 @@ function getContextBoost(title: string, snapshot: NewsContext): number {
   }
 
   return Math.min(boost, 0.2);
+}
+
+// ─── Velocity spike detection ─────────────────────────────────────────────
+
+const VELOCITY_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours
+const VELOCITY_BASELINE = 3; // expected articles per 2h window across all feeds
+
+function getVelocityBoost(article: FeedArticle, allArticles: FeedArticle[]): number {
+  const articleTime = new Date(article.publishedAt).getTime();
+
+  const recentCount = allArticles.filter((a) => {
+    const t = new Date(a.publishedAt).getTime();
+    return t > articleTime - VELOCITY_WINDOW_MS && t <= articleTime;
+  }).length;
+
+  const ratio = recentCount / VELOCITY_BASELINE;
+
+  if (ratio >= 3) return 0.2; // storm — something big is happening
+  if (ratio >= 2) return 0.1; // spike — elevated activity
+  return 0;
 }
 
 function getDuplicatePenalty(title: string, recentTitles: string[]): number {
@@ -157,11 +182,17 @@ export function scoreArticles(
       const freshness = getFreshnessScore(article.publishedAt);
       const keywordBoost = getKeywordBoost(article.title);
       const contextBoost = snapshot ? getContextBoost(article.title, snapshot) : 0;
+      const velocityBoost = getVelocityBoost(article, articles);
       const duplicatePenalty = recentTitles ? getDuplicatePenalty(article.title, recentTitles) : 0;
       const spamPenalty = getSpamPenalty(article.title);
 
       const importanceScore =
-        authority * freshness + keywordBoost + contextBoost - duplicatePenalty - spamPenalty;
+        authority * freshness +
+        keywordBoost +
+        contextBoost +
+        velocityBoost -
+        duplicatePenalty -
+        spamPenalty;
 
       return {
         ...article,
@@ -171,6 +202,7 @@ export function scoreArticles(
           freshness,
           keywordBoost,
           contextBoost,
+          velocityBoost,
           duplicatePenalty,
           spamPenalty,
         },

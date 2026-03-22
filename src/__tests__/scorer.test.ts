@@ -69,6 +69,26 @@ describe('scorer — smoke tests', () => {
     expect(scored[0]!.scoreBreakdown.spamPenalty).toBeGreaterThan(0);
   });
 
+  it('applies velocity boost when many articles in same time window', () => {
+    const now = new Date();
+    // 9 articles in a 2h window = 3x baseline → storm boost
+    const storm = Array.from({ length: 9 }, (_, i) =>
+      makeArticle({
+        title: `News story ${i}`,
+        url: `https://example.com/storm-${i}`,
+        publishedAt: new Date(now.getTime() - i * 5 * 60 * 1000).toISOString(),
+      }),
+    );
+
+    const scored = scoreArticles(storm);
+    expect(scored[0]!.scoreBreakdown.velocityBoost).toBe(0.2);
+  });
+
+  it('applies no velocity boost for sparse articles', () => {
+    const scored = scoreArticles([makeArticle()]);
+    expect(scored[0]!.scoreBreakdown.velocityBoost).toBe(0);
+  });
+
   it('maps score to tiers correctly', () => {
     expect(getScoreTier(SCORE_THRESHOLDS.BREAKING + 0.01)).toBe('breaking');
     expect(getScoreTier(SCORE_THRESHOLDS.TOP)).toBe('top');
