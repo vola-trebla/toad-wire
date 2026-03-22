@@ -31,7 +31,7 @@ export async function runMondayBriefing(): Promise<void> {
 
     const { text } = await generateText({
       model: getModel('weekly'),
-      prompt: buildMondayBriefingPrompt('', '', topHeadlines),
+      prompt: buildMondayBriefingPrompt(topHeadlines),
       experimental_telemetry: withToadEye({ functionId: 'monday-briefing' }),
     });
 
@@ -86,7 +86,7 @@ export async function runWeeklySummary(): Promise<void> {
 
     const { text } = await generateText({
       model: getModel('weekly'),
-      prompt: buildWeeklySummaryPrompt(topArticles, '', weekNumber),
+      prompt: buildWeeklySummaryPrompt(topArticles, weekNumber),
       experimental_telemetry: withToadEye({ functionId: 'weekly-summary' }),
     });
 

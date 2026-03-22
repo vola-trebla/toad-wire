@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { db } from '../db/client.js';
 import { xInteractions, botState } from '../db/schema.js';
 import { getModel } from '../llm/router.js';
-import { collectMarketSnapshot } from '../market/market-snapshot.js';
 import { logger } from '../utils/logger.js';
 import { SAPO_REPLY_SYSTEM_PROMPT, buildReplyPrompt } from '../prompts/reply.prompt.js';
 import { desc, eq, isNotNull } from 'drizzle-orm';
@@ -68,21 +67,14 @@ export async function generateReply(tweet: {
   content: string;
 }): Promise<{ text: string; tone: string; confidence: number } | null> {
   try {
-    const [snapshot, personaMode, recentReplies] = await Promise.all([
-      collectMarketSnapshot(),
-      getPersonaMode(),
-      getRecentReplies(),
-    ]);
-
-    const btcPrice = snapshot.prices.find((p) => p.symbol === 'BTC')?.price?.toString() ?? '—';
-    const fngValue = snapshot.fearGreed?.value?.toString() ?? '—';
+    const [personaMode, recentReplies] = await Promise.all([getPersonaMode(), getRecentReplies()]);
 
     const prompt = buildReplyPrompt({
       authorHandle: tweet.authorHandle,
       tweetContent: tweet.content,
       personaMode,
-      btcPrice,
-      fngValue,
+      btcPrice: '',
+      fngValue: '',
       recentReplies,
     });
 

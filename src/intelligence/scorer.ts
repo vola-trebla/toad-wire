@@ -14,7 +14,7 @@
  */
 
 import type { FeedArticle } from '../ingestion/rss.js';
-import type { MarketSnapshot } from '../market/market-snapshot.js';
+import type { NewsContext } from '../context/news-context.js';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -88,7 +88,7 @@ function getKeywordBoost(title: string): number {
   return Math.min(boost, 0.5);
 }
 
-function getContextBoost(title: string, snapshot: MarketSnapshot): number {
+function getContextBoost(title: string, snapshot: NewsContext): number {
   let boost = 0;
 
   // ─── Time-of-day boost ─────────────────────────────────────────────────────
@@ -147,7 +147,7 @@ function getSpamPenalty(title: string): number {
 
 export function scoreArticles(
   articles: FeedArticle[],
-  snapshot?: MarketSnapshot,
+  snapshot?: NewsContext,
   recentTitles?: string[],
 ): ScoredArticle[] {
   return articles

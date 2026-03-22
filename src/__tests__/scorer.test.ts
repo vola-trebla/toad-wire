@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { scoreArticles, getScoreTier, SCORE_THRESHOLDS } from '../intelligence/scorer.js';
 import type { FeedArticle } from '../ingestion/rss.js';
-import type { MarketSnapshot } from '../market/market-snapshot.js';
+import type { NewsContext } from '../context/news-context.js';
 
 function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
   return {
@@ -17,14 +17,10 @@ function makeArticle(overrides: Partial<FeedArticle> = {}): FeedArticle {
   };
 }
 
-function makeSnapshot(overrides: Partial<MarketSnapshot> = {}): MarketSnapshot {
+function makeSnapshot(overrides: Partial<NewsContext> = {}): NewsContext {
   return {
-    prices: [],
-    fearGreed: null,
     unusedHeadlines: [],
-    marketMood: 'extreme_fear',
     timeOfDay: 'morning',
-    volatilityAlerts: [],
     ...overrides,
   };
 }
@@ -52,9 +48,7 @@ describe('scorer — smoke tests', () => {
       title: 'OpenAI announces breakthrough model launch today',
     });
     const snapshot = makeSnapshot({
-      marketMood: 'neutral',
       timeOfDay: 'morning',
-      volatilityAlerts: [],
     });
 
     const scored = scoreArticles([article], snapshot);

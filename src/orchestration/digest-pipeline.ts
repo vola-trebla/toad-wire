@@ -2,7 +2,7 @@
 import { generateGoodNight } from '../content/summarize.js';
 import { logger } from '../utils/logger.js';
 import { generateBatch } from '../content/batch-generator.js';
-import type { MarketSnapshot } from '../market/market-snapshot.js';
+import { type NewsContext, getTimeOfDay } from '../context/news-context.js';
 import {
   enqueueMicroPosts,
   getNextUnposted,
@@ -16,14 +16,10 @@ import { xBudgetState, getUnusedHeadlines } from './state.js';
 import { withPipelineMetrics } from './helpers.js';
 import { publish, content } from '../delivery/publisher.js';
 
-function emptySnapshot(unusedHeadlines: string[] = []): MarketSnapshot {
+function buildContext(unusedHeadlines: string[] = []): NewsContext {
   return {
-    prices: [],
-    fearGreed: null,
     unusedHeadlines,
-    marketMood: 'neutral',
-    timeOfDay: 'morning',
-    volatilityAlerts: [],
+    timeOfDay: getTimeOfDay(),
   };
 }
 
@@ -32,7 +28,7 @@ function emptySnapshot(unusedHeadlines: string[] = []): MarketSnapshot {
 export async function runMorningBatches(): Promise<void> {
   logger.info('🎲 Starting morning batch generation...');
   try {
-    const stub = emptySnapshot();
+    const stub = buildContext();
     const philosophyPosts = await generateBatch('philosophy', stub);
     logger.info(`🎲 Morning batch ready — philosophy: ${philosophyPosts.length}`);
     await enqueueMicroPosts(philosophyPosts);
@@ -53,7 +49,7 @@ export async function runAfternoonBatch(): Promise<void> {
       logger.warn('⚠️ No unused headlines available, skipping raw_headlines batch');
       return;
     }
-    const stub = emptySnapshot(headlines);
+    const stub = buildContext(headlines);
     const posts = await generateBatch('raw_headlines', stub);
     logger.info(`🎲 Afternoon batch ready — raw_headlines: ${posts.length}`);
     await enqueueMicroPosts(posts);
@@ -74,7 +70,7 @@ export async function runDegenTime(): Promise<void> {
       logger.warn('⚠️ No unused headlines for DegenTime, skipping');
       return;
     }
-    const stub = emptySnapshot(headlines);
+    const stub = buildContext(headlines);
     const posts = await generateBatch('degen_time', stub);
     if (posts.length > 0) {
       await enqueueMicroPosts(posts);
