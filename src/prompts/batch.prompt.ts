@@ -1,7 +1,7 @@
 // src/prompts/batch.prompt.ts
-import { type MarketSnapshot } from '../market/market-snapshot.js';
+import { type NewsContext } from '../context/news-context.js';
 
-export function buildMarketVibePrompt(snapshot: MarketSnapshot): string {
+export function buildMarketVibePrompt(snapshot: NewsContext): string {
   const headlinesList =
     snapshot.unusedHeadlines.length > 0
       ? snapshot.unusedHeadlines
@@ -28,7 +28,7 @@ Rules:
 `.trim();
 }
 
-export function buildPhilosophyPrompt(snapshot: MarketSnapshot): string {
+export function buildPhilosophyPrompt(snapshot: NewsContext): string {
   return `
 You are Toad Wire. Wise toad of the AI lab.
 Time of day: ${snapshot.timeOfDay}.
@@ -42,7 +42,7 @@ No doom predictions, no AGI timeline speculation.
 `.trim();
 }
 
-export function buildRawHeadlinesPrompt(snapshot: MarketSnapshot): string {
+export function buildRawHeadlinesPrompt(snapshot: NewsContext): string {
   if (snapshot.unusedHeadlines.length === 0) {
     throw new Error('No unused headlines available for raw_headlines batch');
   }

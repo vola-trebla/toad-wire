@@ -3,7 +3,7 @@ import { withToadEye } from 'toad-eye/vercel';
 import { z } from 'zod';
 import { getModel } from '../llm/router.js';
 import { trackRequest } from '../utils/request-budget.js';
-import { type MarketSnapshot } from '../market/market-snapshot.js';
+import { type NewsContext } from '../context/news-context.js';
 import { logger } from '../utils/logger.js';
 import {
   buildMarketVibePrompt,
@@ -40,10 +40,7 @@ const DegenPostSchema = z.object({
   mood: z.string(),
 });
 
-export async function generateBatch(
-  type: BatchType,
-  snapshot: MarketSnapshot,
-): Promise<MicroPost[]> {
+export async function generateBatch(type: BatchType, snapshot: NewsContext): Promise<MicroPost[]> {
   logger.info(`🎲 Generating batch [${type}]...`);
 
   if (type === 'degen_time') {

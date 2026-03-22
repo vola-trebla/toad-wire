@@ -115,11 +115,7 @@ Rules:
 `.trim();
 }
 
-export function buildMondayBriefingPrompt(
-  _prices: string,
-  _fearGreed: string,
-  topHeadlines: string[],
-): string {
+export function buildMondayBriefingPrompt(topHeadlines: string[]): string {
   return `
 You are the editor of Toad Wire — an AI news channel covering artificial intelligence and the tech industry.
 Your voice is the Toad: analytical, calm, with light irony and the wisdom of "someone who has seen every hype cycle".
@@ -175,7 +171,6 @@ ${topHeadlines.map((h, i) => `${i + 1}. ${h}`).join('\n')}
 
 export function buildWeeklySummaryPrompt(
   topArticles: { title: string; category: string; sentiment: string }[],
-  _fearGreed: string,
   weekNumber: number,
 ): string {
   const sentiments = topArticles.map((a) => a.sentiment);
