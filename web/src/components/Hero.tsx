@@ -1,6 +1,5 @@
 import { MOODS, type Mood } from '../constants/moods';
 import { HowSapoThinks } from './HowSapoThinks';
-import * as React from 'react';
 
 interface Props {
   mood: Mood;
