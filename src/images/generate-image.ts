@@ -1,17 +1,14 @@
 /**
- * Image Generator v2 — Gemini 2.5 Flash Image (Nano Banana)
+ * Image Generator — Gemini 2.5 Flash Image
  *
  * Pipeline:
- *   summary (Spanish) → Flash-Lite visual descriptor (English) → Gemini Image
+ *   summary → Flash-Lite visual descriptor (English) → Gemini Image
  *
  * Features:
- *   - 17 rotating visual styles (same DNA, different "screens")
- *   - Sentiment-driven color palette
- *   - Flash-Lite for descriptor (free, unlimited)
- *   - Gemini 2.5 Flash Image for generation (500/month)
+ *   - 17 rotating visual styles (cyberpunk / AI-lab / techno-retro)
+ *   - Sentiment-driven dual-color palette
+ *   - Category-aware style overrides for AI news topics
  *   - Pixel frog Easter egg always present
- *
- * Quota: 500 image generations/month (~16/day)
  */
 
 import { GoogleGenAI } from '@google/genai';
@@ -35,32 +32,43 @@ const client = new GoogleGenAI({ apiKey: config.GOOGLE_GENERATIVE_AI_API_KEY });
 const IMAGE_MODEL = 'gemini-2.5-flash-image';
 
 const CATEGORY_VISUAL_OVERRIDES: Record<string, string> = {
-  // seguridad
-  hack: 'fracture',
-  exploit: 'seismic-spike',
-  breach: 'fracture',
-  stolen: 'seismic-spike',
-  // regulacion
-  sec: 'depth-strata',
-  ban: 'liquidity-wall',
-  regulation: 'depth-strata',
-  lawsuit: 'liquidity-wall',
-  // defi
-  defi: 'vector-terrain',
-  liquidity: 'order-depth',
-  protocol: 'bio-circuit',
-  // tecnologia
-  upgrade: 'bio-circuit',
-  fork: 'node-cluster',
-  mainnet: 'node-cluster',
-  // institucional
-  etf: 'holo-chart',
-  institutional: 'continent-grid',
-  blackrock: 'holo-chart',
-  // crisis
-  crash: 'seismic-spike',
-  collapse: 'fracture',
-  liquidat: 'liquidity-wall',
+  // security / threats
+  hack: 'signal-corrupt',
+  exploit: 'bit-rot',
+  breach: 'signal-corrupt',
+  jailbreak: 'overfit-noise',
+  vulnerab: 'bit-rot',
+  // regulation / policy
+  regulat: 'dataflow-pipe',
+  ban: 'signal-corrupt',
+  lawsuit: 'signal-corrupt',
+  legislation: 'cluster-topology',
+  // research / models
+  benchmark: 'attention-map',
+  training: 'loss-landscape',
+  reasoning: 'neural-mesh',
+  transformer: 'attention-map',
+  parameter: 'gpu-rack',
+  // infrastructure
+  gpu: 'gpu-rack',
+  compute: 'gpu-rack',
+  inference: 'dataflow-pipe',
+  scaling: 'cluster-topology',
+  // open source / community
+  'open source': 'mycelium-net',
+  hugging: 'mycelium-net',
+  ollama: 'bio-circuit',
+  // product / launches
+  release: 'synthwave-grid',
+  launch: 'neon-terminal',
+  announce: 'matrix-cascade',
+  // safety / alignment
+  safety: 'overfit-noise',
+  alignment: 'loss-landscape',
+  // disruption / crisis
+  crash: 'signal-corrupt',
+  collapse: 'bit-rot',
+  shutdown: 'vhs-glitch',
 };
 
 function pickStyleForTitle(title: string): VisualStyle {
@@ -97,7 +105,7 @@ async function buildVisualDescriptor(summary: string, category: string): Promise
     return text.trim();
   } catch (error) {
     logger.warn(`⚠️ Descriptor generation failed, using fallback: ${error}`);
-    return `Abstract ${category} crypto market visualization with symbolic data patterns.`;
+    return `Abstract ${category} AI technology visualization with symbolic data patterns.`;
   }
 }
 
