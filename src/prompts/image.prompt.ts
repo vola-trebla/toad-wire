@@ -8,136 +8,141 @@ export interface VisualStyle {
 }
 
 export const VISUAL_STYLES: VisualStyle[] = [
+  // ─── Cyberpunk Core ─────────────────────────────────────────────────────────
   {
-    name: 'terminal',
+    name: 'neon-terminal',
     description:
-      'Retro CRT monitor display, phosphor green glow, visible scanlines, rectangular UI panels, fixed-width typography layout, structured grid, 8-bit computer aesthetic.',
+      'Retro CRT monitor with scanlines, phosphor glow cycling between cyan and magenta, floating UI panels with kanji-style grid overlays, 8-bit pixel aesthetic, rain of data characters.',
   },
   {
-    name: 'micro-matrix',
+    name: 'matrix-cascade',
     description:
-      'Complex isometric micro-chip architecture layout, visible conductive copper traces, geometric micro-processor blocks, complex layered circuit board topography, emerald and dark-water color palette, pixel-art textures.',
+      'Vertical streams of falling luminous glyphs on pure black, columns of data at varying speeds and brightness, some characters frozen mid-fall, deep green base with electric cyan highlights.',
   },
   {
-    name: 'circuit',
+    name: 'neural-mesh',
     description:
-      'Printed circuit board layout, visible copper traces, microchip blocks, structured electronic pathways',
+      'Dense 3D neural network visualization, thousands of interconnected nodes pulsing with signal propagation, layered depth with hot magenta synaptic flashes on deep indigo background.',
+  },
+  // ─── Techno-Retro ──────────────────────────────────────────────────────────
+  {
+    name: 'vhs-glitch',
+    description:
+      'Corrupted VHS tape aesthetic, horizontal tracking distortion bands, RGB channel separation, blocky compression artifacts, warm amber and cool teal interference patterns.',
   },
   {
-    name: 'market-topography',
+    name: 'synthwave-grid',
     description:
-      'Low-poly 3D terrain map, contour elevation lines forming a structured surface, layered depth-buffer height bands, high-tech industrial aesthetic, dark background, precise perspective.',
+      'Infinite perspective grid receding into a neon sunset horizon, chrome wireframe mountains, hot pink and electric blue gradients, retro-futuristic 1980s computer art aesthetic.',
   },
   {
-    name: 'depth-strata',
+    name: 'crt-phosphor',
     description:
-      'Stacked monochromatic strata layers, vertical cross-section of data blocks, complex density gradient, high-contrast trading terminal dashboard, sharp rectangular geometry, no blurred edges.',
+      'Extreme close-up of CRT pixel substructure, visible RGB phosphor dots, electron beam scan pattern, warm amber glow bleeding into shadow, retro-tech microscopy aesthetic.',
+  },
+  // ─── AI Lab / Research ─────────────────────────────────────────────────────
+  {
+    name: 'attention-map',
+    description:
+      'Transformer attention heatmap visualization, warm-to-cool color gradient blocks arranged in matrix formation, self-attention cross-patterns, structured rectangular grid with glowing hotspots.',
   },
   {
-    name: 'liquidity-wall',
+    name: 'loss-landscape',
     description:
-      'Massive vertical monolithic blocks, dense stacked pixelated rectangles, heavy pressure visualization, industrial dark UI, flat vector aesthetic, no perspective distortion.',
+      'Topographic 3D loss surface with sharp ravines and smooth plateaus, contour elevation lines in electric purple and deep orange, gradient descent paths glowing as thin trails.',
   },
   {
-    name: 'order-depth',
+    name: 'token-rain',
     description:
-      'Horizontal layered depth-buffer visualization, stacked monochromatic blocks, sharp shifting pressure zones, dark interface, high contrast, pixel-perfect rectangles.',
+      'Abstract tokenization visualization, text fragments dissolving into numerical embeddings, floating vector coordinates, transition from readable shapes to pure geometry, cyan-to-violet gradient.',
+  },
+  // ─── Infrastructure / Compute ──────────────────────────────────────────────
+  {
+    name: 'gpu-rack',
+    description:
+      'Isometric server rack visualization, dense stacked compute units with status LEDs, heat dissipation waves, structured industrial aesthetic, deep teal and warning amber palette.',
   },
   {
-    name: 'holo-chart',
+    name: 'dataflow-pipe',
     description:
-      'Isometric volumetric structures, floating translucent data panes, complex UI dashboard overlays, futuristic analytics tower, monochromatic blue phosphor tones.',
+      'Horizontal data pipeline visualization, parallel streams of different widths and speeds, bottleneck compression points, industrial plumbing aesthetic with neon fluid, dark chrome surfaces.',
   },
   {
-    name: 'signal-wireframe',
+    name: 'cluster-topology',
     description:
-      '3D polygon wireframe mesh, glowing edges, structured triangular surfaces, clean spatial depth, high-tech altitude map aesthetic.',
+      'Distributed compute cluster map, asymmetric node placement with weighted connection lines, pulse propagation visualization, satellite-view aesthetic, electric purple on void black.',
+  },
+  // ─── Glitch / Disruption ───────────────────────────────────────────────────
+  {
+    name: 'signal-corrupt',
+    description:
+      'Aggressive digital signal corruption, jagged fault lines splitting the frame, geometric vector shards, RGB channel displacement, controlled fragmentation on pure black.',
   },
   {
-    name: 'continent-grid',
+    name: 'bit-rot',
     description:
-      'Large-scale volumetric continental shelves on a dark wireframe sphere, precise symmetrical longitude and latitude lines, topographic elevation clusters, minimalist geometric data nodes, complex satellite view mapping.',
-  },
-
-  {
-    name: 'seismic-spike',
-    description:
-      'Aggressive jagged fault lines, geometric vector shards splitting vertically along a central axis, controlled fragmentation texture, dark background, glitch-art elements, broken data structure effect.',
+      'Data decay visualization, structured pixel grid gradually dissolving into entropy, clean geometry on one side decaying into noise on the other, teal and rust-orange palette.',
   },
   {
-    name: 'fracture',
+    name: 'overfit-noise',
     description:
-      'Geometric vector shards splitting along jagged straight lines, controlled digital fragmentation, sharp angular contrast, dark background, glitch-art elements, broken glass effect.',
+      'Overfitting visualization — perfect structured pattern on the left dissolving into chaotic memorized noise on the right, sharp boundary between order and chaos, magenta and white.',
   },
-  {
-    name: 'oscilloscope',
-    description:
-      'Oscilloscope display with sharp waveform lines, horizontal scan grid, precise signal amplitude patterns, monochrome cyan signal glow.',
-  },
-  {
-    name: 'vector-terrain',
-    description:
-      'Directional vector arrow paths flow map across a textured 3D grid surface, structured channels, subtle movement visualization, industrial dark UI aesthetic, topographic flow lines.',
-  },
-  {
-    name: 'node-cluster',
-    description:
-      'Scattered glowing data nodes forming asymmetric clusters, thin connection lines, distributed network structure, no organic curves.',
-  },
+  // ─── Bio-Digital / Swamp-Tech ──────────────────────────────────────────────
   {
     name: 'bio-circuit',
     description:
-      'Hybrid organic microcircuitry, branching neon bioluminescent filaments, structured neural pathways, swamp-tech aesthetic, emerald and dark-water palette, pixel-art textures',
+      'Hybrid organic microcircuitry, branching bioluminescent neural filaments, structured synaptic pathways merging with silicon traces, swamp-tech aesthetic, emerald and dark-water palette.',
+  },
+  {
+    name: 'mycelium-net',
+    description:
+      'Underground fungal network pattern as data infrastructure metaphor, branching filaments connecting resource nodes, bioluminescent pulses, dark soil tones with electric green highlights.',
   },
 ];
 
 export const VISUAL_STYLES_NIGHT: VisualStyle[] = [
   {
-    name: 'moonlit-terminal',
+    name: 'idle-terminal',
     description:
-      'Dim CRT interface with low phosphor brightness, sparse UI panels, single blinking cursor glow',
+      'Dim CRT with single blinking cursor, almost-black screen, faint phosphor afterglow, one thin scanline drifting slowly downward.',
   },
   {
-    name: 'sleeping-circuit',
+    name: 'cooldown-rack',
     description:
-      'Circuit board in low-power mode, faint trace lines, single subtle pulse across microchip nodes',
+      'Server rack powering down, LEDs dimming one by one, residual heat shimmer, deep indigo and fading amber.',
   },
   {
-    name: 'deep-circuit-dream',
-    description: 'Minimal circuit pathways with slow rhythmic pulse, low brightness microchip glow',
-  },
-
-  {
-    name: 'silent-topography',
-    description: 'Low-contrast contour terrain map, faint elevation lines, smooth dark gradients',
-  },
-  {
-    name: 'nocturnal-grid',
+    name: 'gradient-descent-rest',
     description:
-      'Soft symmetrical grid fading into darkness, muted blue-green highlights, sparse signal activity',
+      'Loss landscape at convergence — smooth valley floor, minimal contour lines, low-energy equilibrium, muted purple on near-black.',
   },
   {
-    name: 'night-oscilloscope',
-    description: 'Minimal oscilloscope waveform, low amplitude signal, dim grid background',
-  },
-
-  {
-    name: 'signal-constellation',
+    name: 'dormant-mesh',
     description:
-      'Sparse glowing data nodes connected by thin lines, forming abstract constellation patterns over dark space',
+      'Neural network in sleep mode, sparse node activity, occasional faint pulse traveling along a single edge, deep space black with dim cyan.',
   },
   {
-    name: 'night-fracture',
-    description: 'Dark geometric surfaces with faint edge highlights, subtle controlled cracks',
+    name: 'night-mycelium',
+    description:
+      'Underground network at rest, barely visible bioluminescent threads, slow rhythmic pulse at root nodes, dark earth tones with faint emerald.',
+  },
+  {
+    name: 'static-channel',
+    description:
+      'Dead TV channel static at lowest brightness, barely perceptible grain, monochrome noise field, minimal visual energy.',
   },
 ];
 
 // ─── Sentiment palettes ───────────────────────────────────────────────────────
 
 export const SENTIMENT_PALETTE = {
-  bullish: 'bright neon green (#00ff41), upward energy, rising patterns, optimistic glow',
-  bearish: 'deep red (#ff2200), crimson tones, downward pressure, warning signals',
-  neutral: 'steel blue-grey (#4a9eff), balanced tones, analytical calm, cool palette',
+  bullish:
+    'electric cyan (#00ffff) and hot magenta (#ff00ff) accents on deep black, neon optimism, sharp highlights, forward momentum energy',
+  bearish:
+    'warning amber (#ff6600) bleeding into deep crimson (#cc0000), glitch distortion, tension patterns, system alert aesthetic',
+  neutral:
+    'cool violet (#7b68ee) and muted teal (#2dd4bf) on charcoal, analytical calm, balanced geometry, observatory mode',
 } as const;
 
 export type ImageSentiment = keyof typeof SENTIMENT_PALETTE;
