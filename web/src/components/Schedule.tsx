@@ -36,7 +36,7 @@ export function Schedule() {
             letterSpacing: '-0.01em',
           }}
         >
-          ¿Qué publica <span style={{ color: 'var(--green)' }}>el sapo</span>?
+          What does <span style={{ color: 'var(--green)' }}>TOAD-WIRE</span> broadcast?
         </h2>
 
         {/* Tabs */}
@@ -59,7 +59,7 @@ export function Schedule() {
                 fontWeight: dayType === type ? 700 : 400,
               }}
             >
-              {type === 'weekday' ? '// LUNES–VIERNES' : '// FIN DE SEMANA'}
+              {type === 'weekday' ? '// WEEKDAYS' : '// WEEKEND'}
             </button>
           ))}
           <div
@@ -72,7 +72,7 @@ export function Schedule() {
               alignItems: 'center',
             }}
           >
-            {dayType === 'weekend' ? '↑ +2 posts vs semana' : `${filtered.length} posts / día`}
+            {dayType === 'weekend' ? '↑ Focused Analysis' : `${filtered.length} cycles / day`}
           </div>
         </div>
 

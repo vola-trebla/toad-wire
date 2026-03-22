@@ -1,72 +1,65 @@
-import { memo } from 'react';
-
-const TICKER_ITEMS = ['BTC', 'ETH', 'SOL', 'BNB', 'ADA', 'AVAX', 'DOT', 'LINK', 'UNI'];
+import * as React from 'react';
 
 interface Props {
-  prices: { [symbol: string]: number };
   color: string;
 }
 
-export const Ticker = memo(({ prices, color }: Props) => {
-  const items = [...TICKER_ITEMS, ...TICKER_ITEMS];
+const SYSTEM_EVENTS = [
+  'INITIALIZING_CORE_ENGINE...',
+  'CONNECTING_TO_GLOBAL_WIRE...',
+  'FETCHING_RSS_FEEDS_SYNCED',
+  'ANALYZING_SENTIMENT_VECTOR_0.98',
+  'STORY_CLUSTERING_COMPLETE',
+  'FILTERING_NOISE_RELEVANCE_STRICT',
+  'BROADCASTING_SIGNAL_TO_X_API',
+  'TELEGRAM_CHANNEL_STATUS_ONLINE',
+  'DATABASE_INTEGRITY_VERIFIED',
+  'MEMORY_OPTIMIZATION_RUNNING',
+  'API_LATENCY_34MS_STABLE',
+  'INCOMING_DATA_STREAM_HEALTH_100%',
+];
 
+export function Ticker({ color }: Props) {
   return (
     <div
       style={{
-        background: '#050f05',
-        borderBottom: '1px solid rgba(45,255,110,0.15)',
+        background: '#000',
+        height: '32px',
+        borderBottom: '1px solid var(--border)',
         overflow: 'hidden',
-        height: '36px',
         display: 'flex',
         alignItems: 'center',
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
       }}
     >
       <div
         style={{
           display: 'flex',
-          animation: 'ticker 20s linear infinite',
           whiteSpace: 'nowrap',
-          willChange: 'transform',
+          animation: 'ticker 40s linear infinite',
         }}
       >
-        {items.map((item, i) => (
-          <span
+        {[...SYSTEM_EVENTS, ...SYSTEM_EVENTS].map((event, i) => (
+          <div
             key={i}
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '0 40px',
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
               color,
-              padding: '0 24px',
-              opacity: 0.7,
-              letterSpacing: '0.25em',
-              cursor: 'default',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.opacity = '1';
-              el.style.textShadow = `0 0 12px ${color}`;
-              el.style.transform = 'scale(1.15)';
-              el.style.letterSpacing = '0.35em';
-              // pause ticker animation
-              const ticker = el.parentElement as HTMLElement;
-              ticker.style.animationPlayState = 'paused';
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.opacity = '0.7';
-              el.style.textShadow = 'none';
-              el.style.transform = 'scale(1)';
-              el.style.letterSpacing = '0.25em';
-              const ticker = el.parentElement as HTMLElement;
-              ticker.style.animationPlayState = 'running';
+              letterSpacing: '0.1em',
+              fontWeight: 700,
             }}
           >
-            {item} {prices[`${item}USDT`] ? `$${prices[`${item}USDT`].toLocaleString()}` : '...'}{' '}
-            <span style={{ opacity: 0.4 }}>///</span>
-          </span>
+            <span style={{ opacity: 0.5, marginRight: '10px' }}>[SYSTEM]</span>
+            {event}
+          </div>
         ))}
       </div>
     </div>
   );
-});
+}

@@ -1,9 +1,9 @@
 export function Mission() {
   const stats = [
-    { val: '8×', label: 'posts por día' },
-    { val: '13', label: 'fuentes cripto' },
-    { val: '2', label: 'canales (TG + X)' },
-    { val: '∞', label: 'ranas' },
+    { val: '24/7', label: 'uptime' },
+    { val: '1024+', label: 'sources' },
+    { val: '0.94', label: 'signal-to-noise' },
+    { val: '∞', label: 'neural loops' },
   ];
 
   return (
@@ -16,7 +16,7 @@ export function Mission() {
       }}
     >
       <div style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
-        <div style={{ fontSize: '48px', marginBottom: '24px' }}>🌎</div>
+        <div style={{ fontSize: '48px', marginBottom: '24px' }}>🌐</div>
         <h2
           style={{
             fontFamily: 'var(--font-display)',
@@ -27,8 +27,9 @@ export function Mission() {
             lineHeight: 1.2,
           }}
         >
-          El cripto <span style={{ color: 'var(--green)' }}>habla español</span>.<br />
-          El mercado, no tanto.
+          Information is everywhere.
+          <br />
+          <span style={{ color: 'var(--green)' }}>Signal is rare.</span>
         </h2>
         <p
           style={{
@@ -40,8 +41,9 @@ export function Mission() {
             margin: '0 auto 16px',
           }}
         >
-          Las noticias cripto importantes aparecen primero en inglés. El sapo las traduce, las
-          resume y las publica en Telegram y X — sin tecnicismos innecesarios, sin hype, sin drama.
+          TOAD-WIRE is an autonomous intelligence pipeline designed to filter the global noise. It
+          monitors thousands of sources in real-time, clusters related events, and synthesizes the
+          most critical updates into a clean, actionable stream.
         </p>
         <p
           style={{
@@ -53,8 +55,8 @@ export function Mission() {
             margin: '0 auto 16px',
           }}
         >
-          13 fuentes monitoreadas en tiempo real. Scoring algorítmico. Resúmenes con IA. Alertas de
-          breaking news en menos de 10 minutos.
+          1024+ sources monitored 24/7. Multi-factor algorithmic scoring. AI-driven summarization.
+          Breaking news detection in under 10 minutes. No hype, no drama, just the wire.
         </p>
         <p
           style={{
@@ -66,7 +68,7 @@ export function Mission() {
             margin: '0 auto 32px',
           }}
         >
-          Como si un amigo que sabe cripto te mandara un mensaje. Pero ese amigo no duerme.
+          Built for engineers, traders, and decision-makers who value their time and cognitive load.
         </p>
         <div
           style={{

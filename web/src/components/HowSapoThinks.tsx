@@ -1,22 +1,21 @@
 export function HowSapoThinks() {
   const discarded = [
-    { title: 'AI agent sends memecoin to reply guy', reason: 'viral pero bajo impacto real' },
-    { title: 'Blockchain apps failed the masses', reason: 'opinión, no noticia de mercado' },
-    { title: 'Bitdeer dumps entire BTC reserves', reason: 'relevante pero menor escala' },
+    { title: 'AI agent sends memecoin to reply guy', reason: 'low impact / viral noise' },
+    { title: 'New smartphone leaked on Weibo', reason: 'out of scope / consumer tech' },
+    { title: 'Local weather alert in Nebraska', reason: 'geographic noise' },
   ];
 
-  // Единый объект данных для выбранного кейса
   const currentPost = {
-    title: 'Arbitrum bajo presión: Ballenas venden ARB',
-    reason: 'alto impacto, volumen on-chain detectado',
-    fullTitle: '📉 Arbitrum bajo presión: Ballenas venden ARB y avivan temor a mínimos históricos',
-    sentiment: '🔴 Bearish',
-    sentimentColor: '#ff4444',
-    category: '📈 Trading',
-    source: 'BeInCrypto',
-    body: 'Según BeInCrypto, el precio de Arbitrum (ARB) enfrenta una fuerte presión vendedora. En las últimas tres semanas, las ballenas han liquidado más de 60 millones de ARB, inyectando una oferta considerable en el mercado.',
-    thought: 'Cuando las ballenas hacen olas, el mercado siente el mareo. Clásico. 🌐 🧠',
-    tags: '#Arbitrum #Cripto #Mercado',
+    title: 'Global Semiconductor Supply Chain Update',
+    reason: 'high impact, systemic relevance detected',
+    fullTitle: '⚙️ Global Wire: Semiconductor Supply Chain faces new bottlenecks',
+    sentiment: '🔵 Neutral',
+    sentimentColor: '#4a9eff',
+    category: '⚙️ Technology',
+    source: 'TechFlow',
+    body: 'Recent reports indicate a shift in the global semiconductor landscape. New manufacturing hubs are emerging, but logistics challenges remain the primary bottleneck for 2026 production cycles.',
+    thought: 'The wire never sleeps. Infrastructure is the true signal. 🌐 🧠',
+    tags: '#Hardware #SupplyChain #GlobalWire',
     image: '/post/example-post.png',
   };
 
@@ -31,7 +30,7 @@ export function HowSapoThinks() {
           marginBottom: '8px',
         }}
       >
-        // HOW_SAPO_THINKS.exe
+        // WIRE_INTELLIGENCE.exe
       </div>
 
       <h2
@@ -43,7 +42,7 @@ export function HowSapoThinks() {
           marginBottom: '16px',
         }}
       >
-        Así elige <span style={{ color: 'var(--green)' }}>El Sapo.</span>
+        How <span style={{ color: 'var(--green)' }}>TOAD-WIRE</span> Decides.
       </h2>
 
       {/* Pipeline: Log de decisiones */}
@@ -58,13 +57,13 @@ export function HowSapoThinks() {
       >
         <div style={{ color: 'var(--text-muted)', marginBottom: '16px', lineHeight: '1.8' }}>
           <div>
-            📡 <span style={{ color: 'var(--text-dim)' }}>320+ artículos analizados</span>
+            📡 <span style={{ color: 'var(--text-dim)' }}>1024+ sources monitored</span>
           </div>
           <div>
-            🔍 <span style={{ color: 'var(--text-dim)' }}>filtro de relevancia activado</span>
+            🔍 <span style={{ color: 'var(--text-dim)' }}>relevance filter: strict_mode</span>
           </div>
           <div>
-            ⚡ <span style={{ color: 'var(--text-dim)' }}>Breaking news detectado</span>
+            ⚡ <span style={{ color: 'var(--text-dim)' }}>signal_to_noise_ratio: 0.94</span>
           </div>
         </div>
 

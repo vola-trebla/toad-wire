@@ -19,8 +19,7 @@ export function Footer() {
           color: 'var(--text-muted)',
         }}
       >
-        © 2026 El Sapo Cripto · No es asesoramiento financiero · El sapo no es responsable de tus
-        decisiones
+        © 2026 TOAD-WIRE · Autonomous Intelligence Pipeline · No noise, just the wire.
       </div>
       <div
         style={{
@@ -32,8 +31,10 @@ export function Footer() {
           gap: '6px',
         }}
       >
-        <span style={{ animation: 'blink 1.2s step-end infinite', color: 'var(--green)' }}>▌</span>
-        Hecho en LATAM con 🐸
+        <span style={{ animation: 'pulse 1.2s ease-in-out infinite', color: 'var(--green)' }}>
+          ▌
+        </span>
+        Driven by 🐸 and Signal
       </div>
     </footer>
   );

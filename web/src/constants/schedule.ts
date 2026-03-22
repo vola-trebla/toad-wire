@@ -1,71 +1,44 @@
-export interface ScheduleItem {
-  time: string;
-  icon: string;
-  title: string;
-  desc: string;
-  weekendOnly?: boolean;
-  weekdayOnly?: boolean;
-}
-
-export const SCHEDULE: ScheduleItem[] = [
+export const SCHEDULE = [
   {
-    time: '10:00',
-    icon: '☀️',
-    title: 'Buenos días, LATAM',
-    desc: 'Precios de apertura + la noticia que importó anoche. Con café o sin café.',
-  },
-  {
-    time: '13:00',
-    icon: '📡',
-    title: 'Flash del mediodía',
-    desc: 'La movida más importante de las últimas horas. Directo al punto.',
-  },
-  {
-    time: '18:00',
-    icon: '📊',
-    title: 'Cierre americano',
-    desc: 'Wall Street habló. ¿Qué significa para el cripto? El sapo traduce.',
+    time: '08:00',
+    icon: '🌅',
+    title: 'Daily Wire Roundup',
+    desc: 'Automated synthesis of the top 5 global signals from the last 12 hours.',
     weekdayOnly: true,
   },
   {
-    time: '17:00',
-    icon: '🐸',
-    title: 'El sapo no descansa',
-    desc: 'Finde de semana, mercado abierto. El pantano no cierra los sábados.',
-    weekendOnly: true,
+    time: '12:00',
+    icon: '⚙️',
+    title: 'System Health & Metrics',
+    desc: 'Mid-day report on engine performance, source health, and clustering efficiency.',
+    weekdayOnly: true,
+  },
+  {
+    time: '16:00',
+    icon: '📈',
+    title: 'Trend Analysis',
+    desc: 'Deep dive into emerging clusters and shifting sentiment vectors across all feeds.',
+    weekdayOnly: true,
   },
   {
     time: '20:00',
-    icon: '🔍',
-    title: 'Análisis nocturno',
-    desc: 'Contexto, no ruido. Una noticia bien explicada antes de cerrar el día.',
-  },
-  {
-    time: '22:00',
-    icon: '⚡',
-    title: 'Breaking & señales',
-    desc: 'Si algo importante pasa — el sapo lo detecta antes que los demás.',
+    icon: '🌙',
+    title: 'Nightly Signal Sweep',
+    desc: 'Final high-relevance broadcast before the Asian session handover.',
     weekdayOnly: true,
   },
   {
-    time: '21:00',
-    icon: '⚡',
-    title: 'Breaking & señales',
-    desc: 'Si algo importante pasa — el sapo lo detecta antes que los demás.',
+    time: '10:00',
+    icon: '🧘',
+    title: 'Weekly Core Cleanup',
+    desc: 'System-wide deduplication and historical archive optimization.',
     weekendOnly: true,
   },
   {
-    time: '22:30',
-    icon: '🌙',
-    title: 'Buenas noches',
-    desc: 'El pantano se cierra. Hasta mañana (o no, si hay breaking).',
-    weekdayOnly: true,
-  },
-  {
-    time: '23:30',
-    icon: '🌙',
-    title: 'Buenas noches',
-    desc: 'Noche larga de finde. El sapo se retira. El mercado, probablemente no.',
+    time: '18:00',
+    icon: '🔭',
+    title: 'Long-term Horizon',
+    desc: 'Macro analysis of weekly signals and persistent intelligence trends.',
     weekendOnly: true,
   },
 ];

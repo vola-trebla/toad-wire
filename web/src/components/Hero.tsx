@@ -99,7 +99,7 @@ export function Hero({ mood, glitching, switchMood }: Props) {
 
           {/* Title */}
           <h1
-            className="animate-fade-up delay-1"
+            className="animate-fade-up delay-1 glow-text"
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(32px,7vw,80px)',
@@ -109,9 +109,9 @@ export function Hero({ mood, glitching, switchMood }: Props) {
               marginBottom: '8px',
             }}
           >
-            <span style={{ color: 'var(--green)' }}>EL SAPO</span>
+            <span style={{ color: 'var(--green)' }}>TOAD</span>
             <br />
-            <span style={{ color: 'var(--text)' }}>CRIPTO</span>
+            <span style={{ color: 'var(--text)' }}>WIRE</span>
           </h1>
 
           {/* Tagline */}
@@ -126,10 +126,10 @@ export function Hero({ mood, glitching, switchMood }: Props) {
               lineHeight: 1.7,
             }}
           >
-            {currentMood.tagline}
+            {currentMood.tagline.replace('Sapo', 'Toad-Wire')}
             <br />
             <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>
-              Noticias cripto en español · Para LATAM · Sin complicaciones
+              Universal News Pipeline · AI-Driven Intelligence · Real-time Stream
             </span>
           </div>
 
@@ -235,7 +235,7 @@ export function Hero({ mood, glitching, switchMood }: Props) {
                 border: `1px solid ${mood === 'bearish' ? 'rgba(255,59,59,0.3)' : 'rgba(45,255,110,0.2)'}`,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '16px',
+                gap: '20px',
                 transition: 'all 0.3s',
                 opacity: glitching ? 0 : 1,
                 transform: glitching ? 'translateX(4px)' : 'none',
@@ -244,15 +244,17 @@ export function Hero({ mood, glitching, switchMood }: Props) {
               <span
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: '28px',
+                  fontSize: '20px',
+                  fontWeight: 900,
                   color: mood === 'bearish' ? 'var(--red)' : 'var(--green)',
                   lineHeight: 1,
-                  minWidth: '36px',
+                  minWidth: '54px',
+                  letterSpacing: '-0.02em',
                 }}
               >
                 {currentMood.signal}
               </span>
-              <div>
+              <div style={{ flex: 1 }}>
                 <div
                   style={{
                     fontFamily: 'var(--font-mono)',
@@ -262,12 +264,12 @@ export function Hero({ mood, glitching, switchMood }: Props) {
                     letterSpacing: '0.1em',
                   }}
                 >
-                  ÚLTIMA SEÑAL DEL SAPO
+                  ENGINE_STATUS_REPORT
                 </div>
                 <div
                   style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '12px',
+                    fontSize: '11px',
                     color: 'var(--text)',
                     lineHeight: 1.5,
                   }}

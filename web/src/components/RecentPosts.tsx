@@ -18,18 +18,18 @@ const SENTIMENT_COLOR = {
 };
 
 const SENTIMENT_LABEL = {
-  bullish: '🚀 Bullish',
-  bearish: '🩸 Bearish',
+  bullish: '🚀 Positive',
+  bearish: '🩸 Negative',
   neutral: '🔵 Neutral',
 };
 
 const CATEGORY_ICON: Record<string, string> = {
-  regulacion: '⚖️',
-  defi: '🔗',
-  trading: '📈',
-  seguridad: '🔒',
-  tecnologia: '⚙️',
-  latam: '🌎',
+  general: '🌍',
+  ai: '🤖',
+  tech: '⚙️',
+  finance: '📈',
+  politics: '⚖️',
+  security: '🔒',
 };
 
 function timeAgo(dateStr: string): string {
@@ -47,7 +47,6 @@ export function RecentPosts() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    // Проверка на наличие переменных окружения, чтобы не упасть
     const apiUrl = import.meta.env.VITE_API_URL || '';
     const token = import.meta.env.VITE_ADMIN_TOKEN || '';
 
@@ -77,7 +76,7 @@ export function RecentPosts() {
             marginBottom: '8px',
           }}
         >
-          // RECENT_POSTS.log
+          // WIRE_SIGNALS.log
         </div>
         <div
           style={{
@@ -97,7 +96,7 @@ export function RecentPosts() {
               margin: 0,
             }}
           >
-            Últimas señales <span style={{ color: 'var(--green)' }}>del sapo</span>
+            Latest <span style={{ color: 'var(--green)' }}>Wire Signals</span>
           </h2>
           {!loading && !error && (
             <span
@@ -108,7 +107,7 @@ export function RecentPosts() {
                 letterSpacing: '0.1em',
               }}
             >
-              ● LIVE
+              ● DATA_INCOMING
             </span>
           )}
         </div>
@@ -122,7 +121,7 @@ export function RecentPosts() {
               padding: '40px 0',
             }}
           >
-            // cargando señales...
+            // loading signals...
           </div>
         )}
 
@@ -135,7 +134,7 @@ export function RecentPosts() {
               padding: '40px 0',
             }}
           >
-            // el sapo está en el pantano, vuelve en un momento
+            // the wire is offline, reconnecting...
           </div>
         )}
 
@@ -148,9 +147,8 @@ export function RecentPosts() {
             }}
           >
             {posts.map((post) => {
-              // Фоллбек значения, если прилетел null
               const sKey = (post.sentiment || 'neutral') as keyof typeof SENTIMENT_COLOR;
-              const cKey = post.category || 'trading';
+              const cKey = post.category || 'tech';
               const color = SENTIMENT_COLOR[sKey] || '#4a9eff';
 
               return (
@@ -184,7 +182,6 @@ export function RecentPosts() {
                       el.style.background = 'var(--surface)';
                     }}
                   >
-                    {/* Top row */}
                     <div
                       style={{
                         display: 'flex',
@@ -212,7 +209,7 @@ export function RecentPosts() {
                             color: 'var(--text-muted)',
                           }}
                         >
-                          {CATEGORY_ICON[cKey] || '📈'} {cKey}
+                          {CATEGORY_ICON[cKey] || '⚙️'} {cKey}
                         </span>
                       </div>
                       <span
@@ -226,7 +223,6 @@ export function RecentPosts() {
                       </span>
                     </div>
 
-                    {/* Title */}
                     <div
                       style={{
                         fontFamily: 'var(--font-display)',
@@ -240,7 +236,6 @@ export function RecentPosts() {
                       {post.title}
                     </div>
 
-                    {/* Tweet preview */}
                     {post.tweet && (
                       <div
                         style={{
@@ -257,7 +252,6 @@ export function RecentPosts() {
                       </div>
                     )}
 
-                    {/* Source */}
                     <div
                       style={{
                         marginTop: '16px',
@@ -269,7 +263,6 @@ export function RecentPosts() {
                       🔗 {post.source}
                     </div>
 
-                    {/* Corner decoration */}
                     <div
                       style={{
                         position: 'absolute',

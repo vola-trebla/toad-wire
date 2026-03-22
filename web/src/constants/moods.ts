@@ -3,39 +3,38 @@ export type Mood = 'neutral' | 'bullish' | 'bearish';
 export interface MoodConfig {
   label: string;
   emoji: string;
-  color: string;
+  tagline: string;
   signal: string;
   signalText: string;
-  tagline: string;
-  cta: string;
+  sentiment: string;
 }
 
 export const MOODS: Record<Mood, MoodConfig> = {
   neutral: {
-    label: 'NEUTRAL',
-    emoji: '🐸',
-    color: '#2dff6e',
-    signal: '─',
-    signalText: 'El mercado respira. El sapo observa.',
-    tagline: 'Sin drama. Sin FOMO. Solo datos.',
-    cta: 'Únete al canal',
+    label: 'STABLE',
+    emoji: '🔵',
+    tagline:
+      'TOAD-WIRE Engine is monitoring global information streams in real-time. High signal-to-noise ratio maintained.',
+    signal: 'STB',
+    signalText: 'Normal operations. Scanning 1024+ sources. No anomalies detected.',
+    sentiment: 'neutral',
   },
   bullish: {
-    label: 'BULLISH',
-    emoji: '🚀🐸',
-    color: '#2dff6e',
-    signal: '▲',
-    signalText: '¡Las ranas saltan cuando hay sangre verde!',
-    tagline: 'El sapo huele oportunidad. ¿Tú también?',
-    cta: '¡Únete ahora!',
+    label: 'AGGRESSIVE',
+    emoji: '🚀',
+    tagline:
+      'High-frequency signal detection active. Filtering for exponential growth patterns and breakthrough innovation.',
+    signal: 'OPT',
+    signalText: 'Aggressive acquisition. Positive sentiment dominating global feeds.',
+    sentiment: 'bullish',
   },
   bearish: {
-    label: 'BEARISH',
-    emoji: '🐸💀',
-    color: '#ff3b3b',
-    signal: '▼',
-    signalText: 'El mercado llora. El sapo toma notas.',
-    tagline: 'Cuando todos venden, el sapo analiza.',
-    cta: 'No entres en pánico →',
+    label: 'DEFENSIVE',
+    emoji: '🩸',
+    tagline:
+      'System in risk-mitigation mode. Filtering for systemic failures, volatility, and negative market pressure.',
+    signal: 'CRIT',
+    signalText: 'Volatility detected. Protective filters engaged. High alert mode.',
+    sentiment: 'bearish',
   },
 };

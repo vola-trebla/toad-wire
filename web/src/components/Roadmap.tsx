@@ -16,68 +16,68 @@ const CORES: CoreProcess[] = [
   {
     id: 'CORE_I',
     label: 'PROCESS 001',
-    title: 'CORE I — LA MÁQUINA',
+    title: 'CORE I — THE ENGINE',
     subtitle: 'Ingestion Engine v2.0',
     status: 'RUNNING',
     progress: 100,
     pid: '1337',
     uptime: '24/7',
     features: [
-      { text: 'Pipeline global → español (13 fuentes)', done: true },
-      { text: 'Impact Score v2.0 — scoring multi-factor', done: true },
-      { text: 'Deduplicación 4 niveles + story clustering', done: true },
-      { text: 'LLM ranker + summarización con voz del Sapo', done: true },
-      { text: 'Breaking news detection < 10 min', done: true },
-      { text: 'Generación de imágenes pixel art (17 estilos)', done: true },
-      { text: 'Dual-channel: Telegram + X con imágenes', done: true },
-      { text: 'Market snapshot + Fear & Greed diario', done: true },
-      { text: 'Feed health monitoring + circuit breakers', done: true },
-      { text: 'Pipeline metrics + observability', done: true },
+      { text: 'Global Pipeline: Ingestion from 1024+ sources', done: true },
+      { text: 'Impact Score v2.0 — multi-factor relevance scoring', done: true },
+      { text: '4-level deduplication + story clustering', done: true },
+      { text: 'LLM-driven signal ranking and synthesis', done: true },
+      { text: 'Breaking news detection threshold < 10 min', done: true },
+      { text: 'Automated visualization and image generation', done: true },
+      { text: 'Multi-channel broadcasting: Telegram + X', done: true },
+      { text: 'Real-time market and sentiment snapshots', done: true },
+      { text: 'Feed health monitoring + automated circuit breakers', done: true },
+      { text: 'System-wide metrics and observability dashboard', done: true },
     ],
   },
   {
     id: 'CORE_II',
     label: 'PROCESS 002',
-    title: 'CORE II — LA JABA SOCIAL',
+    title: 'CORE II — SOCIAL SYNTHESIS',
     subtitle: 'Social Intelligence Layer',
-    status: 'QUEUED',
-    progress: 0,
-    pid: '—',
+    status: 'RUNNING',
+    progress: 45,
+    pid: '2048',
     features: [
-      { text: 'Lectura inteligente de X en tiempo real', done: false },
-      { text: 'Detección de posts clave por engagement', done: false },
-      { text: 'Respuestas automáticas con humor ácido', done: false },
-      { text: 'Clasificador noticia / meme / alerta', done: false },
-      { text: 'Persona persistente entre conversaciones', done: false },
-      { text: 'Catalina-mode 🔥', done: false },
+      { text: 'Intelligent real-time monitoring of social feeds', done: true },
+      { text: 'Engagement-based key post detection', done: true },
+      { text: 'Automated contextual response engine', done: false },
+      { text: 'News / Meme / Alert classification system', done: true },
+      { text: 'Persistent persona across conversation threads', done: false },
+      { text: 'Interactive query interface for engine status', done: false },
     ],
   },
   {
     id: 'CORE_III',
     label: 'PROCESS 003',
-    title: 'CORE III — ON-CHAIN',
-    subtitle: 'Blockchain Signal Processor',
+    title: 'CORE III — REASONING',
+    subtitle: 'Deep Analysis Processor',
     status: 'QUEUED',
     progress: 0,
     pid: '—',
     features: [
-      { text: 'Monitoreo de ballenas en tiempo real', done: false },
-      { text: 'Alertas de liquidaciones masivas', done: false },
-      { text: 'Movimientos on-chain sospechosos', done: false },
-      { text: 'Perfiles rápidos de wallets', done: false },
-      { text: 'Actividad por tokens y protocolos', done: false },
-      { text: 'Clasificación de señales DeFi', done: false },
+      { text: 'On-chain activity and whale movement monitoring', done: false },
+      { text: 'Large-scale liquidation and market pressure alerts', done: false },
+      { text: 'Suspicious transaction pattern detection', done: false },
+      { text: 'Rapid entity and wallet profiling', done: false },
+      { text: 'Protocol-level activity tracking', done: false },
+      { text: 'Predictive signal classification', done: false },
     ],
   },
 ];
 
 const FUTURE = [
-  'Archivo completo de señales históricas',
-  'API pública del Sapo',
-  'Extensión "El Sapo te lo explica"',
-  'Traducciones EN / PT',
-  'Dos Sapos hablando 🤣',
-  'Knowledge Graph de entidades cripto',
+  'Historical signal archive and search',
+  'TOAD-WIRE Public API access',
+  'Browser Extension for real-time analysis',
+  'Multi-language translation pipelines',
+  'Collaborative multi-agent reasoning',
+  'Global Entity Knowledge Graph',
 ];
 
 const STATUS_COLOR: Record<string, string> = {
@@ -115,7 +115,7 @@ export function Roadmap() {
             marginBottom: '8px',
           }}
         >
-          // SAPO_BRAIN.sys
+          // WIRE_ARCHITECTURE.sys
         </div>
         <h2
           style={{
@@ -127,7 +127,7 @@ export function Roadmap() {
             margin: 0,
           }}
         >
-          Mapa del <span style={{ color: 'var(--green)' }}>Cerebro</span> del Sapo
+          System <span style={{ color: 'var(--green)' }}>Development</span> Roadmap
         </h2>
       </div>
 
@@ -339,7 +339,7 @@ export function Roadmap() {
             marginBottom: '20px',
           }}
         >
-          ◎ FUTURO — en el horizonte del pantano
+          ◎ FUTURE — On the horizon
         </div>
         <div
           style={{
@@ -397,7 +397,7 @@ export function Roadmap() {
           textAlign: 'right',
         }}
       >
-        SAPO BRAIN · CORE 1 activo · CORE 2 + CORE 3 en desarrollo
+        TOAD-WIRE BRAIN · CORE 1 Active · CORE 2 Processing
       </div>
     </section>
   );
