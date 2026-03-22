@@ -69,6 +69,7 @@ export async function runNewsPipeline(limit = 1): Promise<void> {
         `     auth=${a.scoreBreakdown.authority.toFixed(2)} × fresh=${a.scoreBreakdown.freshness.toFixed(2)}` +
           ` + kw=${a.scoreBreakdown.keywordBoost.toFixed(2)}` +
           ` + ctx=${a.scoreBreakdown.contextBoost.toFixed(2)}` +
+          ` + vel=${a.scoreBreakdown.velocityBoost.toFixed(2)}` +
           ` − dup=${a.scoreBreakdown.duplicatePenalty.toFixed(2)}` +
           ` − spam=${a.scoreBreakdown.spamPenalty.toFixed(2)}`,
       );
