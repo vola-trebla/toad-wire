@@ -43,10 +43,7 @@ export function buildReplyPrompt(params: {
   authorHandle: string;
   tweetContent: string;
   personaMode: string;
-  btcPrice: string;
-  fngValue: string;
   recentReplies: string[];
-  skipMarketContext?: boolean;
 }): string {
   const { authorHandle, tweetContent, personaMode, recentReplies } = params;
 
