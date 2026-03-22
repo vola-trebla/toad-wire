@@ -38,12 +38,11 @@ async function getRecentReplies(limit = 5): Promise<string[]> {
 // ─── Validate Reply ───────────────────────────────────────────────────────────
 
 const BANNED_PATTERNS = [
-  /\bcompr[aá]\b/i, // compra / comprá
-  /\bvend[eé]\b/i, // vende / vendé
-  /\binvert[ií]\b/i, // invertí
-  /\bva a llegar\b/i, // price prediction
-  /\bva a subir\b/i,
-  /\bva a bajar\b/i,
+  /\bbuy\b/i, // financial advice
+  /\bsell\b/i,
+  /\binvest\b/i,
+  /\bAGI by\b/i, // timeline predictions
+  /\bwill (replace|kill|destroy)\b/i, // doom predictions
   /http[s]?:\/\//i, // no links in replies
 ];
 
@@ -73,8 +72,6 @@ export async function generateReply(tweet: {
       authorHandle: tweet.authorHandle,
       tweetContent: tweet.content,
       personaMode,
-      btcPrice: '',
-      fngValue: '',
       recentReplies,
     });
 
