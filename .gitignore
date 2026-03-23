@@ -5,4 +5,3 @@ dist/
 .claude
 .idea
 infra/
-trigger-one.ts

@@ -1,0 +1,44 @@
+name: Sapo Cripto Worker 🐸
+
+on:
+  schedule:
+    # Запуск каждый час (минута 0).
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    # Кнопка "Run workflow" для тестов руками
+
+jobs:
+  post-news:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Забираем код из репы
+        uses: actions/checkout@v4
+
+      - name: Поднимаем Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Ставим зависимости
+        run: npm ci
+
+      - name: Выпускаем жабу в X 🚀
+        env:
+          # Прокидываем все секреты из GitHub Secrets
+          AXIOM_DATASET: ${{ secrets.AXIOM_DATASET }}
+          AXIOM_TOKEN: ${{ secrets.AXIOM_TOKEN }}
+          COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          X_BOT_USER_ID: ${{ secrets.X_BOT_USER_ID }}
+          X_CONSUMER_KEY: ${{ secrets.X_CONSUMER_KEY }}
+          X_CONSUMER_SECRET: ${{ secrets.X_CONSUMER_SECRET }}
+          X_REPLY_DRY_RUN: ${{ secrets.X_REPLY_DRY_RUN }}
+        run: npx tsx trigger-one.ts
