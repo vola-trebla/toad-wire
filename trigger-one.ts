@@ -23,18 +23,25 @@ initObservability({
 async function trigger() {
   // Определяем время в Монтевидео
   const now = new Date();
-  const fmt = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'America/Montevideo',
-    hour: 'numeric',
-    minute: 'numeric',
-    weekday: 'numeric',
-    hour12: false,
-  });
 
-  const parts = fmt.formatToParts(now);
-  const hour = parseInt(parts.find((p) => p.type === 'hour')?.value || '0');
-  const minute = parseInt(parts.find((p) => p.type === 'minute')?.value || '0');
-  const day = now.toLocaleDateString('en-US', { timeZone: 'America/Montevideo', weekday: 'short' });
+  // 🐸 Исправленный форматтер: убираем weekday: 'numeric'
+  const hour = parseInt(
+    now.toLocaleTimeString('en-US', {
+      timeZone: 'America/Montevideo',
+      hour: 'numeric',
+      hour12: false,
+    }),
+  );
+  const minute = parseInt(
+    now.toLocaleTimeString('en-US', {
+      timeZone: 'America/Montevideo',
+      minute: 'numeric',
+    }),
+  );
+  const day = now.toLocaleDateString('en-US', {
+    timeZone: 'America/Montevideo',
+    weekday: 'short',
+  });
 
   logger.info(`🐸 Sapo Dispatcher: Current time in Montevideo is ${day} ${hour}:${minute}`);
 
