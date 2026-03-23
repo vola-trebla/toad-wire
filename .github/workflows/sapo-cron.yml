@@ -1,32 +1,38 @@
-name: Sapo Cripto Worker 🐸
+name: Sapo Cripto Dispatcher 🐸
 
 on:
   schedule:
-    # Запуск каждый час (минута 0).
-    - cron: '0 * * * *'
+    # Запуск каждые 30 минут для проверки здоровья фидов и выполнения задач по расписанию
+    - cron: '*/30 * * * *'
   workflow_dispatch:
-    # Кнопка "Run workflow" для тестов руками
+    # Кнопка для ручного запуска
+    inputs:
+      force_run:
+        description: 'Force run News Pipeline?'
+        required: false
+        default: 'true'
 
 jobs:
-  post-news:
+  dispatch:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Забираем код из репы
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Поднимаем Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: Ставим зависимости
+      - name: Install dependencies
         run: npm install
 
-      - name: Выпускаем жабу в X 🚀
+      - name: Run Sapo Dispatcher 🐸
         env:
-          # Прокидываем все секреты из GitHub Secrets
+          FORCE_RUN: ${{ github.event.inputs.force_run || 'false' }}
+          # Все секреты
           AXIOM_DATASET: ${{ secrets.AXIOM_DATASET }}
           AXIOM_TOKEN: ${{ secrets.AXIOM_TOKEN }}
           COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
