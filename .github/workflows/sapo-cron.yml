@@ -1,50 +1,50 @@
-name: Sapo Cripto Dispatcher 🐸
+# name: Sapo Cripto Dispatcher 🐸
 
-on:
-  schedule:
-    # Запуск каждые 30 минут для проверки здоровья фидов и выполнения задач по расписанию
-    - cron: '*/30 * * * *'
-  workflow_dispatch:
-    # Кнопка для ручного запуска
-    inputs:
-      force_run:
-        description: 'Force run News Pipeline?'
-        required: false
-        default: 'true'
+# on:
+#   schedule:
+#     # Запуск каждые 30 минут для проверки здоровья фидов и выполнения задач по расписанию
+#     - cron: '*/30 * * * *'
+#   workflow_dispatch:
+#     # Кнопка для ручного запуска
+#     inputs:
+#       force_run:
+#         description: 'Force run News Pipeline?'
+#         required: false
+#         default: 'true'
 
-jobs:
-  dispatch:
-    runs-on: ubuntu-latest
+# jobs:
+#   dispatch:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '20'
+#           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm install
+#       - name: Install dependencies
+#         run: npm install
 
-      - name: Run Sapo Dispatcher 🐸
-        env:
-          FORCE_RUN: ${{ github.event.inputs.force_run || 'false' }}
-          # Все секреты
-          AXIOM_DATASET: ${{ secrets.AXIOM_DATASET }}
-          AXIOM_TOKEN: ${{ secrets.AXIOM_TOKEN }}
-          COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
-          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
-          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
-          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
-          X_BOT_USER_ID: ${{ secrets.X_BOT_USER_ID }}
-          X_CONSUMER_KEY: ${{ secrets.X_CONSUMER_KEY }}
-          X_CONSUMER_SECRET: ${{ secrets.X_CONSUMER_SECRET }}
-          X_REPLY_DRY_RUN: ${{ secrets.X_REPLY_DRY_RUN }}
-        run: npx tsx trigger-one.ts
+#       - name: Run Sapo Dispatcher 🐸
+#         env:
+#           FORCE_RUN: ${{ github.event.inputs.force_run || 'false' }}
+#           # Все секреты
+#           AXIOM_DATASET: ${{ secrets.AXIOM_DATASET }}
+#           AXIOM_TOKEN: ${{ secrets.AXIOM_TOKEN }}
+#           COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
+#           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+#           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+#           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+#           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+#           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+#           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+#           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+#           X_BOT_USER_ID: ${{ secrets.X_BOT_USER_ID }}
+#           X_CONSUMER_KEY: ${{ secrets.X_CONSUMER_KEY }}
+#           X_CONSUMER_SECRET: ${{ secrets.X_CONSUMER_SECRET }}
+#           X_REPLY_DRY_RUN: ${{ secrets.X_REPLY_DRY_RUN }}
+#         run: npx tsx trigger-one.ts
